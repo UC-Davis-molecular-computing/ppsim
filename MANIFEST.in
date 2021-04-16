@@ -1,0 +1,6 @@
+include requirements*.txt
+include LICENSE.txt
+include README_files/README_12_1.png
+include README_files/README_14_2.png
+include README_files/README_20_2.png
+include README_files/README_24_0.png
