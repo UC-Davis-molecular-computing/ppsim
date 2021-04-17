@@ -6,7 +6,7 @@ from setuptools.extension import Extension
 
 
 inc_path = np.get_include()
-lib_path = join(np.get_include(), '', '../..', 'random', 'lib')
+lib_path = join(np.get_include(), '..', '..', 'random', 'lib')
 
 with open("README.md", 'r') as f:
     long_description = f.read()
@@ -23,7 +23,8 @@ with open("requirements.txt") as fp:
 
 setup(
     name="ppsim",
-    version="0.0.1",
+    packages=['ppsim'],
+    version="0.0.3",
     author="Eric Severson",
     description="A package for simulating population protocols.",
     long_description=long_description,

@@ -398,34 +398,45 @@ class Simulation:
         if len(self.snapshots) == 1 and type(self.snapshots[0]) is TimeUpdate:
             self.snapshots.pop()
 
-    def print_reactions(self):
-        """Print all non-null transitions, using reaction notation."""
-        w = max([len(str(state)) for state in self.state_list])
-        for reaction, p in zip(self.simulator.reactions, self.simulator.reaction_probabilities):
-            self._print_reaction(reaction, p, w)
+    @property
+    def reactions(self):
+        """A string showing all non-null transitions in reaction notation.
 
-    def print_enabled_reactions(self):
-        """Print all non-null transitions which are currently enabled.
+        Each reaction is separated by \n, so that print(self.reactions) will
+            display all reactions.
+        """
+        w = max([len(str(state)) for state in self.state_list])
+        reactions = [self._reaction_string(r, p, w) for (r, p) in
+                     zip(self.simulator.reactions, self.simulator.reaction_probabilities)]
+        return '\n'.join(reactions)
+
+    @property
+    def enabled_reactions(self):
+        """A string showing all non-null transitions that are currently enabled.
 
         This can only check the current configuration in self.simulator.
+        Each reaction is separated by \n, so that print(self.enabled_reactions) will
+            display all enabled reactions.
         """
         w = max([len(str(state)) for state in self.state_list])
         self.simulator.get_enabled_reactions()
 
+        reactions = []
         for i in range(self.simulator.num_enabled_reactions):
-            reaction = self.simulator.reactions[self.simulator.enabled_reactions[i]]
+            r = self.simulator.reactions[self.simulator.enabled_reactions[i]]
             p = self.simulator.reaction_probabilities[self.simulator.enabled_reactions[i]]
-            self._print_reaction(reaction, p, w)
+            reactions.append(self._reaction_string(r, p, w))
+        return '\n'.join(reactions)
 
-    def _print_reaction(self, reaction, p=1, w=1):
-        """Prints reaction, from self.simulator.reactions."""
+    def _reaction_string(self, reaction, p=1, w=1):
+        """A string representation of a reaction."""
 
         reactants = [self.state_list[i] for i in sorted(reaction[0:2])]
         products = [self.state_list[i] for i in sorted(reaction[2:])]
         s = '{0}, {1}  -->  {2}, {3}'.format(*[str(x).rjust(w) for x in reactants + products])
         if p < 1:
             s += f'      with probability {p}'
-        print(s)
+        return s
 
     def reset(self, init_config: Optional[Dict[State, int]] = None):
         """Reset the Simulation.
