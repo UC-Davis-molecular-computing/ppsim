@@ -11,7 +11,7 @@ lib_path = join(np.get_include(), '..', '..', 'random', 'lib')
 with open("README.md", 'r') as f:
     long_description = f.read()
 
-distributions = Extension("simulator",
+distributions = Extension("ppsim.simulator",
                           sources=[join('', 'ppsim/simulator.pyx')],
                           include_dirs=[inc_path],
                           library_dirs=[lib_path],
@@ -24,7 +24,7 @@ with open("requirements.txt") as fp:
 setup(
     name="ppsim",
     packages=['ppsim'],
-    version="0.0.3",
+    version="0.0.5",
     author="Eric Severson",
     description="A package for simulating population protocols.",
     long_description=long_description,

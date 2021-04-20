@@ -27,7 +27,7 @@ import pandas as pd
 import seaborn as sns
 from tqdm.auto import tqdm
 
-import simulator
+from . import simulator
 
 # TODO: these names are not showing up in the mouseover information
 State = Hashable
@@ -36,7 +36,7 @@ Rule = Union[Callable[[State, State], Output], Dict[Tuple[State, State], Output]
 
 
 # TODO: give other option for when the number of reachable states is large or unbounded
-def state_enumeration(init_dist: Dict[State, int], rule: Callable[[State, State], Output], **kwargs) -> set:
+def state_enumeration(init_dist: Dict[State, int], rule: Callable[[State, State], Output]) -> set:
     """Finds all reachable states by breadth-first search.
 
     Args:
@@ -44,7 +44,6 @@ def state_enumeration(init_dist: Dict[State, int], rule: Callable[[State, State]
             (states are any hashable type, commonly NamedTuple or String)
         rule: function mapping a pair of states to either a pair of states
             or to a dictionary mapping pairs of states to probabilities
-        **kwargs: any additional parameters used by rule
 
     Returns:
         a set of all reachable states
@@ -56,31 +55,16 @@ def state_enumeration(init_dist: Dict[State, int], rule: Callable[[State, State]
         if unchecked_state not in checked_states:
             checked_states.add(unchecked_state)
         for checked_state in checked_states:
-            for new_states in [rule(checked_state, unchecked_state, **kwargs),
-                               rule(unchecked_state, checked_state, **kwargs)]:
+            for new_states in [rule(checked_state, unchecked_state),
+                               rule(unchecked_state, checked_state)]:
                 if new_states is not None:
-                    if type(new_states) == dict:
+                    if isinstance(new_states, dict):
                         # if the output is a distribution
                         new_states = sum(new_states.keys(), ())
                     for new_state in new_states:
                         if new_state not in checked_states and new_state not in unchecked_states:
                             unchecked_states.add(new_state)
     return checked_states
-
-
-def rule_from_dict(d: Dict[Tuple[State, State], Output]):
-    """Converts a dict defining a rule into a function defining a rule.
-
-    Args:
-        d: dictionary mapping pairs of states to outputs
-
-    Returns:
-        a function mapping the same pairs of states to outputs
-    """
-    def rule(a, b):
-        if (a, b) in d:
-            return d[(a, b)]
-    return rule
 
 
 class Snapshot:
@@ -144,6 +128,7 @@ class TimeUpdate(Snapshot):
         print(f'\r Time: {self.time:.3f}', end='\r')
 
 
+# TODO: add seed
 class Simulation:
     """Class to simulate a population protocol.
 
@@ -189,8 +174,8 @@ class Simulation:
                 The Sequential represents the population as an array of agents, and
                 simulates each interaction step by choosing a pair of agents to update.
                 Defaults to 'MultiBatch'.
-            symmetric (str): Should the rule be interpreted as being symmetric, either
-                'asymmetric', 'symmetric', or 'symmetric_enforced'.
+            transition_order (str): Should the rule be interpreted as being symmetric,
+                either 'asymmetric', 'symmetric', or 'symmetric_enforced'.
                 Defaults to 'asymmetric'.
                 'asymmetric': Ordering of the inputs matters, and all inputs not
                     explicitly given as assumed to be null interactions.
@@ -205,20 +190,66 @@ class Simulation:
             **kwargs: If rule is a function, other keyword function parameters are
                 passed in here.
         """
-        if type(rule) == dict:
-            self.rule = rule_from_dict(rule)
-        elif callable(rule):
-            self.rule = rule
+        self._rule = rule
+        self._rule_kwargs = kwargs
+
+        # Get a list of all reachable states, use the natsort library to put in a nice order.
+        self.state_list = natsorted(list(state_enumeration(init_config, self.rule)),
+                                    key=lambda x:x.__repr__())
+        self.state_dict = {state: i for i, state in enumerate(self.state_list)}
+
+        if simulator_method.lower() == 'multibatch':
+            self._method = simulator.SimulatorMultiBatch
+        elif simulator_method.lower() == 'sequential':
+            self._method = simulator.SimulatorSequentialArray
+        else:
+            raise ValueError('simulator_method must be multibatch or sequential')
+        self._transition_order = transition_order
+        self.initialize_simulator(self.array_from_dict(init_config))
+
+        # Check an arbitrary state to see if it has fields.
+        # This will be true for either a tuple, NamedTuple, or dataclass.
+        state = next(iter(init_config.keys()))
+        # Check for dataclass.
+        if dataclasses.is_dataclass(state):
+            field_names = [field.name for field in dataclasses.fields(state)]
+            tuples = [dataclasses.astuple(state) for state in self.state_list]
+        else:
+            # Check for NamedTuple.
+            field_names = getattr(state, '_fields', None)
+            tuples = self.state_list
+        # Check also for tuple.
+        if field_names or isinstance(state, tuple):
+            self.column_names = pd.MultiIndex.from_tuples(tuples, names=field_names)
+        else:
+            self.column_names = [str(i) for i in self.state_list]
+        self.configs = []
+        self.times = []
+        self.add_config()
+        # private history dataframe is initially empty, updated by the getter of property self.history
+        self._history = pd.DataFrame(data=self.configs, index=pd.Index(self.times, name='time'),
+                                     columns=self.column_names)
+        self.snapshots = []
+
+    def rule(self, a, b):
+        """The rule, as a function of two input states."""
+        # If the input rule was a dict
+        if type(self._rule) == dict:
+            if (a, b) in self._rule:
+                return self._rule[(a, b)]
+        # If the input rule was a function, with possible kwargs
+        elif callable(self._rule):
+            return self._rule(a, b, **self._rule_kwargs)
         else:
             raise TypeError("rule must be either a dict or a callable.")
 
-        # Get a list of all reachable states, use the natsort library to put in a nice order.
-        self.state_list = natsorted(list(state_enumeration(init_config, self.rule, **kwargs)),
-                                    key=lambda x:x.__repr__())
-        q = len(self.state_list)
-        self.state_dict = {self.state_list[i]: i for i in range(q)}
+    def initialize_simulator(self, config):
+        """Build the data structures necessary to instantiate the Simulator class.
 
-        # Build the data structures necessary to instantiate the Simulator class.
+        Args:
+            config: The config array to instantiate the Simulator.
+        """
+        q = len(self.state_list)
         delta = np.zeros((q, q, 2), dtype=np.intp)
         null_transitions = np.zeros((q, q), dtype=bool)
         random_transitions = np.zeros((q, q, 2), dtype=np.intp)
@@ -226,7 +257,7 @@ class Simulation:
         transition_probabilities = []
         for i, a in enumerate(self.state_list):
             for j, b in enumerate(self.state_list):
-                output = self.rule(a, b, **kwargs)
+                output = self.rule(a, b)
                 # when output is a distribution
                 if type(output) == dict:
                     s = sum(output.values())
@@ -254,7 +285,7 @@ class Simulation:
         random_outputs = np.array(random_outputs, dtype=np.intp)
         transition_probabilities = np.array(transition_probabilities, dtype=float)
 
-        if transition_order.lower() in ['symmetric', 'symmetric_enforced']:
+        if self._transition_order.lower() in ['symmetric', 'symmetric_enforced']:
             for i in range(q):
                 for j in range(q):
                     # Set the output for i, j to be equal to j, i if null
@@ -263,47 +294,16 @@ class Simulation:
                         delta[i, j] = delta[j, i]
                         random_transitions[i, j] = random_transitions[j, i]
                     # If i, j and j, i are both non-null, with symmetric_enforced, check outputs are equal
-                    elif transition_order.lower() == 'symmetric_enforced' and not null_transitions[j, i]:
+                    elif self._transition_order.lower() == 'symmetric_enforced' and not null_transitions[j, i]:
                         if sorted(delta[i, j]) != sorted(delta[j, i]) or \
                                 random_transitions[i, j, 0] != random_transitions[j, i, 0]:
                             a, b = self.state_list[i], self.state_list[j]
                             raise ValueError(f'''Asymmetric interaction:
-                                            {a, b} -> {self.rule(a,b,**kwargs)}
-                                            {b, a} -> {self.rule(b, a,**kwargs)}''')
+                                            {a, b} -> {self.rule(a,b)}
+                                            {b, a} -> {self.rule(b, a)}''')
 
-        if simulator_method.lower() == 'multibatch':
-            method = simulator.SimulatorMultiBatch
-        elif simulator_method.lower() == 'sequential':
-            method = simulator.SimulatorSequentialArray
-        else:
-            raise ValueError('simulator_method must be multibatch or sequential')
-
-        self.simulator = method(self.array_from_dict(init_config), delta, null_transitions,
-                                random_transitions, random_outputs, transition_probabilities)
-
-        # Check an arbitrary state to see if it has fields.
-        # This will be true for either a tuple, NamedTuple, or dataclass.
-        state = next(iter(init_config.keys()))
-        # Check for dataclass.
-        if dataclasses.is_dataclass(state):
-            field_names = [field.name for field in dataclasses.fields(state)]
-            tuples = [dataclasses.astuple(state) for state in self.state_list]
-        else:
-            # Check for NamedTuple.
-            field_names = getattr(state, '_fields', None)
-            tuples = self.state_list
-        # Check also for tuple.
-        if field_names or isinstance(state, tuple):
-            self.column_names = pd.MultiIndex.from_tuples(tuples, names=field_names)
-        else:
-            self.column_names = [str(i) for i in self.state_list]
-        self.configs = []
-        self.times = []
-        self.add_config()
-        # private history dataframe is initially empty, updated by the getter of property self.history
-        self._history = pd.DataFrame(data=self.configs, index=pd.Index(self.times, name='time'),
-                                     columns=self.column_names)
-        self.snapshots = []
+        self.simulator = self._method(config, delta, null_transitions,
+                                      random_transitions, random_outputs, transition_probabilities)
 
     def array_from_dict(self, d):
         """Convert a configuration dictionary to an array.
@@ -342,7 +342,7 @@ class Simulation:
             timer: If True, and there are no other snapshot objects, a default TimeUpdate
                 Snapshot will be created to print the current parallel time.
         """
-        if len(self.snapshots) is 0 and timer is True:
+        if len(self.snapshots) == 0 and timer is True:
             self.add_snapshot(TimeUpdate())
 
         # stop_condition() returns True when it is time to stop
@@ -453,7 +453,8 @@ class Simulation:
                 config[self.state_dict[k]] += init_config[k]
         self.configs = [config]
         self.times = [0]
-        self._history = pd.DataFrame(columns=self.column_names)
+        self._history = pd.DataFrame(data=self.configs, index=pd.Index(self.times, name='time'),
+                                     columns=self._history.columns)
         self.simulator.reset(config)
 
     def set_config(self, config):
@@ -498,7 +499,7 @@ class Simulation:
         h = len(self._history)
         if h < len(self.configs):
             new_history = pd.DataFrame(data=self.configs[h:], index=pd.Index(self.times[h:], name='time'),
-                                       columns=self.column_names)
+                                       columns=self._history.columns)
             self._history = pd.concat([self._history, new_history])
         return self._history
 
@@ -565,6 +566,20 @@ class Simulation:
         self.simulator.run_until_silent(np.array(self.configs[0]))
         return self.time
 
+    def __getstate__(self):
+        """Returns information to be pickled."""
+        # Clear _history such that it can be regenerated by self.history
+        d = dict(self.__dict__)
+        d['_history'] = pd.DataFrame(data=self.configs[0:1], index=pd.Index(self.times[0:1], name='time'),
+                                                 columns=self._history.columns)
+        del d['simulator']
+        return d
+
+    def __setstate__(self, state):
+        """Instantiates from the pickled state information."""
+        self.__dict__ = state
+        self.initialize_simulator(self.configs[-1])
+
 
 class StatePlotter(Snapshot):
     """Snapshot gives a barplot showing counts of states in a given configuration.
@@ -594,8 +609,9 @@ class StatePlotter(Snapshot):
 
     def _add_state_map(self, state_map):
         """An internal function called to update self.categories and self.matrix."""
-        self.categories = list(set([state_map(state) for state in self.simulation.state_list
-                                    if state_map(state) is not None]))
+        self.categories = natsorted(list(set([state_map(state) for state in self.simulation.state_list
+                                    if state_map(state) is not None])),
+                                    key=lambda x:x.__repr__())
         categories_dict = {j: i for i, j in enumerate(self.categories)}
         self._matrix = np.zeros((len(self.simulation.state_list), len(self.categories)), dtype=np.int64)
         for i, state in enumerate(self.simulation.state_list):
@@ -676,7 +692,7 @@ def time_trials(rule: Rule, ns: List[int], initial_conditions: Union[Callable, L
     if callable(initial_conditions):
         initial_conditions = [initial_conditions(n) for n in ns]
     for i in tqdm(range(len(ns))):
-        sim = Simulation(initial_conditions[i], rule)
+        sim = Simulation(initial_conditions[i], rule, **kwargs)
         t = time.perf_counter()
         time_limit = t + (end_time - t) / (len(ns) - i)
         j = 0

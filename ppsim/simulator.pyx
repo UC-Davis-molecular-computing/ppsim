@@ -185,7 +185,6 @@ cdef class SimulatorMultiBatch(Simulator):
         r_constant: Used in definition of coll_table_r_values.
     """
 
-    # cdef public DynamicAliasTable urn
     cdef public Urn urn
     cdef Urn updated_counts
     cdef double logn
