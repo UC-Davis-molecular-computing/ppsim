@@ -397,6 +397,7 @@ class Simulation:
 
         if len(self.snapshots) == 1 and type(self.snapshots[0]) is TimeUpdate:
             self.snapshots.pop()
+            print()
 
     @property
     def reactions(self):
