@@ -371,6 +371,10 @@ class Simulation:
         # accomodate more rapid snapshots.
         interval_length = min(step_length, int(convergence_step * self.simulator.n))
 
+        # Ensure these lengths are at least a positive number of steps
+        step_length = max(step_length, 1)
+        interval_length = max(interval_length, 1)
+
         next_step = self.simulator.t + step_length
 
         for snapshot in self.snapshots:
@@ -655,7 +659,9 @@ class StatePlotter(Snapshot):
 
 def time_trials(rule: Rule, ns: List[int], initial_conditions: Union[Callable, List],
                 convergence_condition: Optional[Callable] = None, convergence_check_interval: float = 0.1,
-                num_trials: int = 100, max_wallclock_time: float = 60 * 60 * 24, **kwargs):
+                num_trials: int = 100, max_wallclock_time: float = 60 * 60 * 24,
+
+                **kwargs):
     """Gathers data about the convergence time of a rule.
 
     Args:
