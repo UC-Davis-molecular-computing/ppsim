@@ -11,10 +11,6 @@ The package can be installed with `pip` via
 pip install ppsim
 ```
 
-    Found existing installation: ppsim 0.0.5
-    Can't uninstall 'ppsim'. No files were found to uninstall.
-    Note: you may need to restart the kernel to use updated packages.
-    
 
 The most important part of the package is the `Simulation` class, which is responsible for parsing a protocol, performing the simulation, and giving data about the simulation.
 
@@ -55,8 +51,6 @@ Now let's run this simulation for `10` units of parallel time (`10 * n` interact
 ```python
 sim.run(10, 0.1)
 ```
-
-     Time: 10.002
 
 
 The `Simulation` class can display all these configurations in a `pandas` dataframe in the attribute `history`.
@@ -167,7 +161,7 @@ sim.history
     </tr>
   </tbody>
 </table>
-<p>101 rows × 3 columns</p>
+<p>101 rows x 3 columns</p>
 </div>
 
 
@@ -176,14 +170,6 @@ sim.history
 ```python
 sim.history.plot()
 ```
-
-
-
-
-    <AxesSubplot:xlabel='time'>
-
-
-
 
     
 ![png](https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/raw/main/README_files/README_12_1.png)
@@ -197,17 +183,6 @@ Without specifying an end time, `run` will run the simulation until the configur
 sim.run()
 sim.history.plot()
 ```
-
-     Time: 44.593
-
-
-
-
-
-    <AxesSubplot:xlabel='time'>
-
-
-
 
     
 ![png](https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/raw/main/README_files/README_14_2.png)
@@ -251,15 +226,6 @@ sim.history.plot()
     A, B  -->  U, U
     A, U  -->  A, A
     B, U  -->  B, B
-     Time: 23.383
-
-
-
-
-
-    <AxesSubplot:xlabel='time'>
-
-
 
 
     
@@ -282,26 +248,6 @@ df
 ```
 
 
-      0%|          | 0/20 [00:00<?, ?it/s]
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -368,8 +314,7 @@ df
     </tr>
   </tbody>
 </table>
-<p>1506 rows × 2 columns</p>
-</div>
+<p>1506 rows x 2 columns</p>
 
 
 
@@ -382,7 +327,6 @@ import seaborn as sns
 lp = sns.lineplot(x='n', y='time', data=df)
 lp.set_xscale('log')
 ```
-
 
     
 ![png](https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/raw/main/README_files/README_24_0.png)
@@ -478,26 +422,6 @@ sim.run(three_consecutive_values, 0.1)
 sim.history
 ```
 
-     Time: 18.394
-
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -816,9 +740,7 @@ sim.history
     </tr>
   </tbody>
 </table>
-<p>183 rows × 101 columns</p>
-</div>
-
+<p>183 rows x 101 columns</p>
 
 
 With a much larger number of states, the `history` dataframe is more unwieldly, so trying to directly call `history.plot()` would be very messy and not very useful.
