@@ -60,23 +60,6 @@ The `Simulation` class can display all these configurations in a `pandas` datafr
 sim.history
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -162,8 +145,6 @@ sim.history
   </tbody>
 </table>
 <p>101 rows x 3 columns</p>
-</div>
-
 
 
 
