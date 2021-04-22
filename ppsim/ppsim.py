@@ -29,8 +29,6 @@ from tqdm.auto import tqdm
 
 from . import simulator
 
-# This comment was an important bug fix
-
 # TODO: these names are not showing up in the mouseover information
 State = Hashable
 Output = Union[Tuple[State, State], Dict[Tuple[State, State], float]]
