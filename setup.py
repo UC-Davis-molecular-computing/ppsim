@@ -24,7 +24,7 @@ with open("requirements.txt") as fp:
 setup(
     name="ppsim",
     packages=['ppsim'],
-    version="0.0.7",
+    version="0.0.8",
     author="Eric Severson",
     description="A package for simulating population protocols.",
     long_description=long_description,
