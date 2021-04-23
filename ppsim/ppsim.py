@@ -239,7 +239,12 @@ class Simulation:
                 return self._rule[(a, b)]
         # If the input rule was a function, with possible kwargs
         elif callable(self._rule):
-            return self._rule(a, b, **self._rule_kwargs)
+            # Make a fresh copy in the case of a dataclass in case the function mutates a, b
+            if dataclasses.is_dataclass(a):
+                a, b = dataclasses.replace(a), dataclasses.replace(b)
+            output = self._rule(a, b, **self._rule_kwargs)
+            # If function just mutates a, b but doesn't return, then return new a, b values
+            return (a, b) if output is None else output
         else:
             raise TypeError("rule must be either a dict or a callable.")
 
@@ -603,7 +608,7 @@ class StatePlotter(Snapshot):
             array self.config (indexed by states), matrix * config gives an array
             of counts of categories. Used internally for the update function.
     """
-    def __init__(self, state_map=None):
+    def __init__(self, state_map=None, update_time=0.5):
         """Initializes the StatePlotter.
 
         Args:
@@ -611,12 +616,17 @@ class StatePlotter(Snapshot):
         """
         self._matrix = None
         self.state_map = state_map
+        self.update_time = update_time
 
     def _add_state_map(self, state_map):
         """An internal function called to update self.categories and self.matrix."""
-        self.categories = natsorted(list(set([state_map(state) for state in self.simulation.state_list
-                                    if state_map(state) is not None])),
-                                    key=lambda x:x.__repr__())
+        self.categories = []
+        for state in self.simulation.state_list:
+            if state_map(state) is not None and state_map(state) not in self.categories:
+                self.categories.append(state_map(state))
+        # self.categories = natsorted(list(set([state_map(state) for state in self.simulation.state_list
+        #                             if state_map(state) is not None])),
+        #                             key=lambda x:x.__repr__())
         categories_dict = {j: i for i, j in enumerate(self.categories)}
         self._matrix = np.zeros((len(self.simulation.state_list), len(self.categories)), dtype=np.int64)
         for i, state in enumerate(self.simulation.state_list):
@@ -630,7 +640,6 @@ class StatePlotter(Snapshot):
         If self.state_map gets changed, call initialize to update the barplot to
             show the new set self.categories.
         """
-        self.update_time = 0.2
         self.fig, self.ax = plt.subplots()
         if self.state_map is not None:
             self._add_state_map(self.state_map)
@@ -641,7 +650,6 @@ class StatePlotter(Snapshot):
         if max([len(str(c)) for c in self.categories]) > 2:
             self.ax.set_xticklabels(self.ax.get_xticklabels(), rotation=90, ha='center')
         self.ax.set_ylim(0, self.simulation.simulator.n)
-        self.fig.tight_layout()
 
     def update(self, index=None):
         """Update the heights of all bars in the plot."""
@@ -654,6 +662,7 @@ class StatePlotter(Snapshot):
             rect.set_height(heights[i])
 
         self.ax.set_title(f'Time {self.time}')
+        self.fig.tight_layout()
         self.fig.canvas.draw()
 
 
