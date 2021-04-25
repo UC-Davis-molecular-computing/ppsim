@@ -384,21 +384,22 @@ class Simulation:
 
         for snapshot in self.snapshots:
             snapshot.next_snapshot_time = time.perf_counter() + snapshot.update_time
+        # add max_wall_clock to be the minimum snapshot update time, to put a time bound on calls to simulator.run
+        run_kwargs = {}
+        if len(self.snapshots) > 0:
+            run_kwargs['max_wallclock_time'] = min([s.update_time for s in self.snapshots])
         while stop_condition() is False:
-            self.simulator.run(interval_length)
+            self.simulator.run(min(self.simulator.t + interval_length, next_step), **run_kwargs)
             if self.simulator.t >= next_step:
                 self.add_config()
                 next_step = self.simulator.t + step_length
             for snapshot in self.snapshots:
                 t = time.perf_counter()
                 if t >= snapshot.next_snapshot_time:
-                    # if waiting for interval length took 2x the snapshot rate, cut interval length in half
-                    if t >= snapshot.next_snapshot_time + snapshot.update_time:
-                        interval_length = max(interval_length // 2, 1)
                     snapshot.update()
                     snapshot.next_snapshot_time = time.perf_counter() + snapshot.update_time
-        # add the final configuration if running until silence
-        if run_until is None:
+        # add the final configuration if it wasn't already recorded
+        if self.time > self.times[-1]:
             self.add_config()
         # final updates for all snapshots
         for snapshot in self.snapshots:

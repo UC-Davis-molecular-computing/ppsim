@@ -88,11 +88,20 @@ cdef class Simulator:
         self.gen = PCG64(seed=seed)
         self.bitgen = <bitgen_t *> PyCapsule_GetPointer(self.gen.capsule, "BitGenerator")
 
-    def run(self, int64_t num_steps):
+    def run(self, int64_t num_steps, double max_wallclock_time = 60 * 60):
         """Base function which will be called to run the simulation for a fixed number of steps.
 
         Args:
             num_steps: The number of steps to run the simulation.
+            max_wallclock_time: A bound in seconds on how long the simulator will run for.
+        """
+        pass
+
+    def reset(self, int64_t [::1] config):
+        """Base function which will be called to reset the simulation.
+
+        Args:
+            config: The configuration array to reset to.
         """
         pass
 
@@ -108,6 +117,13 @@ cdef class SimulatorSequentialArray(Simulator):
     def __init__(self, *args):
         """Initializes Simulator, then creates the population array."""
         Simulator.__init__(self, *args)
+        self.make_population()
+
+    def make_population(self):
+        """Creates the array self.population.
+
+        This is an array of agent states, where the count of each state comes from self.config.
+        """
         self.population = np.zeros(self.n, dtype=np.intp)
         cdef npy_intp i, j, k = 0
         for i in range(self.q):
@@ -115,13 +131,13 @@ cdef class SimulatorSequentialArray(Simulator):
                 self.population[k] = i
                 k += 1
 
-    def run(self, int64_t num_steps):
+    def run(self, int64_t end_step, double max_wallclock_time = 60 * 60):
         """Samples random pairs of agents and updates them num_steps times."""
-        cdef int64_t end = self.t + num_steps
         cdef npy_intp i, j, k, a, b
         cdef double u
         cdef double [:] ps
-        while self.t < end:
+        cdef double end_time = time.perf_counter() + max_wallclock_time
+        while self.t < end_step and time.perf_counter() < end_time:
             # random integer in [0, ... , n-1]
             i = random_interval(self.bitgen, self.n - 1)
             j = random_interval(self.bitgen, self.n - 1)
@@ -147,37 +163,58 @@ cdef class SimulatorSequentialArray(Simulator):
             self.t += 1
         return self.config
 
+    def reset(self, int64_t [::1] config):
+        """Reset to a given configuration.
+
+        Sets all parameters necessary to change the configuration.
+
+        Args:
+            config: The configuration array to reset to.
+        """
+        self.config = config
+        self.t = 0
+        self.n = sum(config)
+        self.make_population()
+
 
 cdef class SimulatorMultiBatch(Simulator):
     """Uses the MultiBatch algorithm to simulate O(sqrt(n)) interactions in parallel.
 
     The MultiBatch algorithm comes from the paper
-        'Simulating Population Protocols in Subconstant Time per Interaction' (https://arxiv.org/abs/2005.03584).
-    Beyond the methods described in the paper, this class also dynamically switches to Gillespie's algorithm when
-    the number of null interactions is high.
+        'Simulating Population Protocols in Subconstant Time per Interaction'
+        (https://arxiv.org/abs/2005.03584).
+    Beyond the methods described in the paper, this class also dynamically switches
+    to Gillespie's algorithm when the number of null interactions is high.
 
     Attributes:
         urn: An Urn object which stores the configuration and has methods for sampling.
-        updated_counts: An additional Urn where agents are stored that have been updated during a batch.
+        updated_counts: An additional Urn where agents are stored that have been
+            updated during a batch.
         logn: Precomputed log(n).
-        batch_threshold: Required size of the batch that must be found from sampling collision lengths
-            before doing the parallel batch processing.
-        row_sums: Array which stores sampled counts of initiator agents (row sums of the 'D' matrix from the paper).
-        row: Array which stores the counts of responder agents for each type of initiator agent
-            (one row of the 'D' matrix from the paper).
-        m: Array which holds the outputs of samples from a multinomial distribution for batch random transitions.
+        batch_threshold: Minimum number of interactions that must be simulated in each
+            batch. Collisions will be repeatedly sampled up until batch_threshold
+            interaction steps, then all non-colliding pairs of 'delayed agents' are
+            processed in parallel.
+        row_sums: Array which stores sampled counts of initiator agents
+            (row sums of the 'D' matrix from the paper).
+        row: Array which stores the counts of responder agents for each type of
+            initiator agent (one row of the 'D' matrix from the paper).
+        m: Array which holds the outputs of samples from a multinomial distribution
+            for batch random transitions.
         do_gillespie: A boolean determining if the we are currently doing Gillespie steps.
-        silent: A boolean determining if the configuration is silent (all interactions are null).
-        reactions: A (num_reactions) x 4 array giving a list of reactions, as [input input output output]
-        enabled_reactions: An array holding indices of all reactions which are currently applicable.
-        num_enabled_reactions: Gives the number of meaningful indices contained in enabled_reactions.
+        silent: A boolean determining if the configuration is silent
+            (all interactions are null).
+        reactions: A (num_reactions) x 4 array giving a list of reactions,
+            as [input input output output]
+        enabled_reactions: An array holding indices of all currently applicable reactions.
+        num_enabled_reactions: The number of meaningful indices in enabled_reactions.
         propensities: A num_reactions x 1 array holding the propensities of each reaction.
             The propensity of a reaction is the probability of that reaction * (n choose 2).
-        reaction_probabilities: A num_reactions x 1 array giving the probability of each reaction given that those
-            two agents interact.
-        gillespie_threshold: The probability of a non-null interaction must be below this threshold to keep
-            doing Gillespie steps.
-        coll_table: Precomputed values of the distribution to speed up the function sample_coll(r, u).
+        reaction_probabilities: A num_reactions x 1 array giving the probability of each
+            reaction, given that those two agents interact.
+        gillespie_threshold: The probability of a non-null interaction must be below this
+            threshold to keep doing Gillespie steps.
+        coll_table: Precomputed values to speed up the function sample_coll(r, u).
         coll_table_r_values: Values of r, giving one axis of coll_table.
         coll_table_u_values: Values of u, giving the other axis of coll_table.
         num_r_values: len(coll_table_r_values), first axis of coll_table.
@@ -302,21 +339,21 @@ cdef class SimulatorMultiBatch(Simulator):
         self.silent = False
         self.do_gillespie = False
 
-    def run(self, int64_t num_steps):
+    def run(self, int64_t end_step, double max_wallclock_time = 60 * 60):
         """Run the simulation for a fixed number of steps.
 
         Args:
             num_steps: The number of steps to run the simulation.
         """
-        cdef int64_t end = self.t + num_steps
-        while self.t < end:
+        cdef double end_time = time.perf_counter() + max_wallclock_time
+        while self.t < end_step and time.perf_counter() < end_time:
             if self.silent:
-                self.t = end
+                self.t = end_step
                 return
             elif self.do_gillespie:
-                self.gillespie_step()
+                self.gillespie_step(end_step)
             else:
-                self.multibatch_step()
+                self.multibatch_step(end_step)
 
     def run_until_silent(self, int64_t [::1] config):
         """Run the simulation until silent."""
@@ -354,8 +391,17 @@ cdef class SimulatorMultiBatch(Simulator):
                 self.enabled_reactions[self.num_enabled_reactions] = i
                 self.num_enabled_reactions += 1
 
-    def gillespie_step(self):
-        """Samples the time until the next non-null interaction and updates."""
+    def gillespie_step(self, int64_t t_max = 0):
+        """Samples the time until the next non-null interaction and updates.
+
+        Args:
+            t_max: Defaults to 0.
+                If positive, the maximum value of self.t that will be reached.
+                If the sampled time is greater than t_max, then it will instead
+                be set to t_max and no reaction will be performed.
+                (Because of the memoryless property of the geometric, this gives a
+                faithful simulation up to step t_max).
+        """
         cdef npy_intp i, j
         cdef int64_t a, b
         cdef npy_intp [:] r
@@ -377,7 +423,12 @@ cdef class SimulatorMultiBatch(Simulator):
         if success_probability > self.gillespie_threshold:
             self.do_gillespie = False
         # add a geometric number of steps, based on success probability
+        new_t = self.t + random_geometric(self.bitgen, success_probability)
         self.t += random_geometric(self.bitgen, success_probability)
+        # if t_max was exceeded, stop at step t_max without performing a reaction
+        if self.t > t_max > 0:
+            self.t = t_max
+            return
         # sample the successful reaction r, currently just using linear search
         x = self.bitgen.next_double(self.bitgen.state) * total_propensity
         i = 0
@@ -398,13 +449,13 @@ cdef class SimulatorMultiBatch(Simulator):
         if enabled_reactions_changed or self.config[r[0]] == 0 or self.config[r[1]] == 0:
             self.get_enabled_reactions()
 
-    def multibatch_step(self):
+    def multibatch_step(self, int64_t t_max = 0):
         """Sample collisions to build a batch, then update the entire batch in parallel.
 
         See the paper for a more detailed explanation of the algorithm.
         """
         cdef int64_t num_delayed, l
-        cdef double t1, t2, t3, u, r
+        cdef double t1, t2, t3, u, r, end_step
         cdef npy_intp a, b, c, i, j, i_max, j_max, o_i, o_j
 
 
@@ -414,18 +465,29 @@ cdef class SimulatorMultiBatch(Simulator):
         num_delayed = 2
 
         t1 = time.perf_counter()
-        while num_delayed + self.updated_counts.size < self.batch_threshold:
+        # batch will go for at least batch_threshold interactions, unless passing t_max
+        end_step = self.t + self.batch_threshold
+        if t_max > 0:
+            end_step = min(end_step, t_max)
+        while self.t + num_delayed // 2 < end_step:
             u = self.bitgen.next_double(self.bitgen.state)
             l = self.sample_coll(r = num_delayed + self.updated_counts.size,
                                  u = u, has_bounds=True)
             # add (l-1) // 2 pairs of delayed agents, the lth agent a was already picked, so has a collision
             num_delayed += 2 * ((l-1) // 2)
+
+            # If the sampled collision happens after t_max, then include delayed agents up until t_max
+            #   and do not perform the collision.
+            if self.t + num_delayed // 2 > t_max > 0:
+                num_delayed = (t_max - self.t) * 2
+                break
+
             # sample if a was a delayed or an updated agent
             u = self.bitgen.next_double(self.bitgen.state)
             r = num_delayed / (num_delayed + self.updated_counts.size)
             # true with probability num_delayed / (num_delayed + num_updated)
             if u * (num_delayed + self.updated_counts.size) <= num_delayed:
-                # if a was delayed, need to first update a to current its current state
+                # if a was delayed, need to first update a with its first interaction before the collision
                 # c is the delayed partner that a interacted with, so add this interaction
                 a = self.urn.sample_one()
                 c = self.urn.sample_one()

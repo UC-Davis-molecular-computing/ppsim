@@ -1265,7 +1265,7 @@ typedef struct __pyx_ctuple_npy_intp__and_npy_intp __pyx_ctuple_npy_intp__and_np
 struct __pyx_opt_args_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll;
 struct __pyx_opt_args_5ppsim_9simulator_3Urn_add_to_entry;
 
-/* "ppsim/simulator.pyx":329
+/* "ppsim/simulator.pyx":366
  *                 self.multibatch_step()
  * 
  *     cdef (npy_intp, npy_intp) unordered_delta(self, npy_intp a, npy_intp b):             # <<<<<<<<<<<<<<
@@ -1277,7 +1277,7 @@ struct __pyx_ctuple_npy_intp__and_npy_intp {
   npy_intp f1;
 };
 
-/* "ppsim/simulator.pyx":516
+/* "ppsim/simulator.pyx":578
  *             self.get_enabled_reactions()
  * 
  *     cdef int64_t sample_coll(self, int64_t r, double u, bint has_bounds=True):             # <<<<<<<<<<<<<<
@@ -1289,7 +1289,7 @@ struct __pyx_opt_args_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll {
   int has_bounds;
 };
 
-/* "ppsim/simulator.pyx":663
+/* "ppsim/simulator.pyx":725
  *         return index
  * 
  *     cdef void add_to_entry(self, npy_intp index, int64_t amount = 1):             # <<<<<<<<<<<<<<
@@ -1373,7 +1373,7 @@ struct __pyx_obj_5ppsim_9simulator_Simulator {
 };
 
 
-/* "ppsim/simulator.pyx":100
+/* "ppsim/simulator.pyx":109
  * 
  * 
  * cdef class SimulatorSequentialArray(Simulator):             # <<<<<<<<<<<<<<
@@ -1386,7 +1386,7 @@ struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray {
 };
 
 
-/* "ppsim/simulator.pyx":151
+/* "ppsim/simulator.pyx":180
  * 
  * 
  * cdef class SimulatorMultiBatch(Simulator):             # <<<<<<<<<<<<<<
@@ -1421,7 +1421,7 @@ struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch {
 };
 
 
-/* "ppsim/simulator.pyx":589
+/* "ppsim/simulator.pyx":651
  * 
  * 
  * cdef class Urn:             # <<<<<<<<<<<<<<
@@ -1532,7 +1532,7 @@ struct __pyx_vtabstruct_5numpy_6random_13bit_generator_SeedSequence {
 static struct __pyx_vtabstruct_5numpy_6random_13bit_generator_SeedSequence *__pyx_vtabptr_5numpy_6random_13bit_generator_SeedSequence;
 
 
-/* "ppsim/simulator.pyx":151
+/* "ppsim/simulator.pyx":180
  * 
  * 
  * cdef class SimulatorMultiBatch(Simulator):             # <<<<<<<<<<<<<<
@@ -1547,7 +1547,7 @@ struct __pyx_vtabstruct_5ppsim_9simulator_SimulatorMultiBatch {
 static struct __pyx_vtabstruct_5ppsim_9simulator_SimulatorMultiBatch *__pyx_vtabptr_5ppsim_9simulator_SimulatorMultiBatch;
 
 
-/* "ppsim/simulator.pyx":589
+/* "ppsim/simulator.pyx":651
  * 
  * 
  * cdef class Urn:             # <<<<<<<<<<<<<<
@@ -1866,6 +1866,13 @@ static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject 
 /* KeywordStringCheck.proto */
 static int __Pyx_CheckKeywordStrings(PyObject *kwdict, const char* function_name, int kw_allowed);
 
+/* PyObjectCallNoArg.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
+#else
+#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
+#endif
+
 /* RaiseTooManyValuesToUnpack.proto */
 static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
 
@@ -1877,13 +1884,6 @@ static CYTHON_INLINE int __Pyx_IterFinish(void);
 
 /* UnpackItemEndCheck.proto */
 static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
-
-/* PyObjectCallNoArg.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
-#else
-#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
-#endif
 
 /* ListAppend.proto */
 #if CYTHON_USE_PYLIST_INTERNALS && CYTHON_ASSUME_SAFE_MACROS
@@ -2603,6 +2603,7 @@ static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_shape[] = "shape";
 static const char __pyx_k_start[] = "start";
+static const char __pyx_k_t_max[] = "t_max";
 static const char __pyx_k_zeros[] = "zeros";
 static const char __pyx_k_encode[] = "encode";
 static const char __pyx_k_format[] = "format";
@@ -2617,6 +2618,7 @@ static const char __pyx_k_asarray[] = "asarray";
 static const char __pyx_k_fortran[] = "fortran";
 static const char __pyx_k_memview[] = "memview";
 static const char __pyx_k_Ellipsis[] = "Ellipsis";
+static const char __pyx_k_end_step[] = "end_step";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_itemsize[] = "itemsize";
 static const char __pyx_k_linspace[] = "linspace";
@@ -2625,6 +2627,7 @@ static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_Simulator[] = "Simulator";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_enumerate[] = "enumerate";
+static const char __pyx_k_num_steps[] = "num_steps";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
 static const char __pyx_k_IndexError[] = "IndexError";
@@ -2646,6 +2649,7 @@ static const char __pyx_k_random_outputs[] = "random_outputs";
 static const char __pyx_k_View_MemoryView[] = "View.MemoryView";
 static const char __pyx_k_allocate_buffer[] = "allocate_buffer";
 static const char __pyx_k_dtype_is_object[] = "dtype_is_object";
+static const char __pyx_k_make_population[] = "make_population";
 static const char __pyx_k_multibatch_step[] = "multibatch_step";
 static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
@@ -2653,6 +2657,7 @@ static const char __pyx_k_null_transitions[] = "null_transitions";
 static const char __pyx_k_set_n_parameters[] = "set_n_parameters";
 static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_max_wallclock_time[] = "max_wallclock_time";
 static const char __pyx_k_random_transitions[] = "random_transitions";
 static const char __pyx_k_strided_and_direct[] = "<strided and direct>";
 static const char __pyx_k_SimulatorMultiBatch[] = "SimulatorMultiBatch";
@@ -2731,6 +2736,7 @@ static PyObject *__pyx_n_s_dict;
 static PyObject *__pyx_n_s_dtype;
 static PyObject *__pyx_n_s_dtype_is_object;
 static PyObject *__pyx_n_s_encode;
+static PyObject *__pyx_n_s_end_step;
 static PyObject *__pyx_n_s_enumerate;
 static PyObject *__pyx_n_s_error;
 static PyObject *__pyx_n_s_flags;
@@ -2751,6 +2757,8 @@ static PyObject *__pyx_n_s_itemsize;
 static PyObject *__pyx_kp_s_itemsize_0_for_cython_array;
 static PyObject *__pyx_n_s_linspace;
 static PyObject *__pyx_n_s_main;
+static PyObject *__pyx_n_s_make_population;
+static PyObject *__pyx_n_s_max_wallclock_time;
 static PyObject *__pyx_n_s_memview;
 static PyObject *__pyx_n_s_mode;
 static PyObject *__pyx_n_s_multibatch_step;
@@ -2761,6 +2769,7 @@ static PyObject *__pyx_n_s_new;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_null_transitions;
+static PyObject *__pyx_n_s_num_steps;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_kp_u_numpy_core_multiarray_failed_to;
 static PyObject *__pyx_kp_u_numpy_core_umath_failed_to_impor;
@@ -2800,6 +2809,7 @@ static PyObject *__pyx_kp_s_strided_and_indirect;
 static PyObject *__pyx_kp_s_stringsource;
 static PyObject *__pyx_n_s_struct;
 static PyObject *__pyx_n_s_sum;
+static PyObject *__pyx_n_s_t_max;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_time;
 static PyObject *__pyx_n_s_transition_probabilities;
@@ -2809,7 +2819,8 @@ static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_zeros;
 static int __pyx_pf_5ppsim_9simulator_9Simulator___init__(struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, __Pyx_memviewslice __pyx_v_init_array, __Pyx_memviewslice __pyx_v_delta, __Pyx_memviewslice __pyx_v_null_transitions, __Pyx_memviewslice __pyx_v_random_transitions, PyObject *__pyx_v_random_outputs, __Pyx_memviewslice __pyx_v_transition_probabilities, PyObject *__pyx_v_seed); /* proto */
-static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_2run(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, CYTHON_UNUSED int64_t __pyx_v_num_steps); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_2run(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, CYTHON_UNUSED int64_t __pyx_v_num_steps, CYTHON_UNUSED double __pyx_v_max_wallclock_time); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_4reset(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_config); /* proto */
 static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_6config___get__(struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self); /* proto */
 static int __pyx_pf_5ppsim_9simulator_9Simulator_6config_2__set__(struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_1n___get__(struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self); /* proto */
@@ -2820,20 +2831,22 @@ static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_5delta___get__(struct __p
 static int __pyx_pf_5ppsim_9simulator_9Simulator_5delta_2__set__(struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_16null_transitions___get__(struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self); /* proto */
 static int __pyx_pf_5ppsim_9simulator_9Simulator_16null_transitions_2__set__(struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
-static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_6__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_8__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray___init__(struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, PyObject *__pyx_v_args); /* proto */
-static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2run(struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, int64_t __pyx_v_num_steps); /* proto */
-static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2make_population(struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_4run(struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, int64_t __pyx_v_end_step, double __pyx_v_max_wallclock_time); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_6reset(struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, __Pyx_memviewslice __pyx_v_config); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch___init__(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, PyObject *__pyx_v_args); /* proto */
 static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_parameters(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_4reset(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, __Pyx_memviewslice __pyx_v_config); /* proto */
-static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_6run(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, int64_t __pyx_v_num_steps); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_6run(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, int64_t __pyx_v_end_step, double __pyx_v_max_wallclock_time); /* proto */
 static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_8run_until_silent(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_config); /* proto */
 static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_10get_enabled_reactions(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_step(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_step(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_step(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, int64_t __pyx_v_t_max); /* proto */
+static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_step(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, int64_t __pyx_v_t_max); /* proto */
 static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_3urn___get__(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self); /* proto */
 static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_3urn_2__set__(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, PyObject *__pyx_v_value); /* proto */
 static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_3urn_4__del__(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self); /* proto */
@@ -3370,7 +3383,7 @@ static int __pyx_pf_5ppsim_9simulator_9Simulator___init__(struct __pyx_obj_5ppsi
  *         self.gen = PCG64(seed=seed)
  *         self.bitgen = <bitgen_t *> PyCapsule_GetPointer(self.gen.capsule, "BitGenerator")             # <<<<<<<<<<<<<<
  * 
- *     def run(self, int64_t num_steps):
+ *     def run(self, int64_t num_steps, double max_wallclock_time = 60 * 60):
  */
   __pyx_t_1 = __pyx_v_self->gen->capsule;
   __Pyx_INCREF(__pyx_t_1);
@@ -3410,45 +3423,138 @@ static int __pyx_pf_5ppsim_9simulator_9Simulator___init__(struct __pyx_obj_5ppsi
 /* "ppsim/simulator.pyx":91
  *         self.bitgen = <bitgen_t *> PyCapsule_GetPointer(self.gen.capsule, "BitGenerator")
  * 
- *     def run(self, int64_t num_steps):             # <<<<<<<<<<<<<<
+ *     def run(self, int64_t num_steps, double max_wallclock_time = 60 * 60):             # <<<<<<<<<<<<<<
  *         """Base function which will be called to run the simulation for a fixed number of steps.
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_3run(PyObject *__pyx_v_self, PyObject *__pyx_arg_num_steps); /*proto*/
-static char __pyx_doc_5ppsim_9simulator_9Simulator_2run[] = "Base function which will be called to run the simulation for a fixed number of steps.\n\n        Args:\n            num_steps: The number of steps to run the simulation.\n        ";
-static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_3run(PyObject *__pyx_v_self, PyObject *__pyx_arg_num_steps) {
+static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_3run(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5ppsim_9simulator_9Simulator_2run[] = "Base function which will be called to run the simulation for a fixed number of steps.\n\n        Args:\n            num_steps: The number of steps to run the simulation.\n            max_wallclock_time: A bound in seconds on how long the simulator will run for.\n        ";
+static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_3run(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   CYTHON_UNUSED int64_t __pyx_v_num_steps;
+  CYTHON_UNUSED double __pyx_v_max_wallclock_time;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("run (wrapper)", 0);
-  assert(__pyx_arg_num_steps); {
-    __pyx_v_num_steps = __Pyx_PyInt_As_int64_t(__pyx_arg_num_steps); if (unlikely((__pyx_v_num_steps == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 91, __pyx_L3_error)
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_num_steps,&__pyx_n_s_max_wallclock_time,0};
+    PyObject* values[2] = {0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_num_steps)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_max_wallclock_time);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "run") < 0)) __PYX_ERR(0, 91, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_num_steps = __Pyx_PyInt_As_int64_t(values[0]); if (unlikely((__pyx_v_num_steps == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 91, __pyx_L3_error)
+    if (values[1]) {
+      __pyx_v_max_wallclock_time = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_max_wallclock_time == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 91, __pyx_L3_error)
+    } else {
+      __pyx_v_max_wallclock_time = ((double)3600.0);
+    }
   }
   goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("run", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 91, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("ppsim.simulator.Simulator.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5ppsim_9simulator_9Simulator_2run(((struct __pyx_obj_5ppsim_9simulator_Simulator *)__pyx_v_self), ((int64_t)__pyx_v_num_steps));
+  __pyx_r = __pyx_pf_5ppsim_9simulator_9Simulator_2run(((struct __pyx_obj_5ppsim_9simulator_Simulator *)__pyx_v_self), __pyx_v_num_steps, __pyx_v_max_wallclock_time);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_2run(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, CYTHON_UNUSED int64_t __pyx_v_num_steps) {
+static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_2run(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, CYTHON_UNUSED int64_t __pyx_v_num_steps, CYTHON_UNUSED double __pyx_v_max_wallclock_time) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("run", 0);
 
   /* function exit code */
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "ppsim/simulator.pyx":100
+ *         pass
+ * 
+ *     def reset(self, int64_t [::1] config):             # <<<<<<<<<<<<<<
+ *         """Base function which will be called to reset the simulation.
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_5reset(PyObject *__pyx_v_self, PyObject *__pyx_arg_config); /*proto*/
+static char __pyx_doc_5ppsim_9simulator_9Simulator_4reset[] = "Base function which will be called to reset the simulation.\n\n        Args:\n            config: The configuration array to reset to.\n        ";
+static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_5reset(PyObject *__pyx_v_self, PyObject *__pyx_arg_config) {
+  CYTHON_UNUSED __Pyx_memviewslice __pyx_v_config = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("reset (wrapper)", 0);
+  assert(__pyx_arg_config); {
+    __pyx_v_config = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_arg_config, PyBUF_WRITABLE); if (unlikely(!__pyx_v_config.memview)) __PYX_ERR(0, 100, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("ppsim.simulator.Simulator.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_5ppsim_9simulator_9Simulator_4reset(((struct __pyx_obj_5ppsim_9simulator_Simulator *)__pyx_v_self), __pyx_v_config);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_4reset(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, CYTHON_UNUSED __Pyx_memviewslice __pyx_v_config) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("reset", 0);
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __PYX_XDEC_MEMVIEW(&__pyx_v_config, 1);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -3875,19 +3981,19 @@ static int __pyx_pf_5ppsim_9simulator_9Simulator_16null_transitions_2__set__(str
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5ppsim_9simulator_9Simulator_4__reduce_cython__(((struct __pyx_obj_5ppsim_9simulator_Simulator *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5ppsim_9simulator_9Simulator_6__reduce_cython__(((struct __pyx_obj_5ppsim_9simulator_Simulator *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self) {
+static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_6__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3932,19 +4038,19 @@ static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_4__reduce_cython__(CYTHON
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_5ppsim_9simulator_9Simulator_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5ppsim_9simulator_9Simulator_6__setstate_cython__(((struct __pyx_obj_5ppsim_9simulator_Simulator *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_5ppsim_9simulator_9Simulator_8__setstate_cython__(((struct __pyx_obj_5ppsim_9simulator_Simulator *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_8__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_Simulator *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3981,7 +4087,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_9Simulator_6__setstate_cython__(CYTH
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":108
+/* "ppsim/simulator.pyx":117
  *     cdef npy_intp [::1] population
  * 
  *     def __init__(self, *args):             # <<<<<<<<<<<<<<
@@ -4012,10 +4118,114 @@ static int __pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_1__init__(PyObj
 }
 
 static int __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray___init__(struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, PyObject *__pyx_v_args) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__init__", 0);
+
+  /* "ppsim/simulator.pyx":119
+ *     def __init__(self, *args):
+ *         """Initializes Simulator, then creates the population array."""
+ *         Simulator.__init__(self, *args)             # <<<<<<<<<<<<<<
+ *         self.make_population()
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5ppsim_9simulator_Simulator), __pyx_n_s_init); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_INCREF(((PyObject *)__pyx_v_self));
+  __Pyx_GIVEREF(((PyObject *)__pyx_v_self));
+  PyTuple_SET_ITEM(__pyx_t_2, 0, ((PyObject *)__pyx_v_self));
+  __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_v_args); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "ppsim/simulator.pyx":120
+ *         """Initializes Simulator, then creates the population array."""
+ *         Simulator.__init__(self, *args)
+ *         self.make_population()             # <<<<<<<<<<<<<<
+ * 
+ *     def make_population(self):
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_make_population); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_1 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_1)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "ppsim/simulator.pyx":117
+ *     cdef npy_intp [::1] population
+ * 
+ *     def __init__(self, *args):             # <<<<<<<<<<<<<<
+ *         """Initializes Simulator, then creates the population array."""
+ *         Simulator.__init__(self, *args)
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("ppsim.simulator.SimulatorSequentialArray.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "ppsim/simulator.pyx":122
+ *         self.make_population()
+ * 
+ *     def make_population(self):             # <<<<<<<<<<<<<<
+ *         """Creates the array self.population.
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_3make_population(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static char __pyx_doc_5ppsim_9simulator_24SimulatorSequentialArray_2make_population[] = "Creates the array self.population.\n\n        This is an array of agent states, where the count of each state comes from self.config.\n        ";
+static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_3make_population(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("make_population (wrapper)", 0);
+  __pyx_r = __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2make_population(((struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2make_population(struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self) {
   npy_intp __pyx_v_i;
   CYTHON_UNUSED npy_intp __pyx_v_j;
   npy_intp __pyx_v_k;
-  int __pyx_r;
+  PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
@@ -4033,73 +4243,50 @@ static int __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray___init__(struct
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__init__", 0);
+  __Pyx_RefNannySetupContext("make_population", 0);
 
-  /* "ppsim/simulator.pyx":110
- *     def __init__(self, *args):
- *         """Initializes Simulator, then creates the population array."""
- *         Simulator.__init__(self, *args)             # <<<<<<<<<<<<<<
- *         self.population = np.zeros(self.n, dtype=np.intp)
- *         cdef npy_intp i, j, k = 0
- */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5ppsim_9simulator_Simulator), __pyx_n_s_init); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_INCREF(((PyObject *)__pyx_v_self));
-  __Pyx_GIVEREF(((PyObject *)__pyx_v_self));
-  PyTuple_SET_ITEM(__pyx_t_2, 0, ((PyObject *)__pyx_v_self));
-  __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_v_args); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 110, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "ppsim/simulator.pyx":111
- *         """Initializes Simulator, then creates the population array."""
- *         Simulator.__init__(self, *args)
+  /* "ppsim/simulator.pyx":127
+ *         This is an array of agent states, where the count of each state comes from self.config.
+ *         """
  *         self.population = np.zeros(self.n, dtype=np.intp)             # <<<<<<<<<<<<<<
  *         cdef npy_intp i, j, k = 0
  *         for i in range(self.q):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_int64_t(__pyx_v_self->__pyx_base.n); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
-  __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyInt_From_int64_t(__pyx_v_self->__pyx_base.n); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
+  __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_intp); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_intp); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 111, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_npy_intp(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_npy_intp(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->population, 0);
   __pyx_v_self->population = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "ppsim/simulator.pyx":112
- *         Simulator.__init__(self, *args)
+  /* "ppsim/simulator.pyx":128
+ *         """
  *         self.population = np.zeros(self.n, dtype=np.intp)
  *         cdef npy_intp i, j, k = 0             # <<<<<<<<<<<<<<
  *         for i in range(self.q):
@@ -4107,7 +4294,7 @@ static int __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray___init__(struct
  */
   __pyx_v_k = 0;
 
-  /* "ppsim/simulator.pyx":113
+  /* "ppsim/simulator.pyx":129
  *         self.population = np.zeros(self.n, dtype=np.intp)
  *         cdef npy_intp i, j, k = 0
  *         for i in range(self.q):             # <<<<<<<<<<<<<<
@@ -4119,7 +4306,7 @@ static int __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray___init__(struct
   for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
     __pyx_v_i = __pyx_t_9;
 
-    /* "ppsim/simulator.pyx":114
+    /* "ppsim/simulator.pyx":130
  *         cdef npy_intp i, j, k = 0
  *         for i in range(self.q):
  *             for j in range(self.config[i]):             # <<<<<<<<<<<<<<
@@ -4132,7 +4319,7 @@ static int __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray___init__(struct
     for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
       __pyx_v_j = __pyx_t_13;
 
-      /* "ppsim/simulator.pyx":115
+      /* "ppsim/simulator.pyx":131
  *         for i in range(self.q):
  *             for j in range(self.config[i]):
  *                 self.population[k] = i             # <<<<<<<<<<<<<<
@@ -4142,27 +4329,27 @@ static int __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray___init__(struct
       __pyx_t_10 = __pyx_v_k;
       *((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_10)) )) = __pyx_v_i;
 
-      /* "ppsim/simulator.pyx":116
+      /* "ppsim/simulator.pyx":132
  *             for j in range(self.config[i]):
  *                 self.population[k] = i
  *                 k += 1             # <<<<<<<<<<<<<<
  * 
- *     def run(self, int64_t num_steps):
+ *     def run(self, int64_t end_step, double max_wallclock_time = 60 * 60):
  */
       __pyx_v_k = (__pyx_v_k + 1);
     }
   }
 
-  /* "ppsim/simulator.pyx":108
- *     cdef npy_intp [::1] population
+  /* "ppsim/simulator.pyx":122
+ *         self.make_population()
  * 
- *     def __init__(self, *args):             # <<<<<<<<<<<<<<
- *         """Initializes Simulator, then creates the population array."""
- *         Simulator.__init__(self, *args)
+ *     def make_population(self):             # <<<<<<<<<<<<<<
+ *         """Creates the array self.population.
+ * 
  */
 
   /* function exit code */
-  __pyx_r = 0;
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
@@ -4171,98 +4358,207 @@ static int __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray___init__(struct
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
-  __Pyx_AddTraceback("ppsim.simulator.SimulatorSequentialArray.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = -1;
+  __Pyx_AddTraceback("ppsim.simulator.SimulatorSequentialArray.make_population", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
   __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":118
+/* "ppsim/simulator.pyx":134
  *                 k += 1
  * 
- *     def run(self, int64_t num_steps):             # <<<<<<<<<<<<<<
+ *     def run(self, int64_t end_step, double max_wallclock_time = 60 * 60):             # <<<<<<<<<<<<<<
  *         """Samples random pairs of agents and updates them num_steps times."""
- *         cdef int64_t end = self.t + num_steps
+ *         cdef npy_intp i, j, k, a, b
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_3run(PyObject *__pyx_v_self, PyObject *__pyx_arg_num_steps); /*proto*/
-static char __pyx_doc_5ppsim_9simulator_24SimulatorSequentialArray_2run[] = "Samples random pairs of agents and updates them num_steps times.";
-static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_3run(PyObject *__pyx_v_self, PyObject *__pyx_arg_num_steps) {
-  int64_t __pyx_v_num_steps;
+static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_5run(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5ppsim_9simulator_24SimulatorSequentialArray_4run[] = "Samples random pairs of agents and updates them num_steps times.";
+static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_5run(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int64_t __pyx_v_end_step;
+  double __pyx_v_max_wallclock_time;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("run (wrapper)", 0);
-  assert(__pyx_arg_num_steps); {
-    __pyx_v_num_steps = __Pyx_PyInt_As_int64_t(__pyx_arg_num_steps); if (unlikely((__pyx_v_num_steps == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 118, __pyx_L3_error)
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_end_step,&__pyx_n_s_max_wallclock_time,0};
+    PyObject* values[2] = {0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_end_step)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_max_wallclock_time);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "run") < 0)) __PYX_ERR(0, 134, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_end_step = __Pyx_PyInt_As_int64_t(values[0]); if (unlikely((__pyx_v_end_step == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 134, __pyx_L3_error)
+    if (values[1]) {
+      __pyx_v_max_wallclock_time = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_max_wallclock_time == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 134, __pyx_L3_error)
+    } else {
+      __pyx_v_max_wallclock_time = ((double)3600.0);
+    }
   }
   goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("run", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 134, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("ppsim.simulator.SimulatorSequentialArray.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2run(((struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *)__pyx_v_self), ((int64_t)__pyx_v_num_steps));
+  __pyx_r = __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_4run(((struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *)__pyx_v_self), __pyx_v_end_step, __pyx_v_max_wallclock_time);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2run(struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, int64_t __pyx_v_num_steps) {
-  int64_t __pyx_v_end;
+static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_4run(struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, int64_t __pyx_v_end_step, double __pyx_v_max_wallclock_time) {
   npy_intp __pyx_v_i;
   npy_intp __pyx_v_j;
   npy_intp __pyx_v_k;
   npy_intp __pyx_v_a;
   npy_intp __pyx_v_b;
   double __pyx_v_u;
+  double __pyx_v_end_time;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
-  Py_ssize_t __pyx_t_2;
-  npy_intp __pyx_t_3;
-  npy_intp __pyx_t_4;
-  Py_ssize_t __pyx_t_5;
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  double __pyx_t_4;
+  int __pyx_t_5;
   int __pyx_t_6;
   Py_ssize_t __pyx_t_7;
-  __Pyx_memviewslice __pyx_t_8 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_t_9 = NULL;
-  PyObject *__pyx_t_10 = NULL;
-  PyObject *__pyx_t_11 = NULL;
-  PyObject *__pyx_t_12 = NULL;
-  PyObject *(*__pyx_t_13)(PyObject *);
+  npy_intp __pyx_t_8;
+  npy_intp __pyx_t_9;
+  Py_ssize_t __pyx_t_10;
+  Py_ssize_t __pyx_t_11;
+  __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_t_13 = NULL;
+  PyObject *(*__pyx_t_14)(PyObject *);
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("run", 0);
 
-  /* "ppsim/simulator.pyx":120
- *     def run(self, int64_t num_steps):
- *         """Samples random pairs of agents and updates them num_steps times."""
- *         cdef int64_t end = self.t + num_steps             # <<<<<<<<<<<<<<
- *         cdef npy_intp i, j, k, a, b
- *         cdef double u
- */
-  __pyx_v_end = (__pyx_v_self->__pyx_base.t + __pyx_v_num_steps);
-
-  /* "ppsim/simulator.pyx":124
+  /* "ppsim/simulator.pyx":139
  *         cdef double u
  *         cdef double [:] ps
- *         while self.t < end:             # <<<<<<<<<<<<<<
+ *         cdef double end_time = time.perf_counter() + max_wallclock_time             # <<<<<<<<<<<<<<
+ *         while self.t < end_step and time.perf_counter() < end_time:
+ *             # random integer in [0, ... , n-1]
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_2)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_max_wallclock_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_end_time = __pyx_t_4;
+
+  /* "ppsim/simulator.pyx":140
+ *         cdef double [:] ps
+ *         cdef double end_time = time.perf_counter() + max_wallclock_time
+ *         while self.t < end_step and time.perf_counter() < end_time:             # <<<<<<<<<<<<<<
  *             # random integer in [0, ... , n-1]
  *             i = random_interval(self.bitgen, self.n - 1)
  */
   while (1) {
-    __pyx_t_1 = ((__pyx_v_self->__pyx_base.t < __pyx_v_end) != 0);
-    if (!__pyx_t_1) break;
+    __pyx_t_6 = ((__pyx_v_self->__pyx_base.t < __pyx_v_end_step) != 0);
+    if (__pyx_t_6) {
+    } else {
+      __pyx_t_5 = __pyx_t_6;
+      goto __pyx_L5_bool_binop_done;
+    }
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = NULL;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
+      if (likely(__pyx_t_3)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+        __Pyx_INCREF(__pyx_t_3);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_1, function);
+      }
+    }
+    __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_end_time); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = PyObject_RichCompare(__pyx_t_2, __pyx_t_1, Py_LT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_5 = __pyx_t_6;
+    __pyx_L5_bool_binop_done:;
+    if (!__pyx_t_5) break;
 
-    /* "ppsim/simulator.pyx":126
- *         while self.t < end:
+    /* "ppsim/simulator.pyx":142
+ *         while self.t < end_step and time.perf_counter() < end_time:
  *             # random integer in [0, ... , n-1]
  *             i = random_interval(self.bitgen, self.n - 1)             # <<<<<<<<<<<<<<
  *             j = random_interval(self.bitgen, self.n - 1)
@@ -4270,7 +4566,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2run(stru
  */
     __pyx_v_i = random_interval(__pyx_v_self->__pyx_base.bitgen, (__pyx_v_self->__pyx_base.n - 1));
 
-    /* "ppsim/simulator.pyx":127
+    /* "ppsim/simulator.pyx":143
  *             # random integer in [0, ... , n-1]
  *             i = random_interval(self.bitgen, self.n - 1)
  *             j = random_interval(self.bitgen, self.n - 1)             # <<<<<<<<<<<<<<
@@ -4279,7 +4575,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2run(stru
  */
     __pyx_v_j = random_interval(__pyx_v_self->__pyx_base.bitgen, (__pyx_v_self->__pyx_base.n - 1));
 
-    /* "ppsim/simulator.pyx":128
+    /* "ppsim/simulator.pyx":144
  *             i = random_interval(self.bitgen, self.n - 1)
  *             j = random_interval(self.bitgen, self.n - 1)
  *             while i == j:             # <<<<<<<<<<<<<<
@@ -4287,10 +4583,10 @@ static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2run(stru
  *                 j = random_interval(self.bitgen, self.n - 1)
  */
     while (1) {
-      __pyx_t_1 = ((__pyx_v_i == __pyx_v_j) != 0);
-      if (!__pyx_t_1) break;
+      __pyx_t_5 = ((__pyx_v_i == __pyx_v_j) != 0);
+      if (!__pyx_t_5) break;
 
-      /* "ppsim/simulator.pyx":130
+      /* "ppsim/simulator.pyx":146
  *             while i == j:
  *                 # rejection sampling to quickly get distinct pair
  *                 j = random_interval(self.bitgen, self.n - 1)             # <<<<<<<<<<<<<<
@@ -4300,33 +4596,33 @@ static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2run(stru
       __pyx_v_j = random_interval(__pyx_v_self->__pyx_base.bitgen, (__pyx_v_self->__pyx_base.n - 1));
     }
 
-    /* "ppsim/simulator.pyx":131
+    /* "ppsim/simulator.pyx":147
  *                 # rejection sampling to quickly get distinct pair
  *                 j = random_interval(self.bitgen, self.n - 1)
  *             a, b = self.population[i], self.population[j]             # <<<<<<<<<<<<<<
  *             if not self.null_transitions[a, b]:
  *                 if self.is_random and self.random_transitions[a, b, 0]:
  */
-    __pyx_t_2 = __pyx_v_i;
-    __pyx_t_3 = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_2)) )));
-    __pyx_t_2 = __pyx_v_j;
-    __pyx_t_4 = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_2)) )));
-    __pyx_v_a = __pyx_t_3;
-    __pyx_v_b = __pyx_t_4;
+    __pyx_t_7 = __pyx_v_i;
+    __pyx_t_8 = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_7)) )));
+    __pyx_t_7 = __pyx_v_j;
+    __pyx_t_9 = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_7)) )));
+    __pyx_v_a = __pyx_t_8;
+    __pyx_v_b = __pyx_t_9;
 
-    /* "ppsim/simulator.pyx":132
+    /* "ppsim/simulator.pyx":148
  *                 j = random_interval(self.bitgen, self.n - 1)
  *             a, b = self.population[i], self.population[j]
  *             if not self.null_transitions[a, b]:             # <<<<<<<<<<<<<<
  *                 if self.is_random and self.random_transitions[a, b, 0]:
  *                     k = self.random_transitions[a, b, 1]
  */
-    __pyx_t_2 = __pyx_v_a;
-    __pyx_t_5 = __pyx_v_b;
-    __pyx_t_1 = ((!((*((uint8_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.null_transitions.data + __pyx_t_2 * __pyx_v_self->__pyx_base.null_transitions.strides[0]) ) + __pyx_t_5 * __pyx_v_self->__pyx_base.null_transitions.strides[1]) ))) != 0)) != 0);
-    if (__pyx_t_1) {
+    __pyx_t_7 = __pyx_v_a;
+    __pyx_t_10 = __pyx_v_b;
+    __pyx_t_5 = ((!((*((uint8_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.null_transitions.data + __pyx_t_7 * __pyx_v_self->__pyx_base.null_transitions.strides[0]) ) + __pyx_t_10 * __pyx_v_self->__pyx_base.null_transitions.strides[1]) ))) != 0)) != 0);
+    if (__pyx_t_5) {
 
-      /* "ppsim/simulator.pyx":133
+      /* "ppsim/simulator.pyx":149
  *             a, b = self.population[i], self.population[j]
  *             if not self.null_transitions[a, b]:
  *                 if self.is_random and self.random_transitions[a, b, 0]:             # <<<<<<<<<<<<<<
@@ -4336,40 +4632,40 @@ static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2run(stru
       __pyx_t_6 = (__pyx_v_self->__pyx_base.is_random != 0);
       if (__pyx_t_6) {
       } else {
-        __pyx_t_1 = __pyx_t_6;
-        goto __pyx_L9_bool_binop_done;
+        __pyx_t_5 = __pyx_t_6;
+        goto __pyx_L11_bool_binop_done;
       }
-      __pyx_t_5 = __pyx_v_a;
-      __pyx_t_2 = __pyx_v_b;
-      __pyx_t_7 = 0;
-      __pyx_t_6 = ((*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_5 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_2 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_7 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) ))) != 0);
-      __pyx_t_1 = __pyx_t_6;
-      __pyx_L9_bool_binop_done:;
-      if (__pyx_t_1) {
+      __pyx_t_10 = __pyx_v_a;
+      __pyx_t_7 = __pyx_v_b;
+      __pyx_t_11 = 0;
+      __pyx_t_6 = ((*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_10 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_7 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_11 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) ))) != 0);
+      __pyx_t_5 = __pyx_t_6;
+      __pyx_L11_bool_binop_done:;
+      if (__pyx_t_5) {
 
-        /* "ppsim/simulator.pyx":134
+        /* "ppsim/simulator.pyx":150
  *             if not self.null_transitions[a, b]:
  *                 if self.is_random and self.random_transitions[a, b, 0]:
  *                     k = self.random_transitions[a, b, 1]             # <<<<<<<<<<<<<<
  *                     # sample from a probability distribution contained in [k, k+1, ...]
  *                     u = self.bitgen.next_double(self.bitgen.state) - self.transition_probabilities[k]
  */
-        __pyx_t_7 = __pyx_v_a;
-        __pyx_t_2 = __pyx_v_b;
-        __pyx_t_5 = 1;
-        __pyx_v_k = (*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_7 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_2 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_5 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) )));
+        __pyx_t_11 = __pyx_v_a;
+        __pyx_t_7 = __pyx_v_b;
+        __pyx_t_10 = 1;
+        __pyx_v_k = (*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_11 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_7 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_10 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) )));
 
-        /* "ppsim/simulator.pyx":136
+        /* "ppsim/simulator.pyx":152
  *                     k = self.random_transitions[a, b, 1]
  *                     # sample from a probability distribution contained in [k, k+1, ...]
  *                     u = self.bitgen.next_double(self.bitgen.state) - self.transition_probabilities[k]             # <<<<<<<<<<<<<<
  *                     while u > 0:
  *                         k += 1
  */
-        __pyx_t_5 = __pyx_v_k;
-        __pyx_v_u = (__pyx_v_self->__pyx_base.bitgen->next_double(__pyx_v_self->__pyx_base.bitgen->state) - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->__pyx_base.transition_probabilities.data) + __pyx_t_5)) ))));
+        __pyx_t_10 = __pyx_v_k;
+        __pyx_v_u = (__pyx_v_self->__pyx_base.bitgen->next_double(__pyx_v_self->__pyx_base.bitgen->state) - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->__pyx_base.transition_probabilities.data) + __pyx_t_10)) ))));
 
-        /* "ppsim/simulator.pyx":137
+        /* "ppsim/simulator.pyx":153
  *                     # sample from a probability distribution contained in [k, k+1, ...]
  *                     u = self.bitgen.next_double(self.bitgen.state) - self.transition_probabilities[k]
  *                     while u > 0:             # <<<<<<<<<<<<<<
@@ -4377,10 +4673,10 @@ static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2run(stru
  *                         u -= self.transition_probabilities[k]
  */
         while (1) {
-          __pyx_t_1 = ((__pyx_v_u > 0.0) != 0);
-          if (!__pyx_t_1) break;
+          __pyx_t_5 = ((__pyx_v_u > 0.0) != 0);
+          if (!__pyx_t_5) break;
 
-          /* "ppsim/simulator.pyx":138
+          /* "ppsim/simulator.pyx":154
  *                     u = self.bitgen.next_double(self.bitgen.state) - self.transition_probabilities[k]
  *                     while u > 0:
  *                         k += 1             # <<<<<<<<<<<<<<
@@ -4389,108 +4685,108 @@ static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_2run(stru
  */
           __pyx_v_k = (__pyx_v_k + 1);
 
-          /* "ppsim/simulator.pyx":139
+          /* "ppsim/simulator.pyx":155
  *                     while u > 0:
  *                         k += 1
  *                         u -= self.transition_probabilities[k]             # <<<<<<<<<<<<<<
  *                     self.population[i], self.population[j] = self.random_outputs[k]
  *                 else:
  */
-          __pyx_t_5 = __pyx_v_k;
-          __pyx_v_u = (__pyx_v_u - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->__pyx_base.transition_probabilities.data) + __pyx_t_5)) ))));
+          __pyx_t_10 = __pyx_v_k;
+          __pyx_v_u = (__pyx_v_u - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->__pyx_base.transition_probabilities.data) + __pyx_t_10)) ))));
         }
 
-        /* "ppsim/simulator.pyx":140
+        /* "ppsim/simulator.pyx":156
  *                         k += 1
  *                         u -= self.transition_probabilities[k]
  *                     self.population[i], self.population[j] = self.random_outputs[k]             # <<<<<<<<<<<<<<
  *                 else:
  *                     self.population[i], self.population[j] = self.delta[a, b]
  */
-        __pyx_t_8.data = __pyx_v_self->__pyx_base.random_outputs.data;
-        __pyx_t_8.memview = __pyx_v_self->__pyx_base.random_outputs.memview;
-        __PYX_INC_MEMVIEW(&__pyx_t_8, 0);
+        __pyx_t_12.data = __pyx_v_self->__pyx_base.random_outputs.data;
+        __pyx_t_12.memview = __pyx_v_self->__pyx_base.random_outputs.memview;
+        __PYX_INC_MEMVIEW(&__pyx_t_12, 0);
         {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_k;
     Py_ssize_t __pyx_tmp_stride = __pyx_v_self->__pyx_base.random_outputs.strides[0];
-        __pyx_t_8.data += __pyx_tmp_idx * __pyx_tmp_stride;
+        __pyx_t_12.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
-__pyx_t_8.shape[0] = __pyx_v_self->__pyx_base.random_outputs.shape[1];
-__pyx_t_8.strides[0] = __pyx_v_self->__pyx_base.random_outputs.strides[1];
-    __pyx_t_8.suboffsets[0] = -1;
+__pyx_t_12.shape[0] = __pyx_v_self->__pyx_base.random_outputs.shape[1];
+__pyx_t_12.strides[0] = __pyx_v_self->__pyx_base.random_outputs.strides[1];
+    __pyx_t_12.suboffsets[0] = -1;
 
-__pyx_t_9 = __pyx_memoryview_fromslice(__pyx_t_8, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 140, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_9);
-        __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
-        __pyx_t_8.memview = NULL;
-        __pyx_t_8.data = NULL;
-        if ((likely(PyTuple_CheckExact(__pyx_t_9))) || (PyList_CheckExact(__pyx_t_9))) {
-          PyObject* sequence = __pyx_t_9;
+__pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
+        __pyx_t_12.memview = NULL;
+        __pyx_t_12.data = NULL;
+        if ((likely(PyTuple_CheckExact(__pyx_t_3))) || (PyList_CheckExact(__pyx_t_3))) {
+          PyObject* sequence = __pyx_t_3;
           Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
           if (unlikely(size != 2)) {
             if (size > 2) __Pyx_RaiseTooManyValuesError(2);
             else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-            __PYX_ERR(0, 140, __pyx_L1_error)
+            __PYX_ERR(0, 156, __pyx_L1_error)
           }
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
           if (likely(PyTuple_CheckExact(sequence))) {
-            __pyx_t_10 = PyTuple_GET_ITEM(sequence, 0); 
-            __pyx_t_11 = PyTuple_GET_ITEM(sequence, 1); 
+            __pyx_t_1 = PyTuple_GET_ITEM(sequence, 0); 
+            __pyx_t_2 = PyTuple_GET_ITEM(sequence, 1); 
           } else {
-            __pyx_t_10 = PyList_GET_ITEM(sequence, 0); 
-            __pyx_t_11 = PyList_GET_ITEM(sequence, 1); 
+            __pyx_t_1 = PyList_GET_ITEM(sequence, 0); 
+            __pyx_t_2 = PyList_GET_ITEM(sequence, 1); 
           }
-          __Pyx_INCREF(__pyx_t_10);
-          __Pyx_INCREF(__pyx_t_11);
+          __Pyx_INCREF(__pyx_t_1);
+          __Pyx_INCREF(__pyx_t_2);
           #else
-          __pyx_t_10 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 140, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_10);
-          __pyx_t_11 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 140, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_11);
+          __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_1);
+          __pyx_t_2 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
           #endif
-          __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         } else {
           Py_ssize_t index = -1;
-          __pyx_t_12 = PyObject_GetIter(__pyx_t_9); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 140, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_12);
-          __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-          __pyx_t_13 = Py_TYPE(__pyx_t_12)->tp_iternext;
-          index = 0; __pyx_t_10 = __pyx_t_13(__pyx_t_12); if (unlikely(!__pyx_t_10)) goto __pyx_L13_unpacking_failed;
-          __Pyx_GOTREF(__pyx_t_10);
-          index = 1; __pyx_t_11 = __pyx_t_13(__pyx_t_12); if (unlikely(!__pyx_t_11)) goto __pyx_L13_unpacking_failed;
-          __Pyx_GOTREF(__pyx_t_11);
-          if (__Pyx_IternextUnpackEndCheck(__pyx_t_13(__pyx_t_12), 2) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
-          __pyx_t_13 = NULL;
-          __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-          goto __pyx_L14_unpacking_done;
-          __pyx_L13_unpacking_failed:;
-          __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-          __pyx_t_13 = NULL;
+          __pyx_t_13 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 156, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_13);
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+          __pyx_t_14 = Py_TYPE(__pyx_t_13)->tp_iternext;
+          index = 0; __pyx_t_1 = __pyx_t_14(__pyx_t_13); if (unlikely(!__pyx_t_1)) goto __pyx_L15_unpacking_failed;
+          __Pyx_GOTREF(__pyx_t_1);
+          index = 1; __pyx_t_2 = __pyx_t_14(__pyx_t_13); if (unlikely(!__pyx_t_2)) goto __pyx_L15_unpacking_failed;
+          __Pyx_GOTREF(__pyx_t_2);
+          if (__Pyx_IternextUnpackEndCheck(__pyx_t_14(__pyx_t_13), 2) < 0) __PYX_ERR(0, 156, __pyx_L1_error)
+          __pyx_t_14 = NULL;
+          __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+          goto __pyx_L16_unpacking_done;
+          __pyx_L15_unpacking_failed:;
+          __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+          __pyx_t_14 = NULL;
           if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-          __PYX_ERR(0, 140, __pyx_L1_error)
-          __pyx_L14_unpacking_done:;
+          __PYX_ERR(0, 156, __pyx_L1_error)
+          __pyx_L16_unpacking_done:;
         }
-        __pyx_t_4 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_10); if (unlikely((__pyx_t_4 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 140, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __pyx_t_3 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_11); if (unlikely((__pyx_t_3 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 140, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-        __pyx_t_5 = __pyx_v_i;
-        *((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_5)) )) = __pyx_t_4;
-        __pyx_t_5 = __pyx_v_j;
-        *((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_5)) )) = __pyx_t_3;
+        __pyx_t_9 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_1); if (unlikely((__pyx_t_9 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 156, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __pyx_t_8 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_2); if (unlikely((__pyx_t_8 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 156, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_10 = __pyx_v_i;
+        *((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_10)) )) = __pyx_t_9;
+        __pyx_t_10 = __pyx_v_j;
+        *((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_10)) )) = __pyx_t_8;
 
-        /* "ppsim/simulator.pyx":133
+        /* "ppsim/simulator.pyx":149
  *             a, b = self.population[i], self.population[j]
  *             if not self.null_transitions[a, b]:
  *                 if self.is_random and self.random_transitions[a, b, 0]:             # <<<<<<<<<<<<<<
  *                     k = self.random_transitions[a, b, 1]
  *                     # sample from a probability distribution contained in [k, k+1, ...]
  */
-        goto __pyx_L8;
+        goto __pyx_L10;
       }
 
-      /* "ppsim/simulator.pyx":142
+      /* "ppsim/simulator.pyx":158
  *                     self.population[i], self.population[j] = self.random_outputs[k]
  *                 else:
  *                     self.population[i], self.population[j] = self.delta[a, b]             # <<<<<<<<<<<<<<
@@ -4498,130 +4794,130 @@ __pyx_t_9 = __pyx_memoryview_fromslice(__pyx_t_8, 1, (PyObject *(*)(char *)) __p
  *                 self.config[b] -= 1
  */
       /*else*/ {
-        __pyx_t_8.data = __pyx_v_self->__pyx_base.delta.data;
-        __pyx_t_8.memview = __pyx_v_self->__pyx_base.delta.memview;
-        __PYX_INC_MEMVIEW(&__pyx_t_8, 0);
+        __pyx_t_12.data = __pyx_v_self->__pyx_base.delta.data;
+        __pyx_t_12.memview = __pyx_v_self->__pyx_base.delta.memview;
+        __PYX_INC_MEMVIEW(&__pyx_t_12, 0);
         {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_a;
     Py_ssize_t __pyx_tmp_stride = __pyx_v_self->__pyx_base.delta.strides[0];
-        __pyx_t_8.data += __pyx_tmp_idx * __pyx_tmp_stride;
+        __pyx_t_12.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
 {
     Py_ssize_t __pyx_tmp_idx = __pyx_v_b;
     Py_ssize_t __pyx_tmp_stride = __pyx_v_self->__pyx_base.delta.strides[1];
-        __pyx_t_8.data += __pyx_tmp_idx * __pyx_tmp_stride;
+        __pyx_t_12.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
-__pyx_t_8.shape[0] = __pyx_v_self->__pyx_base.delta.shape[2];
-__pyx_t_8.strides[0] = __pyx_v_self->__pyx_base.delta.strides[2];
-    __pyx_t_8.suboffsets[0] = -1;
+__pyx_t_12.shape[0] = __pyx_v_self->__pyx_base.delta.shape[2];
+__pyx_t_12.strides[0] = __pyx_v_self->__pyx_base.delta.strides[2];
+    __pyx_t_12.suboffsets[0] = -1;
 
-__pyx_t_9 = __pyx_memoryview_fromslice(__pyx_t_8, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 142, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_9);
-        __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
-        __pyx_t_8.memview = NULL;
-        __pyx_t_8.data = NULL;
-        if ((likely(PyTuple_CheckExact(__pyx_t_9))) || (PyList_CheckExact(__pyx_t_9))) {
-          PyObject* sequence = __pyx_t_9;
+__pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 158, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_3);
+        __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
+        __pyx_t_12.memview = NULL;
+        __pyx_t_12.data = NULL;
+        if ((likely(PyTuple_CheckExact(__pyx_t_3))) || (PyList_CheckExact(__pyx_t_3))) {
+          PyObject* sequence = __pyx_t_3;
           Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
           if (unlikely(size != 2)) {
             if (size > 2) __Pyx_RaiseTooManyValuesError(2);
             else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-            __PYX_ERR(0, 142, __pyx_L1_error)
+            __PYX_ERR(0, 158, __pyx_L1_error)
           }
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
           if (likely(PyTuple_CheckExact(sequence))) {
-            __pyx_t_11 = PyTuple_GET_ITEM(sequence, 0); 
-            __pyx_t_10 = PyTuple_GET_ITEM(sequence, 1); 
+            __pyx_t_2 = PyTuple_GET_ITEM(sequence, 0); 
+            __pyx_t_1 = PyTuple_GET_ITEM(sequence, 1); 
           } else {
-            __pyx_t_11 = PyList_GET_ITEM(sequence, 0); 
-            __pyx_t_10 = PyList_GET_ITEM(sequence, 1); 
+            __pyx_t_2 = PyList_GET_ITEM(sequence, 0); 
+            __pyx_t_1 = PyList_GET_ITEM(sequence, 1); 
           }
-          __Pyx_INCREF(__pyx_t_11);
-          __Pyx_INCREF(__pyx_t_10);
+          __Pyx_INCREF(__pyx_t_2);
+          __Pyx_INCREF(__pyx_t_1);
           #else
-          __pyx_t_11 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 142, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_11);
-          __pyx_t_10 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 142, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_10);
+          __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          __pyx_t_1 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 158, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_1);
           #endif
-          __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         } else {
           Py_ssize_t index = -1;
-          __pyx_t_12 = PyObject_GetIter(__pyx_t_9); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 142, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_12);
-          __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-          __pyx_t_13 = Py_TYPE(__pyx_t_12)->tp_iternext;
-          index = 0; __pyx_t_11 = __pyx_t_13(__pyx_t_12); if (unlikely(!__pyx_t_11)) goto __pyx_L15_unpacking_failed;
-          __Pyx_GOTREF(__pyx_t_11);
-          index = 1; __pyx_t_10 = __pyx_t_13(__pyx_t_12); if (unlikely(!__pyx_t_10)) goto __pyx_L15_unpacking_failed;
-          __Pyx_GOTREF(__pyx_t_10);
-          if (__Pyx_IternextUnpackEndCheck(__pyx_t_13(__pyx_t_12), 2) < 0) __PYX_ERR(0, 142, __pyx_L1_error)
-          __pyx_t_13 = NULL;
-          __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-          goto __pyx_L16_unpacking_done;
-          __pyx_L15_unpacking_failed:;
-          __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-          __pyx_t_13 = NULL;
+          __pyx_t_13 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 158, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_13);
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+          __pyx_t_14 = Py_TYPE(__pyx_t_13)->tp_iternext;
+          index = 0; __pyx_t_2 = __pyx_t_14(__pyx_t_13); if (unlikely(!__pyx_t_2)) goto __pyx_L17_unpacking_failed;
+          __Pyx_GOTREF(__pyx_t_2);
+          index = 1; __pyx_t_1 = __pyx_t_14(__pyx_t_13); if (unlikely(!__pyx_t_1)) goto __pyx_L17_unpacking_failed;
+          __Pyx_GOTREF(__pyx_t_1);
+          if (__Pyx_IternextUnpackEndCheck(__pyx_t_14(__pyx_t_13), 2) < 0) __PYX_ERR(0, 158, __pyx_L1_error)
+          __pyx_t_14 = NULL;
+          __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+          goto __pyx_L18_unpacking_done;
+          __pyx_L17_unpacking_failed:;
+          __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+          __pyx_t_14 = NULL;
           if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-          __PYX_ERR(0, 142, __pyx_L1_error)
-          __pyx_L16_unpacking_done:;
+          __PYX_ERR(0, 158, __pyx_L1_error)
+          __pyx_L18_unpacking_done:;
         }
-        __pyx_t_3 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_11); if (unlikely((__pyx_t_3 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 142, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-        __pyx_t_4 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_10); if (unlikely((__pyx_t_4 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 142, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-        __pyx_t_5 = __pyx_v_i;
-        *((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_5)) )) = __pyx_t_3;
-        __pyx_t_5 = __pyx_v_j;
-        *((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_5)) )) = __pyx_t_4;
+        __pyx_t_8 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_2); if (unlikely((__pyx_t_8 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 158, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_9 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_1); if (unlikely((__pyx_t_9 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 158, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __pyx_t_10 = __pyx_v_i;
+        *((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_10)) )) = __pyx_t_8;
+        __pyx_t_10 = __pyx_v_j;
+        *((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_10)) )) = __pyx_t_9;
       }
-      __pyx_L8:;
+      __pyx_L10:;
 
-      /* "ppsim/simulator.pyx":143
+      /* "ppsim/simulator.pyx":159
  *                 else:
  *                     self.population[i], self.population[j] = self.delta[a, b]
  *                 self.config[a] -= 1             # <<<<<<<<<<<<<<
  *                 self.config[b] -= 1
  *                 self.config[self.population[i]] += 1
  */
-      __pyx_t_5 = __pyx_v_a;
-      *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_5)) )) -= 1;
+      __pyx_t_10 = __pyx_v_a;
+      *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_10)) )) -= 1;
 
-      /* "ppsim/simulator.pyx":144
+      /* "ppsim/simulator.pyx":160
  *                     self.population[i], self.population[j] = self.delta[a, b]
  *                 self.config[a] -= 1
  *                 self.config[b] -= 1             # <<<<<<<<<<<<<<
  *                 self.config[self.population[i]] += 1
  *                 self.config[self.population[j]] += 1
  */
-      __pyx_t_5 = __pyx_v_b;
-      *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_5)) )) -= 1;
+      __pyx_t_10 = __pyx_v_b;
+      *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_10)) )) -= 1;
 
-      /* "ppsim/simulator.pyx":145
+      /* "ppsim/simulator.pyx":161
  *                 self.config[a] -= 1
  *                 self.config[b] -= 1
  *                 self.config[self.population[i]] += 1             # <<<<<<<<<<<<<<
  *                 self.config[self.population[j]] += 1
  *             self.t += 1
  */
-      __pyx_t_5 = __pyx_v_i;
-      __pyx_t_2 = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_5)) )));
-      *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_2)) )) += 1;
+      __pyx_t_10 = __pyx_v_i;
+      __pyx_t_7 = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_10)) )));
+      *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_7)) )) += 1;
 
-      /* "ppsim/simulator.pyx":146
+      /* "ppsim/simulator.pyx":162
  *                 self.config[b] -= 1
  *                 self.config[self.population[i]] += 1
  *                 self.config[self.population[j]] += 1             # <<<<<<<<<<<<<<
  *             self.t += 1
  *         return self.config
  */
-      __pyx_t_5 = __pyx_v_j;
-      __pyx_t_2 = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_5)) )));
-      *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_2)) )) += 1;
+      __pyx_t_10 = __pyx_v_j;
+      __pyx_t_7 = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->population.data) + __pyx_t_10)) )));
+      *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_7)) )) += 1;
 
-      /* "ppsim/simulator.pyx":132
+      /* "ppsim/simulator.pyx":148
  *                 j = random_interval(self.bitgen, self.n - 1)
  *             a, b = self.population[i], self.population[j]
  *             if not self.null_transitions[a, b]:             # <<<<<<<<<<<<<<
@@ -4630,7 +4926,7 @@ __pyx_t_9 = __pyx_memoryview_fromslice(__pyx_t_8, 1, (PyObject *(*)(char *)) __p
  */
     }
 
-    /* "ppsim/simulator.pyx":147
+    /* "ppsim/simulator.pyx":163
  *                 self.config[self.population[i]] += 1
  *                 self.config[self.population[j]] += 1
  *             self.t += 1             # <<<<<<<<<<<<<<
@@ -4640,38 +4936,171 @@ __pyx_t_9 = __pyx_memoryview_fromslice(__pyx_t_8, 1, (PyObject *(*)(char *)) __p
     __pyx_v_self->__pyx_base.t = (__pyx_v_self->__pyx_base.t + 1);
   }
 
-  /* "ppsim/simulator.pyx":148
+  /* "ppsim/simulator.pyx":164
  *                 self.config[self.population[j]] += 1
  *             self.t += 1
  *         return self.config             # <<<<<<<<<<<<<<
  * 
- * 
+ *     def reset(self, int64_t [::1] config):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_9 = __pyx_memoryview_fromslice(__pyx_v_self->__pyx_base.config, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_int64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_int64_t, 0);; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_r = __pyx_t_9;
-  __pyx_t_9 = 0;
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_self->__pyx_base.config, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_int64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_int64_t, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "ppsim/simulator.pyx":118
+  /* "ppsim/simulator.pyx":134
  *                 k += 1
  * 
- *     def run(self, int64_t num_steps):             # <<<<<<<<<<<<<<
+ *     def run(self, int64_t end_step, double max_wallclock_time = 60 * 60):             # <<<<<<<<<<<<<<
  *         """Samples random pairs of agents and updates them num_steps times."""
- *         cdef int64_t end = self.t + num_steps
+ *         cdef npy_intp i, j, k, a, b
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
-  __Pyx_XDECREF(__pyx_t_9);
-  __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
+  __Pyx_XDECREF(__pyx_t_13);
   __Pyx_AddTraceback("ppsim.simulator.SimulatorSequentialArray.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "ppsim/simulator.pyx":166
+ *         return self.config
+ * 
+ *     def reset(self, int64_t [::1] config):             # <<<<<<<<<<<<<<
+ *         """Reset to a given configuration.
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_7reset(PyObject *__pyx_v_self, PyObject *__pyx_arg_config); /*proto*/
+static char __pyx_doc_5ppsim_9simulator_24SimulatorSequentialArray_6reset[] = "Reset to a given configuration.\n\n        Sets all parameters necessary to change the configuration.\n\n        Args:\n            config: The configuration array to reset to.\n        ";
+static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_7reset(PyObject *__pyx_v_self, PyObject *__pyx_arg_config) {
+  __Pyx_memviewslice __pyx_v_config = { 0, 0, { 0 }, { 0 }, { 0 } };
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("reset (wrapper)", 0);
+  assert(__pyx_arg_config); {
+    __pyx_v_config = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_arg_config, PyBUF_WRITABLE); if (unlikely(!__pyx_v_config.memview)) __PYX_ERR(0, 166, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("ppsim.simulator.SimulatorSequentialArray.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_6reset(((struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *)__pyx_v_self), __pyx_v_config);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_6reset(struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, __Pyx_memviewslice __pyx_v_config) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  int64_t __pyx_t_3;
+  PyObject *__pyx_t_4 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("reset", 0);
+
+  /* "ppsim/simulator.pyx":174
+ *             config: The configuration array to reset to.
+ *         """
+ *         self.config = config             # <<<<<<<<<<<<<<
+ *         self.t = 0
+ *         self.n = sum(config)
+ */
+  __PYX_XDEC_MEMVIEW(&__pyx_v_self->__pyx_base.config, 0);
+  __PYX_INC_MEMVIEW(&__pyx_v_config, 0);
+  __pyx_v_self->__pyx_base.config = __pyx_v_config;
+
+  /* "ppsim/simulator.pyx":175
+ *         """
+ *         self.config = config
+ *         self.t = 0             # <<<<<<<<<<<<<<
+ *         self.n = sum(config)
+ *         self.make_population()
+ */
+  __pyx_v_self->__pyx_base.t = 0;
+
+  /* "ppsim/simulator.pyx":176
+ *         self.config = config
+ *         self.t = 0
+ *         self.n = sum(config)             # <<<<<<<<<<<<<<
+ *         self.make_population()
+ * 
+ */
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_config, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_int64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_int64_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 176, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_sum, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 176, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_3 = __Pyx_PyInt_As_int64_t(__pyx_t_2); if (unlikely((__pyx_t_3 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 176, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_self->__pyx_base.n = __pyx_t_3;
+
+  /* "ppsim/simulator.pyx":177
+ *         self.t = 0
+ *         self.n = sum(config)
+ *         self.make_population()             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_make_population); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "ppsim/simulator.pyx":166
+ *         return self.config
+ * 
+ *     def reset(self, int64_t [::1] config):             # <<<<<<<<<<<<<<
+ *         """Reset to a given configuration.
+ * 
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("ppsim.simulator.SimulatorSequentialArray.reset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_config, 1);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -4684,19 +5113,19 @@ __pyx_t_9 = __pyx_memoryview_fromslice(__pyx_t_8, 1, (PyObject *(*)(char *)) __p
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_9__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_4__reduce_cython__(((struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *)__pyx_v_self));
+  __pyx_r = __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_8__reduce_cython__(((struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self) {
+static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4741,19 +5170,19 @@ static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_4__reduce
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_11__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_6__setstate_cython__(((struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_10__setstate_cython__(((struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5ppsim_9simulator_SimulatorSequentialArray *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4790,7 +5219,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_24SimulatorSequentialArray_6__setsta
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":208
+/* "ppsim/simulator.pyx":245
  *     cdef int64_t r_constant
  * 
  *     def __init__(self, *args):             # <<<<<<<<<<<<<<
@@ -4872,37 +5301,37 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch___init__(struct __py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "ppsim/simulator.pyx":211
+  /* "ppsim/simulator.pyx":248
  *         """Initializes all additional data structures needed for MultiBatch Simulator."""
  * 
  *         Simulator.__init__(self, *args)             # <<<<<<<<<<<<<<
  * 
  *         self.set_n_parameters()
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5ppsim_9simulator_Simulator), __pyx_n_s_init); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5ppsim_9simulator_Simulator), __pyx_n_s_init); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 248, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 248, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(((PyObject *)__pyx_v_self));
   __Pyx_GIVEREF(((PyObject *)__pyx_v_self));
   PyTuple_SET_ITEM(__pyx_t_2, 0, ((PyObject *)__pyx_v_self));
-  __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_v_args); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_v_args); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 248, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 248, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ppsim/simulator.pyx":213
+  /* "ppsim/simulator.pyx":250
  *         Simulator.__init__(self, *args)
  * 
  *         self.set_n_parameters()             # <<<<<<<<<<<<<<
  * 
  *         self.urn = Urn.create(self.config, self.bitgen)
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_set_n_parameters); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 213, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_set_n_parameters); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_1 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -4916,19 +5345,19 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch___init__(struct __py
   }
   __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 213, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 250, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "ppsim/simulator.pyx":215
+  /* "ppsim/simulator.pyx":252
  *         self.set_n_parameters()
  * 
  *         self.urn = Urn.create(self.config, self.bitgen)             # <<<<<<<<<<<<<<
  *         self.updated_counts = Urn.create(np.zeros(self.q, dtype=np.int64), self.bitgen)
  *         self.row_sums = np.zeros(self.q, dtype=np.int64)
  */
-  __pyx_t_2 = ((PyObject *)__pyx_f_5ppsim_9simulator_3Urn_create(__pyx_v_self->__pyx_base.config, __pyx_v_self->__pyx_base.bitgen)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_t_2 = ((PyObject *)__pyx_f_5ppsim_9simulator_3Urn_create(__pyx_v_self->__pyx_base.config, __pyx_v_self->__pyx_base.bitgen)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->urn);
@@ -4936,42 +5365,42 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch___init__(struct __py
   __pyx_v_self->urn = ((struct __pyx_obj_5ppsim_9simulator_Urn *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "ppsim/simulator.pyx":216
+  /* "ppsim/simulator.pyx":253
  * 
  *         self.urn = Urn.create(self.config, self.bitgen)
  *         self.updated_counts = Urn.create(np.zeros(self.q, dtype=np.int64), self.bitgen)             # <<<<<<<<<<<<<<
  *         self.row_sums = np.zeros(self.q, dtype=np.int64)
  *         self.row = np.zeros(self.q, dtype=np.int64)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->__pyx_base.q); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->__pyx_base.q); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_int64); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_int64); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 216, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 253, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 253, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = ((PyObject *)__pyx_f_5ppsim_9simulator_3Urn_create(__pyx_t_6, __pyx_v_self->__pyx_base.bitgen)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_5 = ((PyObject *)__pyx_f_5ppsim_9simulator_3Urn_create(__pyx_t_6, __pyx_v_self->__pyx_base.bitgen)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 253, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
   __pyx_t_6.memview = NULL;
@@ -4982,127 +5411,127 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch___init__(struct __py
   __pyx_v_self->updated_counts = ((struct __pyx_obj_5ppsim_9simulator_Urn *)__pyx_t_5);
   __pyx_t_5 = 0;
 
-  /* "ppsim/simulator.pyx":217
+  /* "ppsim/simulator.pyx":254
  *         self.urn = Urn.create(self.config, self.bitgen)
  *         self.updated_counts = Urn.create(np.zeros(self.q, dtype=np.int64), self.bitgen)
  *         self.row_sums = np.zeros(self.q, dtype=np.int64)             # <<<<<<<<<<<<<<
  *         self.row = np.zeros(self.q, dtype=np.int64)
  *         self.m = np.zeros(self.random_depth, dtype=np.int64)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->__pyx_base.q); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->__pyx_base.q); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_5);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_5);
   __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_int64); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_int64); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 217, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 217, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 254, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->row_sums, 0);
   __pyx_v_self->row_sums = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "ppsim/simulator.pyx":218
+  /* "ppsim/simulator.pyx":255
  *         self.updated_counts = Urn.create(np.zeros(self.q, dtype=np.int64), self.bitgen)
  *         self.row_sums = np.zeros(self.q, dtype=np.int64)
  *         self.row = np.zeros(self.q, dtype=np.int64)             # <<<<<<<<<<<<<<
  *         self.m = np.zeros(self.random_depth, dtype=np.int64)
  *         self.silent = False
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_zeros); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->__pyx_base.q); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->__pyx_base.q); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_4);
   __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_int64); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_int64); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 218, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_3) < 0) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_t_3, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_t_3, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->row, 0);
   __pyx_v_self->row = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "ppsim/simulator.pyx":219
+  /* "ppsim/simulator.pyx":256
  *         self.row_sums = np.zeros(self.q, dtype=np.int64)
  *         self.row = np.zeros(self.q, dtype=np.int64)
  *         self.m = np.zeros(self.random_depth, dtype=np.int64)             # <<<<<<<<<<<<<<
  *         self.silent = False
  *         self.do_gillespie = False
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->__pyx_base.random_depth); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->__pyx_base.random_depth); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
   __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_int64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_int64); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(0, 219, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, __pyx_t_2) < 0) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->m, 0);
   __pyx_v_self->m = __pyx_t_6;
   __pyx_t_6.memview = NULL;
   __pyx_t_6.data = NULL;
 
-  /* "ppsim/simulator.pyx":220
+  /* "ppsim/simulator.pyx":257
  *         self.row = np.zeros(self.q, dtype=np.int64)
  *         self.m = np.zeros(self.random_depth, dtype=np.int64)
  *         self.silent = False             # <<<<<<<<<<<<<<
@@ -5111,7 +5540,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch___init__(struct __py
  */
   __pyx_v_self->silent = 0;
 
-  /* "ppsim/simulator.pyx":221
+  /* "ppsim/simulator.pyx":258
  *         self.m = np.zeros(self.random_depth, dtype=np.int64)
  *         self.silent = False
  *         self.do_gillespie = False             # <<<<<<<<<<<<<<
@@ -5120,31 +5549,31 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch___init__(struct __py
  */
   __pyx_v_self->do_gillespie = 0;
 
-  /* "ppsim/simulator.pyx":224
+  /* "ppsim/simulator.pyx":261
  * 
  *         # enumerate reactions for gillespie
  *         reactions = []             # <<<<<<<<<<<<<<
  *         reaction_probabilities = []
  *         cdef npy_intp i, j, k, a, b
  */
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_reactions = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "ppsim/simulator.pyx":225
+  /* "ppsim/simulator.pyx":262
  *         # enumerate reactions for gillespie
  *         reactions = []
  *         reaction_probabilities = []             # <<<<<<<<<<<<<<
  *         cdef npy_intp i, j, k, a, b
  *         cdef double p
  */
-  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 262, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_reaction_probabilities = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "ppsim/simulator.pyx":228
+  /* "ppsim/simulator.pyx":265
  *         cdef npy_intp i, j, k, a, b
  *         cdef double p
  *         for i in range(self.q):             # <<<<<<<<<<<<<<
@@ -5156,7 +5585,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch___init__(struct __py
   for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
     __pyx_v_i = __pyx_t_9;
 
-    /* "ppsim/simulator.pyx":229
+    /* "ppsim/simulator.pyx":266
  *         cdef double p
  *         for i in range(self.q):
  *             for j in range(i+1):             # <<<<<<<<<<<<<<
@@ -5168,7 +5597,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch___init__(struct __py
     for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
       __pyx_v_j = __pyx_t_12;
 
-      /* "ppsim/simulator.pyx":231
+      /* "ppsim/simulator.pyx":268
  *             for j in range(i+1):
  *                 # check if interaction is symmetric
  *                 symmetric = False             # <<<<<<<<<<<<<<
@@ -5177,16 +5606,16 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch___init__(struct __py
  */
       __pyx_v_symmetric = 0;
 
-      /* "ppsim/simulator.pyx":232
+      /* "ppsim/simulator.pyx":269
  *                 # check if interaction is symmetric
  *                 symmetric = False
  *                 if sorted(np.asarray(self.delta[i,j])) == sorted(np.asarray(self.delta[j, i])):             # <<<<<<<<<<<<<<
  *                     if self.is_random and self.random_transitions[i, j, 0] == self.random_transitions[j, i, 0] > 0:
  *                         a, b = self.random_transitions[i, j, 1], self.random_transitions[j, i, 1]
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_13.data = __pyx_v_self->__pyx_base.delta.data;
@@ -5208,7 +5637,7 @@ __pyx_t_13.shape[0] = __pyx_v_self->__pyx_base.delta.shape[2];
 __pyx_t_13.strides[0] = __pyx_v_self->__pyx_base.delta.strides[2];
     __pyx_t_13.suboffsets[0] = -1;
 
-__pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
+__pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __PYX_XDEC_MEMVIEW(&__pyx_t_13, 1);
       __pyx_t_13.memview = NULL;
@@ -5226,18 +5655,18 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
       __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_1);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 232, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = PySequence_List(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __pyx_t_4 = PySequence_List(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_2 = ((PyObject*)__pyx_t_4);
       __pyx_t_4 = 0;
-      __pyx_t_14 = PyList_Sort(__pyx_t_2); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 232, __pyx_L1_error)
-      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __pyx_t_14 = PyList_Sort(__pyx_t_2); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 269, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_13.data = __pyx_v_self->__pyx_base.delta.data;
@@ -5259,7 +5688,7 @@ __pyx_t_13.shape[0] = __pyx_v_self->__pyx_base.delta.shape[2];
 __pyx_t_13.strides[0] = __pyx_v_self->__pyx_base.delta.strides[2];
     __pyx_t_13.suboffsets[0] = -1;
 
-__pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
+__pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __PYX_XDEC_MEMVIEW(&__pyx_t_13, 1);
       __pyx_t_13.memview = NULL;
@@ -5277,23 +5706,23 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
       __pyx_t_3 = (__pyx_t_15) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_15, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1);
       __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 232, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = PySequence_List(__pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __pyx_t_5 = PySequence_List(__pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_4 = ((PyObject*)__pyx_t_5);
       __pyx_t_5 = 0;
-      __pyx_t_14 = PyList_Sort(__pyx_t_4); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 232, __pyx_L1_error)
-      __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __pyx_t_14 = PyList_Sort(__pyx_t_4); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 269, __pyx_L1_error)
+      __pyx_t_5 = PyObject_RichCompare(__pyx_t_2, __pyx_t_4, Py_EQ); __Pyx_XGOTREF(__pyx_t_5); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_16 < 0)) __PYX_ERR(0, 232, __pyx_L1_error)
+      __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_t_5); if (unlikely(__pyx_t_16 < 0)) __PYX_ERR(0, 269, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       if (__pyx_t_16) {
 
-        /* "ppsim/simulator.pyx":233
+        /* "ppsim/simulator.pyx":270
  *                 symmetric = False
  *                 if sorted(np.asarray(self.delta[i,j])) == sorted(np.asarray(self.delta[j, i])):
  *                     if self.is_random and self.random_transitions[i, j, 0] == self.random_transitions[j, i, 0] > 0:             # <<<<<<<<<<<<<<
@@ -5322,7 +5751,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
         __pyx_L9_bool_binop_done:;
         if (__pyx_t_16) {
 
-          /* "ppsim/simulator.pyx":234
+          /* "ppsim/simulator.pyx":271
  *                 if sorted(np.asarray(self.delta[i,j])) == sorted(np.asarray(self.delta[j, i])):
  *                     if self.is_random and self.random_transitions[i, j, 0] == self.random_transitions[j, i, 0] > 0:
  *                         a, b = self.random_transitions[i, j, 1], self.random_transitions[j, i, 1]             # <<<<<<<<<<<<<<
@@ -5340,7 +5769,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
           __pyx_v_a = __pyx_t_24;
           __pyx_v_b = __pyx_t_26;
 
-          /* "ppsim/simulator.pyx":235
+          /* "ppsim/simulator.pyx":272
  *                     if self.is_random and self.random_transitions[i, j, 0] == self.random_transitions[j, i, 0] > 0:
  *                         a, b = self.random_transitions[i, j, 1], self.random_transitions[j, i, 1]
  *                         symmetric = True             # <<<<<<<<<<<<<<
@@ -5349,7 +5778,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
  */
           __pyx_v_symmetric = 1;
 
-          /* "ppsim/simulator.pyx":236
+          /* "ppsim/simulator.pyx":273
  *                         a, b = self.random_transitions[i, j, 1], self.random_transitions[j, i, 1]
  *                         symmetric = True
  *                         for k in range(self.random_transitions[i, j, 0]):             # <<<<<<<<<<<<<<
@@ -5364,16 +5793,16 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
           for (__pyx_t_27 = 0; __pyx_t_27 < __pyx_t_24; __pyx_t_27+=1) {
             __pyx_v_k = __pyx_t_27;
 
-            /* "ppsim/simulator.pyx":237
+            /* "ppsim/simulator.pyx":274
  *                         symmetric = True
  *                         for k in range(self.random_transitions[i, j, 0]):
  *                             if sorted(np.asarray(self.random_outputs[a + k])) != \             # <<<<<<<<<<<<<<
  *                                     sorted(np.asarray(self.random_outputs[b + k])):
  *                                 symmetric = False
  */
-            __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
+            __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 274, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
-            __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_asarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 237, __pyx_L1_error)
+            __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_asarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 274, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_3);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
             __pyx_t_13.data = __pyx_v_self->__pyx_base.random_outputs.data;
@@ -5389,7 +5818,7 @@ __pyx_t_13.shape[0] = __pyx_v_self->__pyx_base.random_outputs.shape[1];
 __pyx_t_13.strides[0] = __pyx_v_self->__pyx_base.random_outputs.strides[1];
     __pyx_t_13.suboffsets[0] = -1;
 
-__pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 237, __pyx_L1_error)
+__pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 274, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __PYX_XDEC_MEMVIEW(&__pyx_t_13, 1);
             __pyx_t_13.memview = NULL;
@@ -5407,26 +5836,26 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
             __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
             __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 237, __pyx_L1_error)
+            if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 274, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_4);
             __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-            __pyx_t_3 = PySequence_List(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 237, __pyx_L1_error)
+            __pyx_t_3 = PySequence_List(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 274, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_3);
             __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
             __pyx_t_5 = ((PyObject*)__pyx_t_3);
             __pyx_t_3 = 0;
-            __pyx_t_14 = PyList_Sort(__pyx_t_5); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 237, __pyx_L1_error)
+            __pyx_t_14 = PyList_Sort(__pyx_t_5); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 274, __pyx_L1_error)
 
-            /* "ppsim/simulator.pyx":238
+            /* "ppsim/simulator.pyx":275
  *                         for k in range(self.random_transitions[i, j, 0]):
  *                             if sorted(np.asarray(self.random_outputs[a + k])) != \
  *                                     sorted(np.asarray(self.random_outputs[b + k])):             # <<<<<<<<<<<<<<
  *                                 symmetric = False
  *                     else:
  */
-            __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 238, __pyx_L1_error)
+            __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 275, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
-            __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_asarray); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 238, __pyx_L1_error)
+            __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_asarray); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
             __pyx_t_13.data = __pyx_v_self->__pyx_base.random_outputs.data;
@@ -5442,7 +5871,7 @@ __pyx_t_13.shape[0] = __pyx_v_self->__pyx_base.random_outputs.shape[1];
 __pyx_t_13.strides[0] = __pyx_v_self->__pyx_base.random_outputs.strides[1];
     __pyx_t_13.suboffsets[0] = -1;
 
-__pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 238, __pyx_L1_error)
+__pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 275, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __PYX_XDEC_MEMVIEW(&__pyx_t_13, 1);
             __pyx_t_13.memview = NULL;
@@ -5460,31 +5889,31 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
             __pyx_t_4 = (__pyx_t_15) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_15, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2);
             __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 238, __pyx_L1_error)
+            if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 275, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_4);
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-            __pyx_t_1 = PySequence_List(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 238, __pyx_L1_error)
+            __pyx_t_1 = PySequence_List(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_1);
             __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
             __pyx_t_3 = ((PyObject*)__pyx_t_1);
             __pyx_t_1 = 0;
-            __pyx_t_14 = PyList_Sort(__pyx_t_3); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 238, __pyx_L1_error)
-            __pyx_t_1 = PyObject_RichCompare(__pyx_t_5, __pyx_t_3, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 237, __pyx_L1_error)
+            __pyx_t_14 = PyList_Sort(__pyx_t_3); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 275, __pyx_L1_error)
+            __pyx_t_1 = PyObject_RichCompare(__pyx_t_5, __pyx_t_3, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
             __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-            /* "ppsim/simulator.pyx":237
+            /* "ppsim/simulator.pyx":274
  *                         symmetric = True
  *                         for k in range(self.random_transitions[i, j, 0]):
  *                             if sorted(np.asarray(self.random_outputs[a + k])) != \             # <<<<<<<<<<<<<<
  *                                     sorted(np.asarray(self.random_outputs[b + k])):
  *                                 symmetric = False
  */
-            __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_16 < 0)) __PYX_ERR(0, 237, __pyx_L1_error)
+            __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_16 < 0)) __PYX_ERR(0, 274, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
             if (__pyx_t_16) {
 
-              /* "ppsim/simulator.pyx":239
+              /* "ppsim/simulator.pyx":276
  *                             if sorted(np.asarray(self.random_outputs[a + k])) != \
  *                                     sorted(np.asarray(self.random_outputs[b + k])):
  *                                 symmetric = False             # <<<<<<<<<<<<<<
@@ -5493,7 +5922,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
  */
               __pyx_v_symmetric = 0;
 
-              /* "ppsim/simulator.pyx":237
+              /* "ppsim/simulator.pyx":274
  *                         symmetric = True
  *                         for k in range(self.random_transitions[i, j, 0]):
  *                             if sorted(np.asarray(self.random_outputs[a + k])) != \             # <<<<<<<<<<<<<<
@@ -5503,7 +5932,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
             }
           }
 
-          /* "ppsim/simulator.pyx":233
+          /* "ppsim/simulator.pyx":270
  *                 symmetric = False
  *                 if sorted(np.asarray(self.delta[i,j])) == sorted(np.asarray(self.delta[j, i])):
  *                     if self.is_random and self.random_transitions[i, j, 0] == self.random_transitions[j, i, 0] > 0:             # <<<<<<<<<<<<<<
@@ -5513,7 +5942,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
           goto __pyx_L8;
         }
 
-        /* "ppsim/simulator.pyx":241
+        /* "ppsim/simulator.pyx":278
  *                                 symmetric = False
  *                     else:
  *                         symmetric = True             # <<<<<<<<<<<<<<
@@ -5525,7 +5954,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
         }
         __pyx_L8:;
 
-        /* "ppsim/simulator.pyx":232
+        /* "ppsim/simulator.pyx":269
  *                 # check if interaction is symmetric
  *                 symmetric = False
  *                 if sorted(np.asarray(self.delta[i,j])) == sorted(np.asarray(self.delta[j, i])):             # <<<<<<<<<<<<<<
@@ -5534,7 +5963,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
  */
       }
 
-      /* "ppsim/simulator.pyx":242
+      /* "ppsim/simulator.pyx":279
  *                     else:
  *                         symmetric = True
  *                 if symmetric:             # <<<<<<<<<<<<<<
@@ -5544,18 +5973,18 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
       __pyx_t_16 = (__pyx_v_symmetric != 0);
       if (__pyx_t_16) {
 
-        /* "ppsim/simulator.pyx":243
+        /* "ppsim/simulator.pyx":280
  *                         symmetric = True
  *                 if symmetric:
  *                     indices = [(i, j, 1.)]             # <<<<<<<<<<<<<<
  *                 # if interaction is not symmetric, each distinct order gets added as reactions with half proability
  *                 else:
  */
-        __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 243, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 280, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_j); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 243, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_j); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 280, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 243, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 280, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GIVEREF(__pyx_t_1);
         PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1);
@@ -5566,7 +5995,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
         PyTuple_SET_ITEM(__pyx_t_5, 2, __pyx_float_1_);
         __pyx_t_1 = 0;
         __pyx_t_3 = 0;
-        __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 243, __pyx_L1_error)
+        __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 280, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_GIVEREF(__pyx_t_5);
         PyList_SET_ITEM(__pyx_t_3, 0, __pyx_t_5);
@@ -5574,7 +6003,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
         __Pyx_XDECREF_SET(__pyx_v_indices, ((PyObject*)__pyx_t_3));
         __pyx_t_3 = 0;
 
-        /* "ppsim/simulator.pyx":242
+        /* "ppsim/simulator.pyx":279
  *                     else:
  *                         symmetric = True
  *                 if symmetric:             # <<<<<<<<<<<<<<
@@ -5584,7 +6013,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
         goto __pyx_L14;
       }
 
-      /* "ppsim/simulator.pyx":246
+      /* "ppsim/simulator.pyx":283
  *                 # if interaction is not symmetric, each distinct order gets added as reactions with half proability
  *                 else:
  *                     indices = [(i, j, 0.5), (j, i, 0.5)]             # <<<<<<<<<<<<<<
@@ -5592,11 +6021,11 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
  *                     if not self.null_transitions[a, b]:
  */
       /*else*/ {
-        __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 246, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 283, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_j); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 246, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_j); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 283, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 246, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 283, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_GIVEREF(__pyx_t_3);
         PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
@@ -5607,11 +6036,11 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
         PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_float_0_5);
         __pyx_t_3 = 0;
         __pyx_t_5 = 0;
-        __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_j); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 246, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_j); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 283, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 246, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 283, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 246, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 283, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_GIVEREF(__pyx_t_5);
         PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
@@ -5622,7 +6051,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
         PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_float_0_5);
         __pyx_t_5 = 0;
         __pyx_t_3 = 0;
-        __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 246, __pyx_L1_error)
+        __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 283, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_GIVEREF(__pyx_t_1);
         PyList_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
@@ -5635,7 +6064,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
       }
       __pyx_L14:;
 
-      /* "ppsim/simulator.pyx":247
+      /* "ppsim/simulator.pyx":284
  *                 else:
  *                     indices = [(i, j, 0.5), (j, i, 0.5)]
  *                 for a, b, p in indices:             # <<<<<<<<<<<<<<
@@ -5646,9 +6075,9 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
       for (;;) {
         if (__pyx_t_28 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_28); __Pyx_INCREF(__pyx_t_4); __pyx_t_28++; if (unlikely(0 < 0)) __PYX_ERR(0, 247, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_28); __Pyx_INCREF(__pyx_t_4); __pyx_t_28++; if (unlikely(0 < 0)) __PYX_ERR(0, 284, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_28); __pyx_t_28++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 247, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_3, __pyx_t_28); __pyx_t_28++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 284, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
         if ((likely(PyTuple_CheckExact(__pyx_t_4))) || (PyList_CheckExact(__pyx_t_4))) {
@@ -5657,7 +6086,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
           if (unlikely(size != 3)) {
             if (size > 3) __Pyx_RaiseTooManyValuesError(3);
             else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-            __PYX_ERR(0, 247, __pyx_L1_error)
+            __PYX_ERR(0, 284, __pyx_L1_error)
           }
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
           if (likely(PyTuple_CheckExact(sequence))) {
@@ -5673,17 +6102,17 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
           __Pyx_INCREF(__pyx_t_5);
           __Pyx_INCREF(__pyx_t_2);
           #else
-          __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 247, __pyx_L1_error)
+          __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 284, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
-          __pyx_t_5 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 247, __pyx_L1_error)
+          __pyx_t_5 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 284, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
-          __pyx_t_2 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 247, __pyx_L1_error)
+          __pyx_t_2 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 284, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           #endif
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         } else {
           Py_ssize_t index = -1;
-          __pyx_t_15 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 247, __pyx_L1_error)
+          __pyx_t_15 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 284, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_15);
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
           __pyx_t_29 = Py_TYPE(__pyx_t_15)->tp_iternext;
@@ -5693,7 +6122,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
           __Pyx_GOTREF(__pyx_t_5);
           index = 2; __pyx_t_2 = __pyx_t_29(__pyx_t_15); if (unlikely(!__pyx_t_2)) goto __pyx_L17_unpacking_failed;
           __Pyx_GOTREF(__pyx_t_2);
-          if (__Pyx_IternextUnpackEndCheck(__pyx_t_29(__pyx_t_15), 3) < 0) __PYX_ERR(0, 247, __pyx_L1_error)
+          if (__Pyx_IternextUnpackEndCheck(__pyx_t_29(__pyx_t_15), 3) < 0) __PYX_ERR(0, 284, __pyx_L1_error)
           __pyx_t_29 = NULL;
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
           goto __pyx_L18_unpacking_done;
@@ -5701,20 +6130,20 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
           __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
           __pyx_t_29 = NULL;
           if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-          __PYX_ERR(0, 247, __pyx_L1_error)
+          __PYX_ERR(0, 284, __pyx_L1_error)
           __pyx_L18_unpacking_done:;
         }
-        __pyx_t_26 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_1); if (unlikely((__pyx_t_26 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 247, __pyx_L1_error)
+        __pyx_t_26 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_1); if (unlikely((__pyx_t_26 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 284, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_24 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_5); if (unlikely((__pyx_t_24 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 247, __pyx_L1_error)
+        __pyx_t_24 = __Pyx_PyInt_As_Py_intptr_t(__pyx_t_5); if (unlikely((__pyx_t_24 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 284, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        __pyx_t_30 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_30 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 247, __pyx_L1_error)
+        __pyx_t_30 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_30 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 284, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_v_a = __pyx_t_26;
         __pyx_v_b = __pyx_t_24;
         __pyx_v_p = __pyx_t_30;
 
-        /* "ppsim/simulator.pyx":248
+        /* "ppsim/simulator.pyx":285
  *                     indices = [(i, j, 0.5), (j, i, 0.5)]
  *                 for a, b, p in indices:
  *                     if not self.null_transitions[a, b]:             # <<<<<<<<<<<<<<
@@ -5726,7 +6155,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
         __pyx_t_16 = ((!((*((uint8_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.null_transitions.data + __pyx_t_18 * __pyx_v_self->__pyx_base.null_transitions.strides[0]) ) + __pyx_t_19 * __pyx_v_self->__pyx_base.null_transitions.strides[1]) ))) != 0)) != 0);
         if (__pyx_t_16) {
 
-          /* "ppsim/simulator.pyx":249
+          /* "ppsim/simulator.pyx":286
  *                 for a, b, p in indices:
  *                     if not self.null_transitions[a, b]:
  *                         if self.is_random and self.random_transitions[a, b, 0]:             # <<<<<<<<<<<<<<
@@ -5747,7 +6176,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
           __pyx_L21_bool_binop_done:;
           if (__pyx_t_16) {
 
-            /* "ppsim/simulator.pyx":250
+            /* "ppsim/simulator.pyx":287
  *                     if not self.null_transitions[a, b]:
  *                         if self.is_random and self.random_transitions[a, b, 0]:
  *                             for k in range(self.random_transitions[a, b, 0]):             # <<<<<<<<<<<<<<
@@ -5762,7 +6191,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
             for (__pyx_t_27 = 0; __pyx_t_27 < __pyx_t_26; __pyx_t_27+=1) {
               __pyx_v_k = __pyx_t_27;
 
-              /* "ppsim/simulator.pyx":251
+              /* "ppsim/simulator.pyx":288
  *                         if self.is_random and self.random_transitions[a, b, 0]:
  *                             for k in range(self.random_transitions[a, b, 0]):
  *                                 output = list(self.random_outputs[self.random_transitions[a, b, 1] + k])             # <<<<<<<<<<<<<<
@@ -5785,29 +6214,29 @@ __pyx_t_13.shape[0] = __pyx_v_self->__pyx_base.random_outputs.shape[1];
 __pyx_t_13.strides[0] = __pyx_v_self->__pyx_base.random_outputs.strides[1];
     __pyx_t_13.suboffsets[0] = -1;
 
-__pyx_t_4 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 251, __pyx_L1_error)
+__pyx_t_4 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 288, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_4);
               __PYX_XDEC_MEMVIEW(&__pyx_t_13, 1);
               __pyx_t_13.memview = NULL;
               __pyx_t_13.data = NULL;
-              __pyx_t_2 = PySequence_List(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 251, __pyx_L1_error)
+              __pyx_t_2 = PySequence_List(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 288, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_2);
               __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
               __Pyx_XDECREF_SET(__pyx_v_output, ((PyObject*)__pyx_t_2));
               __pyx_t_2 = 0;
 
-              /* "ppsim/simulator.pyx":252
+              /* "ppsim/simulator.pyx":289
  *                             for k in range(self.random_transitions[a, b, 0]):
  *                                 output = list(self.random_outputs[self.random_transitions[a, b, 1] + k])
  *                                 if output != [a, b]:             # <<<<<<<<<<<<<<
  *                                     reactions.append([a, b] + output)
  *                                     reaction_probabilities.append(
  */
-              __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_a); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 252, __pyx_L1_error)
+              __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_a); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 289, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_2);
-              __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_b); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 252, __pyx_L1_error)
+              __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_b); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 289, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_4);
-              __pyx_t_5 = PyList_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 252, __pyx_L1_error)
+              __pyx_t_5 = PyList_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 289, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_5);
               __Pyx_GIVEREF(__pyx_t_2);
               PyList_SET_ITEM(__pyx_t_5, 0, __pyx_t_2);
@@ -5815,24 +6244,24 @@ __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
               PyList_SET_ITEM(__pyx_t_5, 1, __pyx_t_4);
               __pyx_t_2 = 0;
               __pyx_t_4 = 0;
-              __pyx_t_4 = PyObject_RichCompare(__pyx_v_output, __pyx_t_5, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 252, __pyx_L1_error)
+              __pyx_t_4 = PyObject_RichCompare(__pyx_v_output, __pyx_t_5, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 289, __pyx_L1_error)
               __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-              __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_16 < 0)) __PYX_ERR(0, 252, __pyx_L1_error)
+              __pyx_t_16 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_16 < 0)) __PYX_ERR(0, 289, __pyx_L1_error)
               __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
               if (__pyx_t_16) {
 
-                /* "ppsim/simulator.pyx":253
+                /* "ppsim/simulator.pyx":290
  *                                 output = list(self.random_outputs[self.random_transitions[a, b, 1] + k])
  *                                 if output != [a, b]:
  *                                     reactions.append([a, b] + output)             # <<<<<<<<<<<<<<
  *                                     reaction_probabilities.append(
  *                                         self.transition_probabilities[self.random_transitions[a, b, 1] + k] * p)
  */
-                __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_a); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 253, __pyx_L1_error)
+                __pyx_t_4 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_a); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 290, __pyx_L1_error)
                 __Pyx_GOTREF(__pyx_t_4);
-                __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_b); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 253, __pyx_L1_error)
+                __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_b); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 290, __pyx_L1_error)
                 __Pyx_GOTREF(__pyx_t_5);
-                __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 253, __pyx_L1_error)
+                __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 290, __pyx_L1_error)
                 __Pyx_GOTREF(__pyx_t_2);
                 __Pyx_GIVEREF(__pyx_t_4);
                 PyList_SET_ITEM(__pyx_t_2, 0, __pyx_t_4);
@@ -5840,13 +6269,13 @@ __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
                 PyList_SET_ITEM(__pyx_t_2, 1, __pyx_t_5);
                 __pyx_t_4 = 0;
                 __pyx_t_5 = 0;
-                __pyx_t_5 = PyNumber_Add(__pyx_t_2, __pyx_v_output); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 253, __pyx_L1_error)
+                __pyx_t_5 = PyNumber_Add(__pyx_t_2, __pyx_v_output); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 290, __pyx_L1_error)
                 __Pyx_GOTREF(__pyx_t_5);
                 __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-                __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_reactions, __pyx_t_5); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 253, __pyx_L1_error)
+                __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_reactions, __pyx_t_5); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 290, __pyx_L1_error)
                 __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-                /* "ppsim/simulator.pyx":255
+                /* "ppsim/simulator.pyx":292
  *                                     reactions.append([a, b] + output)
  *                                     reaction_probabilities.append(
  *                                         self.transition_probabilities[self.random_transitions[a, b, 1] + k] * p)             # <<<<<<<<<<<<<<
@@ -5857,20 +6286,20 @@ __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
                 __pyx_t_18 = __pyx_v_b;
                 __pyx_t_19 = 1;
                 __pyx_t_23 = ((*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_20 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_18 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_19 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) ))) + __pyx_v_k);
-                __pyx_t_5 = PyFloat_FromDouble(((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->__pyx_base.transition_probabilities.data) + __pyx_t_23)) ))) * __pyx_v_p)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 255, __pyx_L1_error)
+                __pyx_t_5 = PyFloat_FromDouble(((*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->__pyx_base.transition_probabilities.data) + __pyx_t_23)) ))) * __pyx_v_p)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 292, __pyx_L1_error)
                 __Pyx_GOTREF(__pyx_t_5);
 
-                /* "ppsim/simulator.pyx":254
+                /* "ppsim/simulator.pyx":291
  *                                 if output != [a, b]:
  *                                     reactions.append([a, b] + output)
  *                                     reaction_probabilities.append(             # <<<<<<<<<<<<<<
  *                                         self.transition_probabilities[self.random_transitions[a, b, 1] + k] * p)
  *                         else:
  */
-                __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_reaction_probabilities, __pyx_t_5); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 254, __pyx_L1_error)
+                __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_reaction_probabilities, __pyx_t_5); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 291, __pyx_L1_error)
                 __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-                /* "ppsim/simulator.pyx":252
+                /* "ppsim/simulator.pyx":289
  *                             for k in range(self.random_transitions[a, b, 0]):
  *                                 output = list(self.random_outputs[self.random_transitions[a, b, 1] + k])
  *                                 if output != [a, b]:             # <<<<<<<<<<<<<<
@@ -5880,7 +6309,7 @@ __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
               }
             }
 
-            /* "ppsim/simulator.pyx":249
+            /* "ppsim/simulator.pyx":286
  *                 for a, b, p in indices:
  *                     if not self.null_transitions[a, b]:
  *                         if self.is_random and self.random_transitions[a, b, 0]:             # <<<<<<<<<<<<<<
@@ -5890,7 +6319,7 @@ __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
             goto __pyx_L20;
           }
 
-          /* "ppsim/simulator.pyx":257
+          /* "ppsim/simulator.pyx":294
  *                                         self.transition_probabilities[self.random_transitions[a, b, 1] + k] * p)
  *                         else:
  *                             reactions.append([a, b] + list(self.delta[a, b]))             # <<<<<<<<<<<<<<
@@ -5898,11 +6327,11 @@ __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
  *         self.reactions = np.array(reactions, dtype = np.intp)
  */
           /*else*/ {
-            __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_a); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 257, __pyx_L1_error)
+            __pyx_t_5 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_a); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 294, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_5);
-            __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
+            __pyx_t_2 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_b); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 294, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
-            __pyx_t_4 = PyList_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 257, __pyx_L1_error)
+            __pyx_t_4 = PyList_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 294, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_4);
             __Pyx_GIVEREF(__pyx_t_5);
             PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_5);
@@ -5929,36 +6358,36 @@ __pyx_t_13.shape[0] = __pyx_v_self->__pyx_base.delta.shape[2];
 __pyx_t_13.strides[0] = __pyx_v_self->__pyx_base.delta.strides[2];
     __pyx_t_13.suboffsets[0] = -1;
 
-__pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
+__pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 294, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __PYX_XDEC_MEMVIEW(&__pyx_t_13, 1);
             __pyx_t_13.memview = NULL;
             __pyx_t_13.data = NULL;
-            __pyx_t_5 = PySequence_List(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 257, __pyx_L1_error)
+            __pyx_t_5 = PySequence_List(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 294, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_5);
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-            __pyx_t_2 = PyNumber_Add(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
+            __pyx_t_2 = PyNumber_Add(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 294, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
             __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-            __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_reactions, __pyx_t_2); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 257, __pyx_L1_error)
+            __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_reactions, __pyx_t_2); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 294, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-            /* "ppsim/simulator.pyx":258
+            /* "ppsim/simulator.pyx":295
  *                         else:
  *                             reactions.append([a, b] + list(self.delta[a, b]))
  *                             reaction_probabilities.append(p)             # <<<<<<<<<<<<<<
  *         self.reactions = np.array(reactions, dtype = np.intp)
  *         self.reaction_probabilities = np.array(reaction_probabilities, dtype = float)
  */
-            __pyx_t_2 = PyFloat_FromDouble(__pyx_v_p); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 258, __pyx_L1_error)
+            __pyx_t_2 = PyFloat_FromDouble(__pyx_v_p); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 295, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
-            __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_reaction_probabilities, __pyx_t_2); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 258, __pyx_L1_error)
+            __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_reaction_probabilities, __pyx_t_2); if (unlikely(__pyx_t_14 == ((int)-1))) __PYX_ERR(0, 295, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
           }
           __pyx_L20:;
 
-          /* "ppsim/simulator.pyx":248
+          /* "ppsim/simulator.pyx":285
  *                     indices = [(i, j, 0.5), (j, i, 0.5)]
  *                 for a, b, p in indices:
  *                     if not self.null_transitions[a, b]:             # <<<<<<<<<<<<<<
@@ -5967,7 +6396,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
  */
         }
 
-        /* "ppsim/simulator.pyx":247
+        /* "ppsim/simulator.pyx":284
  *                 else:
  *                     indices = [(i, j, 0.5), (j, i, 0.5)]
  *                 for a, b, p in indices:             # <<<<<<<<<<<<<<
@@ -5979,160 +6408,160 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
     }
   }
 
-  /* "ppsim/simulator.pyx":259
+  /* "ppsim/simulator.pyx":296
  *                             reactions.append([a, b] + list(self.delta[a, b]))
  *                             reaction_probabilities.append(p)
  *         self.reactions = np.array(reactions, dtype = np.intp)             # <<<<<<<<<<<<<<
  *         self.reaction_probabilities = np.array(reaction_probabilities, dtype = float)
  *         self.propensities = np.zeros(len(self.reactions), dtype = float)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_array); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_array); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_reactions);
   __Pyx_GIVEREF(__pyx_v_reactions);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_reactions);
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_intp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_intp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_1) < 0) __PYX_ERR(0, 259, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_1) < 0) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_31 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn_npy_intp(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_31.memview)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __pyx_t_31 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn_npy_intp(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_31.memview)) __PYX_ERR(0, 296, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->reactions, 0);
   __pyx_v_self->reactions = __pyx_t_31;
   __pyx_t_31.memview = NULL;
   __pyx_t_31.data = NULL;
 
-  /* "ppsim/simulator.pyx":260
+  /* "ppsim/simulator.pyx":297
  *                             reaction_probabilities.append(p)
  *         self.reactions = np.array(reactions, dtype = np.intp)
  *         self.reaction_probabilities = np.array(reaction_probabilities, dtype = float)             # <<<<<<<<<<<<<<
  *         self.propensities = np.zeros(len(self.reactions), dtype = float)
  *         self.enabled_reactions = np.zeros(len(self.reactions), dtype = np.intp)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_array); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_array); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_reaction_probabilities);
   __Pyx_GIVEREF(__pyx_v_reaction_probabilities);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_reaction_probabilities);
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 260, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 260, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_32 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_32.memview)) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_t_32 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_32.memview)) __PYX_ERR(0, 297, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->reaction_probabilities, 0);
   __pyx_v_self->reaction_probabilities = __pyx_t_32;
   __pyx_t_32.memview = NULL;
   __pyx_t_32.data = NULL;
 
-  /* "ppsim/simulator.pyx":261
+  /* "ppsim/simulator.pyx":298
  *         self.reactions = np.array(reactions, dtype = np.intp)
  *         self.reaction_probabilities = np.array(reaction_probabilities, dtype = float)
  *         self.propensities = np.zeros(len(self.reactions), dtype = float)             # <<<<<<<<<<<<<<
  *         self.enabled_reactions = np.zeros(len(self.reactions), dtype = np.intp)
  *         self.get_enabled_reactions()
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 261, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 261, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_33 = __Pyx_MemoryView_Len(__pyx_v_self->reactions); 
-  __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_t_33); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 261, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_t_33); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 261, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 261, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 261, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 261, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 298, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_32 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_32.memview)) __PYX_ERR(0, 261, __pyx_L1_error)
+  __pyx_t_32 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_32.memview)) __PYX_ERR(0, 298, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->propensities, 0);
   __pyx_v_self->propensities = __pyx_t_32;
   __pyx_t_32.memview = NULL;
   __pyx_t_32.data = NULL;
 
-  /* "ppsim/simulator.pyx":262
+  /* "ppsim/simulator.pyx":299
  *         self.reaction_probabilities = np.array(reaction_probabilities, dtype = float)
  *         self.propensities = np.zeros(len(self.reactions), dtype = float)
  *         self.enabled_reactions = np.zeros(len(self.reactions), dtype = np.intp)             # <<<<<<<<<<<<<<
  *         self.get_enabled_reactions()
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_33 = __Pyx_MemoryView_Len(__pyx_v_self->reactions); 
-  __pyx_t_5 = __Pyx_PyInt_FromSize_t(__pyx_t_33); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_FromSize_t(__pyx_t_33); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_5);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_5);
   __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_intp); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_intp); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 262, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_13 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn_npy_intp(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_13.memview)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn_npy_intp(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_13.memview)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->enabled_reactions, 0);
   __pyx_v_self->enabled_reactions = __pyx_t_13;
   __pyx_t_13.memview = NULL;
   __pyx_t_13.data = NULL;
 
-  /* "ppsim/simulator.pyx":263
+  /* "ppsim/simulator.pyx":300
  *         self.propensities = np.zeros(len(self.reactions), dtype = float)
  *         self.enabled_reactions = np.zeros(len(self.reactions), dtype = np.intp)
  *         self.get_enabled_reactions()             # <<<<<<<<<<<<<<
  * 
  *     def set_n_parameters(self):
  */
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_enabled_reactions); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 263, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_enabled_reactions); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 300, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_1 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -6146,12 +6575,12 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
   }
   __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 263, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 300, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "ppsim/simulator.pyx":208
+  /* "ppsim/simulator.pyx":245
  *     cdef int64_t r_constant
  * 
  *     def __init__(self, *args):             # <<<<<<<<<<<<<<
@@ -6184,7 +6613,7 @@ __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_13, 1, (PyObject *(*)(char *)) __
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":265
+/* "ppsim/simulator.pyx":302
  *         self.get_enabled_reactions()
  * 
  *     def set_n_parameters(self):             # <<<<<<<<<<<<<<
@@ -6241,7 +6670,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("set_n_parameters", 0);
 
-  /* "ppsim/simulator.pyx":267
+  /* "ppsim/simulator.pyx":304
  *     def set_n_parameters(self):
  *         """Initialize all parameters that depend on the population size n."""
  *         self.logn = log(self.n)             # <<<<<<<<<<<<<<
@@ -6250,7 +6679,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
  */
   __pyx_v_self->logn = log(__pyx_v_self->__pyx_base.n);
 
-  /* "ppsim/simulator.pyx":269
+  /* "ppsim/simulator.pyx":306
  *         self.logn = log(self.n)
  *         # theoretical optimum for batch_threshold is Theta(sqrt(n / logn) * q) agents / batch
  *         self.batch_threshold = int(min(sqrt(self.n / self.logn) * self.q, self.n ** 0.7))             # <<<<<<<<<<<<<<
@@ -6266,7 +6695,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
   }
   __pyx_v_self->batch_threshold = ((int64_t)__pyx_t_3);
 
-  /* "ppsim/simulator.pyx":271
+  /* "ppsim/simulator.pyx":308
  *         self.batch_threshold = int(min(sqrt(self.n / self.logn) * self.q, self.n ** 0.7))
  *         # first rough approximation for probability of successful reaction where we want to do gillespie
  *         self.gillespie_threshold = 2 / sqrt(self.n)             # <<<<<<<<<<<<<<
@@ -6275,7 +6704,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
  */
   __pyx_v_self->gillespie_threshold = (2.0 / sqrt(__pyx_v_self->__pyx_base.n));
 
-  /* "ppsim/simulator.pyx":274
+  /* "ppsim/simulator.pyx":311
  * 
  *         # build table for precomputed coll(n, r, u) values
  *         self.num_r_values = int(10 * log(self.n))             # <<<<<<<<<<<<<<
@@ -6284,7 +6713,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
  */
   __pyx_v_self->num_r_values = ((npy_intp)(10.0 * log(__pyx_v_self->__pyx_base.n)));
 
-  /* "ppsim/simulator.pyx":275
+  /* "ppsim/simulator.pyx":312
  *         # build table for precomputed coll(n, r, u) values
  *         self.num_r_values = int(10 * log(self.n))
  *         self.num_u_values = int(10 * log(self.n))             # <<<<<<<<<<<<<<
@@ -6293,7 +6722,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
  */
   __pyx_v_self->num_u_values = ((npy_intp)(10.0 * log(__pyx_v_self->__pyx_base.n)));
 
-  /* "ppsim/simulator.pyx":276
+  /* "ppsim/simulator.pyx":313
  *         self.num_r_values = int(10 * log(self.n))
  *         self.num_u_values = int(10 * log(self.n))
  *         self.r_constant = max(int(1.5 * self.batch_threshold) // ((self.num_r_values - 2) ** 2), 1)             # <<<<<<<<<<<<<<
@@ -6301,22 +6730,22 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
  *         self.coll_table_r_values = np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)]
  */
   __pyx_t_4 = 1;
-  __pyx_t_5 = __Pyx_PyInt_FromDouble((1.5 * __pyx_v_self->batch_threshold)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_FromDouble((1.5 * __pyx_v_self->batch_threshold)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyInt_From_long(__Pyx_pow_long((__pyx_v_self->num_r_values - 2), 2)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_From_long(__Pyx_pow_long((__pyx_v_self->num_r_values - 2), 2)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = PyNumber_FloorDivide(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_7 = PyNumber_FloorDivide(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_8 = PyObject_RichCompare(__pyx_t_5, __pyx_t_7, Py_GT); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_8 = PyObject_RichCompare(__pyx_t_5, __pyx_t_7, Py_GT); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   if (__pyx_t_9) {
-    __pyx_t_8 = __Pyx_PyInt_From_long(__pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 276, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_From_long(__pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 313, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __pyx_t_6 = __pyx_t_8;
     __pyx_t_8 = 0;
@@ -6325,27 +6754,27 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
     __pyx_t_6 = __pyx_t_7;
   }
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_10 = __Pyx_PyInt_As_int64_t(__pyx_t_6); if (unlikely((__pyx_t_10 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 276, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyInt_As_int64_t(__pyx_t_6); if (unlikely((__pyx_t_10 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_v_self->r_constant = __pyx_t_10;
 
-  /* "ppsim/simulator.pyx":277
+  /* "ppsim/simulator.pyx":314
  *         self.num_u_values = int(10 * log(self.n))
  *         self.r_constant = max(int(1.5 * self.batch_threshold) // ((self.num_r_values - 2) ** 2), 1)
  *         self.coll_table = np.zeros((self.num_r_values, self.num_u_values), dtype=np.int64)             # <<<<<<<<<<<<<<
  *         self.coll_table_r_values = np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)]
  *                                             + [self.n], dtype=np.int64)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_zeros); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_zeros); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_r_values); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_r_values); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_8 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_u_values); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_u_values); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_6);
   PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6);
@@ -6353,141 +6782,141 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
   PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_8);
   __pyx_t_6 = 0;
   __pyx_t_8 = 0;
-  __pyx_t_8 = PyTuple_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_8 = PyTuple_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_GIVEREF(__pyx_t_5);
   PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_5);
   __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_int64); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_int64); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_11) < 0) __PYX_ERR(0, 277, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_11) < 0) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_8, __pyx_t_5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_8, __pyx_t_5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn_int64_t(__pyx_t_11, PyBUF_WRITABLE); if (unlikely(!__pyx_t_12.memview)) __PYX_ERR(0, 277, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn_int64_t(__pyx_t_11, PyBUF_WRITABLE); if (unlikely(!__pyx_t_12.memview)) __PYX_ERR(0, 314, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->coll_table, 0);
   __pyx_v_self->coll_table = __pyx_t_12;
   __pyx_t_12.memview = NULL;
   __pyx_t_12.data = NULL;
 
-  /* "ppsim/simulator.pyx":278
+  /* "ppsim/simulator.pyx":315
  *         self.r_constant = max(int(1.5 * self.batch_threshold) // ((self.num_r_values - 2) ** 2), 1)
  *         self.coll_table = np.zeros((self.num_r_values, self.num_u_values), dtype=np.int64)
  *         self.coll_table_r_values = np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)]             # <<<<<<<<<<<<<<
  *                                             + [self.n], dtype=np.int64)
  *         self.coll_table_u_values = np.linspace(0, 1, self.num_u_values, dtype=float)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_array); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_array); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   { /* enter inner scope */
-    __pyx_t_11 = PyList_New(0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 278, __pyx_L1_error)
+    __pyx_t_11 = PyList_New(0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 315, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     __pyx_t_4 = (__pyx_v_self->num_r_values - 1);
     __pyx_t_13 = __pyx_t_4;
     for (__pyx_t_14 = 0; __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
       __pyx_7genexpr__pyx_v_i = __pyx_t_14;
-      __pyx_t_8 = __Pyx_PyInt_From_int64_t((2 + (__pyx_v_self->r_constant * __Pyx_pow_long(((long)__pyx_7genexpr__pyx_v_i), 2)))); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 278, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyInt_From_int64_t((2 + (__pyx_v_self->r_constant * __Pyx_pow_long(((long)__pyx_7genexpr__pyx_v_i), 2)))); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 315, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_11, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 278, __pyx_L1_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_11, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 315, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
   } /* exit inner scope */
 
-  /* "ppsim/simulator.pyx":279
+  /* "ppsim/simulator.pyx":316
  *         self.coll_table = np.zeros((self.num_r_values, self.num_u_values), dtype=np.int64)
  *         self.coll_table_r_values = np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)]
  *                                             + [self.n], dtype=np.int64)             # <<<<<<<<<<<<<<
  *         self.coll_table_u_values = np.linspace(0, 1, self.num_u_values, dtype=float)
  *         cdef npy_intp i, j
  */
-  __pyx_t_8 = __Pyx_PyInt_From_int64_t(__pyx_v_self->__pyx_base.n); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyInt_From_int64_t(__pyx_v_self->__pyx_base.n); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_7 = PyList_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_7 = PyList_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_8);
   PyList_SET_ITEM(__pyx_t_7, 0, __pyx_t_8);
   __pyx_t_8 = 0;
-  __pyx_t_8 = PyNumber_Add(__pyx_t_11, __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_8 = PyNumber_Add(__pyx_t_11, __pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "ppsim/simulator.pyx":278
+  /* "ppsim/simulator.pyx":315
  *         self.r_constant = max(int(1.5 * self.batch_threshold) // ((self.num_r_values - 2) ** 2), 1)
  *         self.coll_table = np.zeros((self.num_r_values, self.num_u_values), dtype=np.int64)
  *         self.coll_table_r_values = np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)]             # <<<<<<<<<<<<<<
  *                                             + [self.n], dtype=np.int64)
  *         self.coll_table_u_values = np.linspace(0, 1, self.num_u_values, dtype=float)
  */
-  __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_8);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_8);
   __pyx_t_8 = 0;
 
-  /* "ppsim/simulator.pyx":279
+  /* "ppsim/simulator.pyx":316
  *         self.coll_table = np.zeros((self.num_r_values, self.num_u_values), dtype=np.int64)
  *         self.coll_table_r_values = np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)]
  *                                             + [self.n], dtype=np.int64)             # <<<<<<<<<<<<<<
  *         self.coll_table_u_values = np.linspace(0, 1, self.num_u_values, dtype=float)
  *         cdef npy_intp i, j
  */
-  __pyx_t_8 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_int64); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 279, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_int64); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(0, 279, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_dtype, __pyx_t_6) < 0) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "ppsim/simulator.pyx":278
+  /* "ppsim/simulator.pyx":315
  *         self.r_constant = max(int(1.5 * self.batch_threshold) // ((self.num_r_values - 2) ** 2), 1)
  *         self.coll_table = np.zeros((self.num_r_values, self.num_u_values), dtype=np.int64)
  *         self.coll_table_r_values = np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)]             # <<<<<<<<<<<<<<
  *                                             + [self.n], dtype=np.int64)
  *         self.coll_table_u_values = np.linspace(0, 1, self.num_u_values, dtype=float)
  */
-  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, __pyx_t_8); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_15 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_t_6, PyBUF_WRITABLE); if (unlikely(!__pyx_t_15.memview)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_t_6, PyBUF_WRITABLE); if (unlikely(!__pyx_t_15.memview)) __PYX_ERR(0, 315, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->coll_table_r_values, 0);
   __pyx_v_self->coll_table_r_values = __pyx_t_15;
   __pyx_t_15.memview = NULL;
   __pyx_t_15.data = NULL;
 
-  /* "ppsim/simulator.pyx":280
+  /* "ppsim/simulator.pyx":317
  *         self.coll_table_r_values = np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)]
  *                                             + [self.n], dtype=np.int64)
  *         self.coll_table_u_values = np.linspace(0, 1, self.num_u_values, dtype=float)             # <<<<<<<<<<<<<<
  *         cdef npy_intp i, j
  *         for i in range(self.num_r_values):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 280, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_linspace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 280, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_linspace); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_u_values); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 280, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_u_values); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 280, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_int_0);
   __Pyx_GIVEREF(__pyx_int_0);
@@ -6498,22 +6927,22 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
   __Pyx_GIVEREF(__pyx_t_6);
   PyTuple_SET_ITEM(__pyx_t_7, 2, __pyx_t_6);
   __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 280, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 280, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_7, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 280, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 317, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_7, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_16 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_16.memview)) __PYX_ERR(0, 280, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_16.memview)) __PYX_ERR(0, 317, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->coll_table_u_values, 0);
   __pyx_v_self->coll_table_u_values = __pyx_t_16;
   __pyx_t_16.memview = NULL;
   __pyx_t_16.data = NULL;
 
-  /* "ppsim/simulator.pyx":282
+  /* "ppsim/simulator.pyx":319
  *         self.coll_table_u_values = np.linspace(0, 1, self.num_u_values, dtype=float)
  *         cdef npy_intp i, j
  *         for i in range(self.num_r_values):             # <<<<<<<<<<<<<<
@@ -6525,7 +6954,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
   for (__pyx_t_18 = 0; __pyx_t_18 < __pyx_t_17; __pyx_t_18+=1) {
     __pyx_v_i = __pyx_t_18;
 
-    /* "ppsim/simulator.pyx":283
+    /* "ppsim/simulator.pyx":320
  *         cdef npy_intp i, j
  *         for i in range(self.num_r_values):
  *             for j in range(self.num_u_values):             # <<<<<<<<<<<<<<
@@ -6537,7 +6966,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
     for (__pyx_t_21 = 0; __pyx_t_21 < __pyx_t_20; __pyx_t_21+=1) {
       __pyx_v_j = __pyx_t_21;
 
-      /* "ppsim/simulator.pyx":284
+      /* "ppsim/simulator.pyx":321
  *         for i in range(self.num_r_values):
  *             for j in range(self.num_u_values):
  *                 self.coll_table[i, j] = self.sample_coll(self.coll_table_r_values[i],             # <<<<<<<<<<<<<<
@@ -6546,7 +6975,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
  */
       __pyx_t_22 = __pyx_v_i;
 
-      /* "ppsim/simulator.pyx":285
+      /* "ppsim/simulator.pyx":322
  *             for j in range(self.num_u_values):
  *                 self.coll_table[i, j] = self.sample_coll(self.coll_table_r_values[i],
  *                                                          self.coll_table_u_values[j], has_bounds=False)             # <<<<<<<<<<<<<<
@@ -6555,7 +6984,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
  */
       __pyx_t_23 = __pyx_v_j;
 
-      /* "ppsim/simulator.pyx":284
+      /* "ppsim/simulator.pyx":321
  *         for i in range(self.num_r_values):
  *             for j in range(self.num_u_values):
  *                 self.coll_table[i, j] = self.sample_coll(self.coll_table_r_values[i],             # <<<<<<<<<<<<<<
@@ -6571,7 +7000,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
     }
   }
 
-  /* "ppsim/simulator.pyx":265
+  /* "ppsim/simulator.pyx":302
  *         self.get_enabled_reactions()
  * 
  *     def set_n_parameters(self):             # <<<<<<<<<<<<<<
@@ -6599,7 +7028,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_paramet
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":287
+/* "ppsim/simulator.pyx":324
  *                                                          self.coll_table_u_values[j], has_bounds=False)
  * 
  *     def reset(self, int64_t [::1] config):             # <<<<<<<<<<<<<<
@@ -6619,7 +7048,7 @@ static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_5reset(PyObjec
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("reset (wrapper)", 0);
   assert(__pyx_arg_config); {
-    __pyx_v_config = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_arg_config, PyBUF_WRITABLE); if (unlikely(!__pyx_v_config.memview)) __PYX_ERR(0, 287, __pyx_L3_error)
+    __pyx_v_config = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_arg_config, PyBUF_WRITABLE); if (unlikely(!__pyx_v_config.memview)) __PYX_ERR(0, 324, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -6648,7 +7077,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_4reset(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("reset", 0);
 
-  /* "ppsim/simulator.pyx":295
+  /* "ppsim/simulator.pyx":332
  *             config: The configuration array to reset to.
  *         """
  *         self.config = config             # <<<<<<<<<<<<<<
@@ -6659,14 +7088,14 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_4reset(struct 
   __PYX_INC_MEMVIEW(&__pyx_v_config, 0);
   __pyx_v_self->__pyx_base.config = __pyx_v_config;
 
-  /* "ppsim/simulator.pyx":296
+  /* "ppsim/simulator.pyx":333
  *         """
  *         self.config = config
  *         self.urn = Urn.create(self.config, self.bitgen)             # <<<<<<<<<<<<<<
  *         cdef int64_t n = sum(config)
  *         if n != self.n:
  */
-  __pyx_t_1 = ((PyObject *)__pyx_f_5ppsim_9simulator_3Urn_create(__pyx_v_self->__pyx_base.config, __pyx_v_self->__pyx_base.bitgen)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 296, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_5ppsim_9simulator_3Urn_create(__pyx_v_self->__pyx_base.config, __pyx_v_self->__pyx_base.bitgen)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 333, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->urn);
@@ -6674,23 +7103,23 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_4reset(struct 
   __pyx_v_self->urn = ((struct __pyx_obj_5ppsim_9simulator_Urn *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "ppsim/simulator.pyx":297
+  /* "ppsim/simulator.pyx":334
  *         self.config = config
  *         self.urn = Urn.create(self.config, self.bitgen)
  *         cdef int64_t n = sum(config)             # <<<<<<<<<<<<<<
  *         if n != self.n:
  *             self.n = n
  */
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_config, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_int64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_int64_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_config, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_int64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_int64_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 334, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_sum, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_sum, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 334, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_int64_t(__pyx_t_2); if (unlikely((__pyx_t_3 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 297, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_int64_t(__pyx_t_2); if (unlikely((__pyx_t_3 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 334, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_n = __pyx_t_3;
 
-  /* "ppsim/simulator.pyx":298
+  /* "ppsim/simulator.pyx":335
  *         self.urn = Urn.create(self.config, self.bitgen)
  *         cdef int64_t n = sum(config)
  *         if n != self.n:             # <<<<<<<<<<<<<<
@@ -6700,7 +7129,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_4reset(struct 
   __pyx_t_4 = ((__pyx_v_n != __pyx_v_self->__pyx_base.n) != 0);
   if (__pyx_t_4) {
 
-    /* "ppsim/simulator.pyx":299
+    /* "ppsim/simulator.pyx":336
  *         cdef int64_t n = sum(config)
  *         if n != self.n:
  *             self.n = n             # <<<<<<<<<<<<<<
@@ -6709,14 +7138,14 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_4reset(struct 
  */
     __pyx_v_self->__pyx_base.n = __pyx_v_n;
 
-    /* "ppsim/simulator.pyx":300
+    /* "ppsim/simulator.pyx":337
  *         if n != self.n:
  *             self.n = n
  *             self.set_n_parameters()             # <<<<<<<<<<<<<<
  *         self.t = 0
  *         self.silent = False
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_set_n_parameters); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 300, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_set_n_parameters); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 337, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -6730,12 +7159,12 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_4reset(struct 
     }
     __pyx_t_2 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 300, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 337, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "ppsim/simulator.pyx":298
+    /* "ppsim/simulator.pyx":335
  *         self.urn = Urn.create(self.config, self.bitgen)
  *         cdef int64_t n = sum(config)
  *         if n != self.n:             # <<<<<<<<<<<<<<
@@ -6744,7 +7173,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_4reset(struct 
  */
   }
 
-  /* "ppsim/simulator.pyx":301
+  /* "ppsim/simulator.pyx":338
  *             self.n = n
  *             self.set_n_parameters()
  *         self.t = 0             # <<<<<<<<<<<<<<
@@ -6753,7 +7182,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_4reset(struct 
  */
   __pyx_v_self->__pyx_base.t = 0;
 
-  /* "ppsim/simulator.pyx":302
+  /* "ppsim/simulator.pyx":339
  *             self.set_n_parameters()
  *         self.t = 0
  *         self.silent = False             # <<<<<<<<<<<<<<
@@ -6762,16 +7191,16 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_4reset(struct 
  */
   __pyx_v_self->silent = 0;
 
-  /* "ppsim/simulator.pyx":303
+  /* "ppsim/simulator.pyx":340
  *         self.t = 0
  *         self.silent = False
  *         self.do_gillespie = False             # <<<<<<<<<<<<<<
  * 
- *     def run(self, int64_t num_steps):
+ *     def run(self, int64_t end_step, double max_wallclock_time = 60 * 60):
  */
   __pyx_v_self->do_gillespie = 0;
 
-  /* "ppsim/simulator.pyx":287
+  /* "ppsim/simulator.pyx":324
  *                                                          self.coll_table_u_values[j], has_bounds=False)
  * 
  *     def reset(self, int64_t [::1] config):             # <<<<<<<<<<<<<<
@@ -6795,193 +7224,309 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_4reset(struct 
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":305
+/* "ppsim/simulator.pyx":342
  *         self.do_gillespie = False
  * 
- *     def run(self, int64_t num_steps):             # <<<<<<<<<<<<<<
+ *     def run(self, int64_t end_step, double max_wallclock_time = 60 * 60):             # <<<<<<<<<<<<<<
  *         """Run the simulation for a fixed number of steps.
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_7run(PyObject *__pyx_v_self, PyObject *__pyx_arg_num_steps); /*proto*/
+static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_7run(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static char __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_6run[] = "Run the simulation for a fixed number of steps.\n\n        Args:\n            num_steps: The number of steps to run the simulation.\n        ";
-static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_7run(PyObject *__pyx_v_self, PyObject *__pyx_arg_num_steps) {
-  int64_t __pyx_v_num_steps;
+static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_7run(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int64_t __pyx_v_end_step;
+  double __pyx_v_max_wallclock_time;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("run (wrapper)", 0);
-  assert(__pyx_arg_num_steps); {
-    __pyx_v_num_steps = __Pyx_PyInt_As_int64_t(__pyx_arg_num_steps); if (unlikely((__pyx_v_num_steps == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 305, __pyx_L3_error)
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_end_step,&__pyx_n_s_max_wallclock_time,0};
+    PyObject* values[2] = {0,0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_end_step)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_max_wallclock_time);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "run") < 0)) __PYX_ERR(0, 342, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_end_step = __Pyx_PyInt_As_int64_t(values[0]); if (unlikely((__pyx_v_end_step == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 342, __pyx_L3_error)
+    if (values[1]) {
+      __pyx_v_max_wallclock_time = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_max_wallclock_time == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 342, __pyx_L3_error)
+    } else {
+      __pyx_v_max_wallclock_time = ((double)3600.0);
+    }
   }
   goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("run", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 342, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("ppsim.simulator.SimulatorMultiBatch.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_6run(((struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self), ((int64_t)__pyx_v_num_steps));
+  __pyx_r = __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_6run(((struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self), __pyx_v_end_step, __pyx_v_max_wallclock_time);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_6run(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, int64_t __pyx_v_num_steps) {
-  int64_t __pyx_v_end;
+static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_6run(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, int64_t __pyx_v_end_step, double __pyx_v_max_wallclock_time) {
+  double __pyx_v_end_time;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  int __pyx_t_1;
+  PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
+  double __pyx_t_4;
+  int __pyx_t_5;
+  int __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("run", 0);
 
-  /* "ppsim/simulator.pyx":311
+  /* "ppsim/simulator.pyx":348
  *             num_steps: The number of steps to run the simulation.
  *         """
- *         cdef int64_t end = self.t + num_steps             # <<<<<<<<<<<<<<
- *         while self.t < end:
+ *         cdef double end_time = time.perf_counter() + max_wallclock_time             # <<<<<<<<<<<<<<
+ *         while self.t < end_step and time.perf_counter() < end_time:
  *             if self.silent:
  */
-  __pyx_v_end = (__pyx_v_self->__pyx_base.t + __pyx_v_num_steps);
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_2)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_max_wallclock_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 348, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_end_time = __pyx_t_4;
 
-  /* "ppsim/simulator.pyx":312
+  /* "ppsim/simulator.pyx":349
  *         """
- *         cdef int64_t end = self.t + num_steps
- *         while self.t < end:             # <<<<<<<<<<<<<<
+ *         cdef double end_time = time.perf_counter() + max_wallclock_time
+ *         while self.t < end_step and time.perf_counter() < end_time:             # <<<<<<<<<<<<<<
  *             if self.silent:
- *                 self.t = end
+ *                 self.t = end_step
  */
   while (1) {
-    __pyx_t_1 = ((__pyx_v_self->__pyx_base.t < __pyx_v_end) != 0);
-    if (!__pyx_t_1) break;
+    __pyx_t_6 = ((__pyx_v_self->__pyx_base.t < __pyx_v_end_step) != 0);
+    if (__pyx_t_6) {
+    } else {
+      __pyx_t_5 = __pyx_t_6;
+      goto __pyx_L5_bool_binop_done;
+    }
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 349, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 349, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = NULL;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
+      if (likely(__pyx_t_3)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+        __Pyx_INCREF(__pyx_t_3);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_1, function);
+      }
+    }
+    __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 349, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_end_time); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 349, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = PyObject_RichCompare(__pyx_t_2, __pyx_t_1, Py_LT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 349, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 349, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_5 = __pyx_t_6;
+    __pyx_L5_bool_binop_done:;
+    if (!__pyx_t_5) break;
 
-    /* "ppsim/simulator.pyx":313
- *         cdef int64_t end = self.t + num_steps
- *         while self.t < end:
+    /* "ppsim/simulator.pyx":350
+ *         cdef double end_time = time.perf_counter() + max_wallclock_time
+ *         while self.t < end_step and time.perf_counter() < end_time:
  *             if self.silent:             # <<<<<<<<<<<<<<
- *                 self.t = end
+ *                 self.t = end_step
  *                 return
  */
-    __pyx_t_1 = (__pyx_v_self->silent != 0);
-    if (__pyx_t_1) {
+    __pyx_t_5 = (__pyx_v_self->silent != 0);
+    if (__pyx_t_5) {
 
-      /* "ppsim/simulator.pyx":314
- *         while self.t < end:
+      /* "ppsim/simulator.pyx":351
+ *         while self.t < end_step and time.perf_counter() < end_time:
  *             if self.silent:
- *                 self.t = end             # <<<<<<<<<<<<<<
+ *                 self.t = end_step             # <<<<<<<<<<<<<<
  *                 return
  *             elif self.do_gillespie:
  */
-      __pyx_v_self->__pyx_base.t = __pyx_v_end;
+      __pyx_v_self->__pyx_base.t = __pyx_v_end_step;
 
-      /* "ppsim/simulator.pyx":315
+      /* "ppsim/simulator.pyx":352
  *             if self.silent:
- *                 self.t = end
+ *                 self.t = end_step
  *                 return             # <<<<<<<<<<<<<<
  *             elif self.do_gillespie:
- *                 self.gillespie_step()
+ *                 self.gillespie_step(end_step)
  */
       __Pyx_XDECREF(__pyx_r);
       __pyx_r = Py_None; __Pyx_INCREF(Py_None);
       goto __pyx_L0;
 
-      /* "ppsim/simulator.pyx":313
- *         cdef int64_t end = self.t + num_steps
- *         while self.t < end:
+      /* "ppsim/simulator.pyx":350
+ *         cdef double end_time = time.perf_counter() + max_wallclock_time
+ *         while self.t < end_step and time.perf_counter() < end_time:
  *             if self.silent:             # <<<<<<<<<<<<<<
- *                 self.t = end
+ *                 self.t = end_step
  *                 return
  */
     }
 
-    /* "ppsim/simulator.pyx":316
- *                 self.t = end
+    /* "ppsim/simulator.pyx":353
+ *                 self.t = end_step
  *                 return
  *             elif self.do_gillespie:             # <<<<<<<<<<<<<<
- *                 self.gillespie_step()
+ *                 self.gillespie_step(end_step)
  *             else:
  */
-    __pyx_t_1 = (__pyx_v_self->do_gillespie != 0);
-    if (__pyx_t_1) {
+    __pyx_t_5 = (__pyx_v_self->do_gillespie != 0);
+    if (__pyx_t_5) {
 
-      /* "ppsim/simulator.pyx":317
+      /* "ppsim/simulator.pyx":354
  *                 return
  *             elif self.do_gillespie:
- *                 self.gillespie_step()             # <<<<<<<<<<<<<<
+ *                 self.gillespie_step(end_step)             # <<<<<<<<<<<<<<
  *             else:
- *                 self.multibatch_step()
+ *                 self.multibatch_step(end_step)
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_gillespie_step); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 317, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-        if (likely(__pyx_t_4)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-          __Pyx_INCREF(__pyx_t_4);
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_gillespie_step); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 354, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_2 = __Pyx_PyInt_From_int64_t(__pyx_v_end_step); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 354, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_7 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+        __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_1);
+        if (likely(__pyx_t_7)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+          __Pyx_INCREF(__pyx_t_7);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_3, function);
+          __Pyx_DECREF_SET(__pyx_t_1, function);
         }
       }
-      __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 317, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_3 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_7, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 354, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "ppsim/simulator.pyx":316
- *                 self.t = end
+      /* "ppsim/simulator.pyx":353
+ *                 self.t = end_step
  *                 return
  *             elif self.do_gillespie:             # <<<<<<<<<<<<<<
- *                 self.gillespie_step()
+ *                 self.gillespie_step(end_step)
  *             else:
  */
-      goto __pyx_L5;
+      goto __pyx_L7;
     }
 
-    /* "ppsim/simulator.pyx":319
- *                 self.gillespie_step()
+    /* "ppsim/simulator.pyx":356
+ *                 self.gillespie_step(end_step)
  *             else:
- *                 self.multibatch_step()             # <<<<<<<<<<<<<<
+ *                 self.multibatch_step(end_step)             # <<<<<<<<<<<<<<
  * 
  *     def run_until_silent(self, int64_t [::1] config):
  */
     /*else*/ {
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_multibatch_step); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 319, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = NULL;
-      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-        if (likely(__pyx_t_4)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-          __Pyx_INCREF(__pyx_t_4);
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_multibatch_step); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 356, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_2 = __Pyx_PyInt_From_int64_t(__pyx_v_end_step); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 356, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __pyx_t_7 = NULL;
+      if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+        __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_1);
+        if (likely(__pyx_t_7)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+          __Pyx_INCREF(__pyx_t_7);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_3, function);
+          __Pyx_DECREF_SET(__pyx_t_1, function);
         }
       }
-      __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 319, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_3 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_7, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 356, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
-    __pyx_L5:;
+    __pyx_L7:;
   }
 
-  /* "ppsim/simulator.pyx":305
+  /* "ppsim/simulator.pyx":342
  *         self.do_gillespie = False
  * 
- *     def run(self, int64_t num_steps):             # <<<<<<<<<<<<<<
+ *     def run(self, int64_t end_step, double max_wallclock_time = 60 * 60):             # <<<<<<<<<<<<<<
  *         """Run the simulation for a fixed number of steps.
  * 
  */
@@ -6990,9 +7535,10 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_6run(struct __
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
   __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("ppsim.simulator.SimulatorMultiBatch.run", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -7001,8 +7547,8 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_6run(struct __
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":321
- *                 self.multibatch_step()
+/* "ppsim/simulator.pyx":358
+ *                 self.multibatch_step(end_step)
  * 
  *     def run_until_silent(self, int64_t [::1] config):             # <<<<<<<<<<<<<<
  *         """Run the simulation until silent."""
@@ -7021,7 +7567,7 @@ static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_9run_until_sil
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("run_until_silent (wrapper)", 0);
   assert(__pyx_arg_config); {
-    __pyx_v_config = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_arg_config, PyBUF_WRITABLE); if (unlikely(!__pyx_v_config.memview)) __PYX_ERR(0, 321, __pyx_L3_error)
+    __pyx_v_config = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_arg_config, PyBUF_WRITABLE); if (unlikely(!__pyx_v_config.memview)) __PYX_ERR(0, 358, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7048,7 +7594,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_8run_until_sil
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("run_until_silent", 0);
 
-  /* "ppsim/simulator.pyx":323
+  /* "ppsim/simulator.pyx":360
  *     def run_until_silent(self, int64_t [::1] config):
  *         """Run the simulation until silent."""
  *         while not self.silent:             # <<<<<<<<<<<<<<
@@ -7059,7 +7605,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_8run_until_sil
     __pyx_t_1 = ((!(__pyx_v_self->silent != 0)) != 0);
     if (!__pyx_t_1) break;
 
-    /* "ppsim/simulator.pyx":324
+    /* "ppsim/simulator.pyx":361
  *         """Run the simulation until silent."""
  *         while not self.silent:
  *             if self.do_gillespie:             # <<<<<<<<<<<<<<
@@ -7069,14 +7615,14 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_8run_until_sil
     __pyx_t_1 = (__pyx_v_self->do_gillespie != 0);
     if (__pyx_t_1) {
 
-      /* "ppsim/simulator.pyx":325
+      /* "ppsim/simulator.pyx":362
  *         while not self.silent:
  *             if self.do_gillespie:
  *                 self.gillespie_step()             # <<<<<<<<<<<<<<
  *             else:
  *                 self.multibatch_step()
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_gillespie_step); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 325, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_gillespie_step); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 362, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_4 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -7090,12 +7636,12 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_8run_until_sil
       }
       __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 325, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 362, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "ppsim/simulator.pyx":324
+      /* "ppsim/simulator.pyx":361
  *         """Run the simulation until silent."""
  *         while not self.silent:
  *             if self.do_gillespie:             # <<<<<<<<<<<<<<
@@ -7105,7 +7651,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_8run_until_sil
       goto __pyx_L5;
     }
 
-    /* "ppsim/simulator.pyx":327
+    /* "ppsim/simulator.pyx":364
  *                 self.gillespie_step()
  *             else:
  *                 self.multibatch_step()             # <<<<<<<<<<<<<<
@@ -7113,7 +7659,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_8run_until_sil
  *     cdef (npy_intp, npy_intp) unordered_delta(self, npy_intp a, npy_intp b):
  */
     /*else*/ {
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_multibatch_step); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 327, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_multibatch_step); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 364, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_4 = NULL;
       if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -7127,7 +7673,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_8run_until_sil
       }
       __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 327, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 364, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -7135,8 +7681,8 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_8run_until_sil
     __pyx_L5:;
   }
 
-  /* "ppsim/simulator.pyx":321
- *                 self.multibatch_step()
+  /* "ppsim/simulator.pyx":358
+ *                 self.multibatch_step(end_step)
  * 
  *     def run_until_silent(self, int64_t [::1] config):             # <<<<<<<<<<<<<<
  *         """Run the simulation until silent."""
@@ -7159,7 +7705,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_8run_until_sil
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":329
+/* "ppsim/simulator.pyx":366
  *                 self.multibatch_step()
  * 
  *     cdef (npy_intp, npy_intp) unordered_delta(self, npy_intp a, npy_intp b):             # <<<<<<<<<<<<<<
@@ -7186,7 +7732,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
   Py_ssize_t __pyx_t_11;
   __Pyx_RefNannySetupContext("unordered_delta", 0);
 
-  /* "ppsim/simulator.pyx":333
+  /* "ppsim/simulator.pyx":370
  *         cdef double u
  *         cdef npy_intp k
  *         cdef uint32_t coin = self.bitgen.next_uint32(self.bitgen.state) & 1             # <<<<<<<<<<<<<<
@@ -7195,7 +7741,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
  */
   __pyx_v_coin = (__pyx_v_self->__pyx_base.bitgen->next_uint32(__pyx_v_self->__pyx_base.bitgen->state) & 1);
 
-  /* "ppsim/simulator.pyx":335
+  /* "ppsim/simulator.pyx":372
  *         cdef uint32_t coin = self.bitgen.next_uint32(self.bitgen.state) & 1
  *         # swap roles of a, b and swap return order by using indices coin, 1-coin
  *         if coin:             # <<<<<<<<<<<<<<
@@ -7205,7 +7751,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
   __pyx_t_1 = (__pyx_v_coin != 0);
   if (__pyx_t_1) {
 
-    /* "ppsim/simulator.pyx":336
+    /* "ppsim/simulator.pyx":373
  *         # swap roles of a, b and swap return order by using indices coin, 1-coin
  *         if coin:
  *             b, a = a, b             # <<<<<<<<<<<<<<
@@ -7217,7 +7763,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
     __pyx_v_b = __pyx_t_2;
     __pyx_v_a = __pyx_t_3;
 
-    /* "ppsim/simulator.pyx":335
+    /* "ppsim/simulator.pyx":372
  *         cdef uint32_t coin = self.bitgen.next_uint32(self.bitgen.state) & 1
  *         # swap roles of a, b and swap return order by using indices coin, 1-coin
  *         if coin:             # <<<<<<<<<<<<<<
@@ -7226,7 +7772,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
  */
   }
 
-  /* "ppsim/simulator.pyx":337
+  /* "ppsim/simulator.pyx":374
  *         if coin:
  *             b, a = a, b
  *         if self.is_random and self.random_transitions[a, b, 0]:             # <<<<<<<<<<<<<<
@@ -7247,7 +7793,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
   __pyx_L5_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "ppsim/simulator.pyx":339
+    /* "ppsim/simulator.pyx":376
  *         if self.is_random and self.random_transitions[a, b, 0]:
  *             # find the appropriate random output by linear search
  *             k = self.random_transitions[a, b, 1]             # <<<<<<<<<<<<<<
@@ -7259,7 +7805,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
     __pyx_t_5 = 1;
     __pyx_v_k = (*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_7 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_6 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_5 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) )));
 
-    /* "ppsim/simulator.pyx":340
+    /* "ppsim/simulator.pyx":377
  *             # find the appropriate random output by linear search
  *             k = self.random_transitions[a, b, 1]
  *             u = self.bitgen.next_double(self.bitgen.state) - self.transition_probabilities[k]             # <<<<<<<<<<<<<<
@@ -7269,7 +7815,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
     __pyx_t_5 = __pyx_v_k;
     __pyx_v_u = (__pyx_v_self->__pyx_base.bitgen->next_double(__pyx_v_self->__pyx_base.bitgen->state) - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->__pyx_base.transition_probabilities.data) + __pyx_t_5)) ))));
 
-    /* "ppsim/simulator.pyx":341
+    /* "ppsim/simulator.pyx":378
  *             k = self.random_transitions[a, b, 1]
  *             u = self.bitgen.next_double(self.bitgen.state) - self.transition_probabilities[k]
  *             while u > 0:             # <<<<<<<<<<<<<<
@@ -7280,7 +7826,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
       __pyx_t_1 = ((__pyx_v_u > 0.0) != 0);
       if (!__pyx_t_1) break;
 
-      /* "ppsim/simulator.pyx":342
+      /* "ppsim/simulator.pyx":379
  *             u = self.bitgen.next_double(self.bitgen.state) - self.transition_probabilities[k]
  *             while u > 0:
  *                 k += 1             # <<<<<<<<<<<<<<
@@ -7289,7 +7835,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
  */
       __pyx_v_k = (__pyx_v_k + 1);
 
-      /* "ppsim/simulator.pyx":343
+      /* "ppsim/simulator.pyx":380
  *             while u > 0:
  *                 k += 1
  *                 u -= self.transition_probabilities[k]             # <<<<<<<<<<<<<<
@@ -7300,7 +7846,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
       __pyx_v_u = (__pyx_v_u - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->__pyx_base.transition_probabilities.data) + __pyx_t_5)) ))));
     }
 
-    /* "ppsim/simulator.pyx":344
+    /* "ppsim/simulator.pyx":381
  *                 k += 1
  *                 u -= self.transition_probabilities[k]
  *             return self.random_outputs[k][coin], self.random_outputs[k][1-coin]             # <<<<<<<<<<<<<<
@@ -7316,7 +7862,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
     __pyx_r = __pyx_t_9;
     goto __pyx_L0;
 
-    /* "ppsim/simulator.pyx":337
+    /* "ppsim/simulator.pyx":374
  *         if coin:
  *             b, a = a, b
  *         if self.is_random and self.random_transitions[a, b, 0]:             # <<<<<<<<<<<<<<
@@ -7325,7 +7871,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
  */
   }
 
-  /* "ppsim/simulator.pyx":346
+  /* "ppsim/simulator.pyx":383
  *             return self.random_outputs[k][coin], self.random_outputs[k][1-coin]
  *         else:
  *             return self.delta[a, b, coin], self.delta[a, b, 1-coin]             # <<<<<<<<<<<<<<
@@ -7345,7 +7891,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
     goto __pyx_L0;
   }
 
-  /* "ppsim/simulator.pyx":329
+  /* "ppsim/simulator.pyx":366
  *                 self.multibatch_step()
  * 
  *     cdef (npy_intp, npy_intp) unordered_delta(self, npy_intp a, npy_intp b):             # <<<<<<<<<<<<<<
@@ -7359,7 +7905,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":348
+/* "ppsim/simulator.pyx":385
  *             return self.delta[a, b, coin], self.delta[a, b, 1-coin]
  * 
  *     def get_enabled_reactions(self):             # <<<<<<<<<<<<<<
@@ -7395,7 +7941,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_10get_enabled_
   int __pyx_t_8;
   __Pyx_RefNannySetupContext("get_enabled_reactions", 0);
 
-  /* "ppsim/simulator.pyx":351
+  /* "ppsim/simulator.pyx":388
  *         """Updates self.enabled_reactions and self.num_enabled_reactions."""
  *         cdef npy_intp i
  *         self.num_enabled_reactions = 0             # <<<<<<<<<<<<<<
@@ -7404,7 +7950,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_10get_enabled_
  */
   __pyx_v_self->num_enabled_reactions = 0;
 
-  /* "ppsim/simulator.pyx":352
+  /* "ppsim/simulator.pyx":389
  *         cdef npy_intp i
  *         self.num_enabled_reactions = 0
  *         for i in range(len(self.reactions)):             # <<<<<<<<<<<<<<
@@ -7416,7 +7962,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_10get_enabled_
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "ppsim/simulator.pyx":353
+    /* "ppsim/simulator.pyx":390
  *         self.num_enabled_reactions = 0
  *         for i in range(len(self.reactions)):
  *             if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:             # <<<<<<<<<<<<<<
@@ -7440,7 +7986,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_10get_enabled_
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "ppsim/simulator.pyx":354
+      /* "ppsim/simulator.pyx":391
  *         for i in range(len(self.reactions)):
  *             if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:
  *                 self.enabled_reactions[self.num_enabled_reactions] = i             # <<<<<<<<<<<<<<
@@ -7450,16 +7996,16 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_10get_enabled_
       __pyx_t_5 = __pyx_v_self->num_enabled_reactions;
       *((npy_intp *) ( /* dim=0 */ (__pyx_v_self->enabled_reactions.data + __pyx_t_5 * __pyx_v_self->enabled_reactions.strides[0]) )) = __pyx_v_i;
 
-      /* "ppsim/simulator.pyx":355
+      /* "ppsim/simulator.pyx":392
  *             if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:
  *                 self.enabled_reactions[self.num_enabled_reactions] = i
  *                 self.num_enabled_reactions += 1             # <<<<<<<<<<<<<<
  * 
- *     def gillespie_step(self):
+ *     def gillespie_step(self, int64_t t_max = 0):
  */
       __pyx_v_self->num_enabled_reactions = (__pyx_v_self->num_enabled_reactions + 1);
 
-      /* "ppsim/simulator.pyx":353
+      /* "ppsim/simulator.pyx":390
  *         self.num_enabled_reactions = 0
  *         for i in range(len(self.reactions)):
  *             if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:             # <<<<<<<<<<<<<<
@@ -7469,7 +8015,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_10get_enabled_
     }
   }
 
-  /* "ppsim/simulator.pyx":348
+  /* "ppsim/simulator.pyx":385
  *             return self.delta[a, b, coin], self.delta[a, b, 1-coin]
  * 
  *     def get_enabled_reactions(self):             # <<<<<<<<<<<<<<
@@ -7484,29 +8030,78 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_10get_enabled_
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":357
+/* "ppsim/simulator.pyx":394
  *                 self.num_enabled_reactions += 1
  * 
- *     def gillespie_step(self):             # <<<<<<<<<<<<<<
- *         """Samples the time until the next non-null interaction and updates."""
- *         cdef npy_intp i, j
+ *     def gillespie_step(self, int64_t t_max = 0):             # <<<<<<<<<<<<<<
+ *         """Samples the time until the next non-null interaction and updates.
+ * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_13gillespie_step(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_step[] = "Samples the time until the next non-null interaction and updates.";
-static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_13gillespie_step(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_13gillespie_step(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_step[] = "Samples the time until the next non-null interaction and updates.\n\n        Args:\n            t_max: Defaults to 0.\n                If positive, the maximum value of self.t that will be reached.\n                If the sampled time is greater than t_max, then it will instead\n                be set to t_max and no reaction will be performed.\n                (Because of the memoryless property of the geometric, this gives a\n                faithful simulation up to step t_max).\n        ";
+static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_13gillespie_step(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int64_t __pyx_v_t_max;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("gillespie_step (wrapper)", 0);
-  __pyx_r = __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_step(((struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self));
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_t_max,0};
+    PyObject* values[1] = {0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_t_max);
+          if (value) { values[0] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "gillespie_step") < 0)) __PYX_ERR(0, 394, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    if (values[0]) {
+      __pyx_v_t_max = __Pyx_PyInt_As_int64_t(values[0]); if (unlikely((__pyx_v_t_max == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 394, __pyx_L3_error)
+    } else {
+      __pyx_v_t_max = ((int64_t)0);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("gillespie_step", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 394, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("ppsim.simulator.SimulatorMultiBatch.gillespie_step", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_step(((struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self), __pyx_v_t_max);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_step(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self) {
+static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_step(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, int64_t __pyx_v_t_max) {
   npy_intp __pyx_v_i;
   npy_intp __pyx_v_j;
   int64_t __pyx_v_a;
@@ -7516,6 +8111,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
   double __pyx_v_success_probability;
   double __pyx_v_x;
   int __pyx_v_enabled_reactions_changed;
+  CYTHON_UNUSED int64_t __pyx_v_new_t;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   npy_intp __pyx_t_1;
@@ -7528,8 +8124,8 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
   int64_t __pyx_t_8;
   Py_ssize_t __pyx_t_9;
   int __pyx_t_10;
-  __Pyx_memviewslice __pyx_t_11 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  int __pyx_t_12;
+  int __pyx_t_11;
+  __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
   struct __pyx_opt_args_5ppsim_9simulator_3Urn_add_to_entry __pyx_t_13;
   PyObject *__pyx_t_14 = NULL;
   PyObject *__pyx_t_15 = NULL;
@@ -7539,7 +8135,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("gillespie_step", 0);
 
-  /* "ppsim/simulator.pyx":362
+  /* "ppsim/simulator.pyx":408
  *         cdef int64_t a, b
  *         cdef npy_intp [:] r
  *         cdef double total_propensity = 0             # <<<<<<<<<<<<<<
@@ -7548,7 +8144,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
  */
   __pyx_v_total_propensity = 0.0;
 
-  /* "ppsim/simulator.pyx":364
+  /* "ppsim/simulator.pyx":410
  *         cdef double total_propensity = 0
  *         cdef double success_probability, x
  *         cdef bint enabled_reactions_changed = False             # <<<<<<<<<<<<<<
@@ -7557,7 +8153,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
  */
   __pyx_v_enabled_reactions_changed = 0;
 
-  /* "ppsim/simulator.pyx":365
+  /* "ppsim/simulator.pyx":411
  *         cdef double success_probability, x
  *         cdef bint enabled_reactions_changed = False
  *         for j in range(self.num_enabled_reactions):             # <<<<<<<<<<<<<<
@@ -7569,7 +8165,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_j = __pyx_t_3;
 
-    /* "ppsim/simulator.pyx":366
+    /* "ppsim/simulator.pyx":412
  *         cdef bint enabled_reactions_changed = False
  *         for j in range(self.num_enabled_reactions):
  *             i = self.enabled_reactions[j]             # <<<<<<<<<<<<<<
@@ -7579,7 +8175,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
     __pyx_t_4 = __pyx_v_j;
     __pyx_v_i = (*((npy_intp *) ( /* dim=0 */ (__pyx_v_self->enabled_reactions.data + __pyx_t_4 * __pyx_v_self->enabled_reactions.strides[0]) )));
 
-    /* "ppsim/simulator.pyx":367
+    /* "ppsim/simulator.pyx":413
  *         for j in range(self.num_enabled_reactions):
  *             i = self.enabled_reactions[j]
  *             a, b = self.config[self.reactions[i][0]], self.config[self.reactions[i][1]]             # <<<<<<<<<<<<<<
@@ -7597,7 +8193,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
     __pyx_v_a = __pyx_t_7;
     __pyx_v_b = __pyx_t_8;
 
-    /* "ppsim/simulator.pyx":368
+    /* "ppsim/simulator.pyx":414
  *             i = self.enabled_reactions[j]
  *             a, b = self.config[self.reactions[i][0]], self.config[self.reactions[i][1]]
  *             if self.reactions[i][0] == self.reactions[i][1]:             # <<<<<<<<<<<<<<
@@ -7611,7 +8207,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
     __pyx_t_10 = (((*((npy_intp *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->reactions.data + __pyx_t_4 * __pyx_v_self->reactions.strides[0]) ) + __pyx_t_5 * __pyx_v_self->reactions.strides[1]) ))) == (*((npy_intp *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->reactions.data + __pyx_t_6 * __pyx_v_self->reactions.strides[0]) ) + __pyx_t_9 * __pyx_v_self->reactions.strides[1]) )))) != 0);
     if (__pyx_t_10) {
 
-      /* "ppsim/simulator.pyx":369
+      /* "ppsim/simulator.pyx":415
  *             a, b = self.config[self.reactions[i][0]], self.config[self.reactions[i][1]]
  *             if self.reactions[i][0] == self.reactions[i][1]:
  *                 self.propensities[i] = (a * (a-1) / 2) * self.reaction_probabilities[i]             # <<<<<<<<<<<<<<
@@ -7622,7 +8218,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
       __pyx_t_6 = __pyx_v_i;
       *((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->propensities.data) + __pyx_t_6)) )) = (((__pyx_v_a * (__pyx_v_a - 1)) / 2) * (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->reaction_probabilities.data) + __pyx_t_9)) ))));
 
-      /* "ppsim/simulator.pyx":368
+      /* "ppsim/simulator.pyx":414
  *             i = self.enabled_reactions[j]
  *             a, b = self.config[self.reactions[i][0]], self.config[self.reactions[i][1]]
  *             if self.reactions[i][0] == self.reactions[i][1]:             # <<<<<<<<<<<<<<
@@ -7632,7 +8228,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
       goto __pyx_L5;
     }
 
-    /* "ppsim/simulator.pyx":371
+    /* "ppsim/simulator.pyx":417
  *                 self.propensities[i] = (a * (a-1) / 2) * self.reaction_probabilities[i]
  *             else:
  *                 self.propensities[i] = a * b * self.reaction_probabilities[i]             # <<<<<<<<<<<<<<
@@ -7646,7 +8242,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
     }
     __pyx_L5:;
 
-    /* "ppsim/simulator.pyx":372
+    /* "ppsim/simulator.pyx":418
  *             else:
  *                 self.propensities[i] = a * b * self.reaction_probabilities[i]
  *             total_propensity += self.propensities[i]             # <<<<<<<<<<<<<<
@@ -7657,7 +8253,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
     __pyx_v_total_propensity = (__pyx_v_total_propensity + (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->propensities.data) + __pyx_t_9)) ))));
   }
 
-  /* "ppsim/simulator.pyx":373
+  /* "ppsim/simulator.pyx":419
  *                 self.propensities[i] = a * b * self.reaction_probabilities[i]
  *             total_propensity += self.propensities[i]
  *         if total_propensity == 0:             # <<<<<<<<<<<<<<
@@ -7667,7 +8263,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
   __pyx_t_10 = ((__pyx_v_total_propensity == 0.0) != 0);
   if (__pyx_t_10) {
 
-    /* "ppsim/simulator.pyx":374
+    /* "ppsim/simulator.pyx":420
  *             total_propensity += self.propensities[i]
  *         if total_propensity == 0:
  *             self.silent = True             # <<<<<<<<<<<<<<
@@ -7676,7 +8272,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
  */
     __pyx_v_self->silent = 1;
 
-    /* "ppsim/simulator.pyx":375
+    /* "ppsim/simulator.pyx":421
  *         if total_propensity == 0:
  *             self.silent = True
  *             return             # <<<<<<<<<<<<<<
@@ -7687,7 +8283,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "ppsim/simulator.pyx":373
+    /* "ppsim/simulator.pyx":419
  *                 self.propensities[i] = a * b * self.reaction_probabilities[i]
  *             total_propensity += self.propensities[i]
  *         if total_propensity == 0:             # <<<<<<<<<<<<<<
@@ -7696,7 +8292,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
  */
   }
 
-  /* "ppsim/simulator.pyx":376
+  /* "ppsim/simulator.pyx":422
  *             self.silent = True
  *             return
  *         success_probability = total_propensity / (self.n * (self.n -1) / 2)             # <<<<<<<<<<<<<<
@@ -7705,7 +8301,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
  */
   __pyx_v_success_probability = (__pyx_v_total_propensity / ((double)((__pyx_v_self->__pyx_base.n * (__pyx_v_self->__pyx_base.n - 1)) / 2)));
 
-  /* "ppsim/simulator.pyx":377
+  /* "ppsim/simulator.pyx":423
  *             return
  *         success_probability = total_propensity / (self.n * (self.n -1) / 2)
  *         if success_probability > self.gillespie_threshold:             # <<<<<<<<<<<<<<
@@ -7715,16 +8311,16 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
   __pyx_t_10 = ((__pyx_v_success_probability > __pyx_v_self->gillespie_threshold) != 0);
   if (__pyx_t_10) {
 
-    /* "ppsim/simulator.pyx":378
+    /* "ppsim/simulator.pyx":424
  *         success_probability = total_propensity / (self.n * (self.n -1) / 2)
  *         if success_probability > self.gillespie_threshold:
  *             self.do_gillespie = False             # <<<<<<<<<<<<<<
  *         # add a geometric number of steps, based on success probability
- *         self.t += random_geometric(self.bitgen, success_probability)
+ *         new_t = self.t + random_geometric(self.bitgen, success_probability)
  */
     __pyx_v_self->do_gillespie = 0;
 
-    /* "ppsim/simulator.pyx":377
+    /* "ppsim/simulator.pyx":423
  *             return
  *         success_probability = total_propensity / (self.n * (self.n -1) / 2)
  *         if success_probability > self.gillespie_threshold:             # <<<<<<<<<<<<<<
@@ -7733,17 +8329,69 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
  */
   }
 
-  /* "ppsim/simulator.pyx":380
+  /* "ppsim/simulator.pyx":426
  *             self.do_gillespie = False
  *         # add a geometric number of steps, based on success probability
+ *         new_t = self.t + random_geometric(self.bitgen, success_probability)             # <<<<<<<<<<<<<<
+ *         self.t += random_geometric(self.bitgen, success_probability)
+ *         # if t_max was exceeded, stop at step t_max without performing a reaction
+ */
+  __pyx_v_new_t = (__pyx_v_self->__pyx_base.t + random_geometric(__pyx_v_self->__pyx_base.bitgen, __pyx_v_success_probability));
+
+  /* "ppsim/simulator.pyx":427
+ *         # add a geometric number of steps, based on success probability
+ *         new_t = self.t + random_geometric(self.bitgen, success_probability)
  *         self.t += random_geometric(self.bitgen, success_probability)             # <<<<<<<<<<<<<<
- *         # sample the successful reaction r, currently just using linear search
- *         x = self.bitgen.next_double(self.bitgen.state) * total_propensity
+ *         # if t_max was exceeded, stop at step t_max without performing a reaction
+ *         if self.t > t_max > 0:
  */
   __pyx_v_self->__pyx_base.t = (__pyx_v_self->__pyx_base.t + random_geometric(__pyx_v_self->__pyx_base.bitgen, __pyx_v_success_probability));
 
-  /* "ppsim/simulator.pyx":382
+  /* "ppsim/simulator.pyx":429
  *         self.t += random_geometric(self.bitgen, success_probability)
+ *         # if t_max was exceeded, stop at step t_max without performing a reaction
+ *         if self.t > t_max > 0:             # <<<<<<<<<<<<<<
+ *             self.t = t_max
+ *             return
+ */
+  __pyx_t_10 = (__pyx_v_self->__pyx_base.t > __pyx_v_t_max);
+  if (__pyx_t_10) {
+    __pyx_t_10 = (__pyx_v_t_max > 0);
+  }
+  __pyx_t_11 = (__pyx_t_10 != 0);
+  if (__pyx_t_11) {
+
+    /* "ppsim/simulator.pyx":430
+ *         # if t_max was exceeded, stop at step t_max without performing a reaction
+ *         if self.t > t_max > 0:
+ *             self.t = t_max             # <<<<<<<<<<<<<<
+ *             return
+ *         # sample the successful reaction r, currently just using linear search
+ */
+    __pyx_v_self->__pyx_base.t = __pyx_v_t_max;
+
+    /* "ppsim/simulator.pyx":431
+ *         if self.t > t_max > 0:
+ *             self.t = t_max
+ *             return             # <<<<<<<<<<<<<<
+ *         # sample the successful reaction r, currently just using linear search
+ *         x = self.bitgen.next_double(self.bitgen.state) * total_propensity
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+    goto __pyx_L0;
+
+    /* "ppsim/simulator.pyx":429
+ *         self.t += random_geometric(self.bitgen, success_probability)
+ *         # if t_max was exceeded, stop at step t_max without performing a reaction
+ *         if self.t > t_max > 0:             # <<<<<<<<<<<<<<
+ *             self.t = t_max
+ *             return
+ */
+  }
+
+  /* "ppsim/simulator.pyx":433
+ *             return
  *         # sample the successful reaction r, currently just using linear search
  *         x = self.bitgen.next_double(self.bitgen.state) * total_propensity             # <<<<<<<<<<<<<<
  *         i = 0
@@ -7751,7 +8399,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
  */
   __pyx_v_x = (__pyx_v_self->__pyx_base.bitgen->next_double(__pyx_v_self->__pyx_base.bitgen->state) * __pyx_v_total_propensity);
 
-  /* "ppsim/simulator.pyx":383
+  /* "ppsim/simulator.pyx":434
  *         # sample the successful reaction r, currently just using linear search
  *         x = self.bitgen.next_double(self.bitgen.state) * total_propensity
  *         i = 0             # <<<<<<<<<<<<<<
@@ -7760,7 +8408,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
  */
   __pyx_v_i = 0;
 
-  /* "ppsim/simulator.pyx":384
+  /* "ppsim/simulator.pyx":435
  *         x = self.bitgen.next_double(self.bitgen.state) * total_propensity
  *         i = 0
  *         while x > 0:             # <<<<<<<<<<<<<<
@@ -7768,10 +8416,10 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
  *             i += 1
  */
   while (1) {
-    __pyx_t_10 = ((__pyx_v_x > 0.0) != 0);
-    if (!__pyx_t_10) break;
+    __pyx_t_11 = ((__pyx_v_x > 0.0) != 0);
+    if (!__pyx_t_11) break;
 
-    /* "ppsim/simulator.pyx":385
+    /* "ppsim/simulator.pyx":436
  *         i = 0
  *         while x > 0:
  *             x -= self.propensities[self.enabled_reactions[i]]             # <<<<<<<<<<<<<<
@@ -7782,7 +8430,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
     __pyx_t_6 = (*((npy_intp *) ( /* dim=0 */ (__pyx_v_self->enabled_reactions.data + __pyx_t_9 * __pyx_v_self->enabled_reactions.strides[0]) )));
     __pyx_v_x = (__pyx_v_x - (*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->propensities.data) + __pyx_t_6)) ))));
 
-    /* "ppsim/simulator.pyx":386
+    /* "ppsim/simulator.pyx":437
  *         while x > 0:
  *             x -= self.propensities[self.enabled_reactions[i]]
  *             i += 1             # <<<<<<<<<<<<<<
@@ -7792,7 +8440,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
     __pyx_v_i = (__pyx_v_i + 1);
   }
 
-  /* "ppsim/simulator.pyx":387
+  /* "ppsim/simulator.pyx":438
  *             x -= self.propensities[self.enabled_reactions[i]]
  *             i += 1
  *         r = self.reactions[self.enabled_reactions[i - 1]]             # <<<<<<<<<<<<<<
@@ -7800,24 +8448,24 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_st
  *         # if any products were not already present, will updated enabled_reactions
  */
   __pyx_t_9 = (__pyx_v_i - 1);
-  __pyx_t_11.data = __pyx_v_self->reactions.data;
-  __pyx_t_11.memview = __pyx_v_self->reactions.memview;
-  __PYX_INC_MEMVIEW(&__pyx_t_11, 0);
+  __pyx_t_12.data = __pyx_v_self->reactions.data;
+  __pyx_t_12.memview = __pyx_v_self->reactions.memview;
+  __PYX_INC_MEMVIEW(&__pyx_t_12, 0);
   {
     Py_ssize_t __pyx_tmp_idx = (*((npy_intp *) ( /* dim=0 */ (__pyx_v_self->enabled_reactions.data + __pyx_t_9 * __pyx_v_self->enabled_reactions.strides[0]) )));
     Py_ssize_t __pyx_tmp_stride = __pyx_v_self->reactions.strides[0];
-        __pyx_t_11.data += __pyx_tmp_idx * __pyx_tmp_stride;
+        __pyx_t_12.data += __pyx_tmp_idx * __pyx_tmp_stride;
 }
 
-__pyx_t_11.shape[0] = __pyx_v_self->reactions.shape[1];
-__pyx_t_11.strides[0] = __pyx_v_self->reactions.strides[1];
-    __pyx_t_11.suboffsets[0] = -1;
+__pyx_t_12.shape[0] = __pyx_v_self->reactions.shape[1];
+__pyx_t_12.strides[0] = __pyx_v_self->reactions.strides[1];
+    __pyx_t_12.suboffsets[0] = -1;
 
-__pyx_v_r = __pyx_t_11;
-  __pyx_t_11.memview = NULL;
-  __pyx_t_11.data = NULL;
+__pyx_v_r = __pyx_t_12;
+  __pyx_t_12.memview = NULL;
+  __pyx_t_12.data = NULL;
 
-  /* "ppsim/simulator.pyx":390
+  /* "ppsim/simulator.pyx":441
  *         # updated with the successful reaction r
  *         # if any products were not already present, will updated enabled_reactions
  *         if self.config[r[2]] == 0 or self.config[r[3]] == 0:             # <<<<<<<<<<<<<<
@@ -7826,20 +8474,20 @@ __pyx_v_r = __pyx_t_11;
  */
   __pyx_t_9 = 2;
   __pyx_t_6 = (*((npy_intp *) ( /* dim=0 */ (__pyx_v_r.data + __pyx_t_9 * __pyx_v_r.strides[0]) )));
-  __pyx_t_12 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_6)) ))) == 0) != 0);
-  if (!__pyx_t_12) {
+  __pyx_t_10 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_6)) ))) == 0) != 0);
+  if (!__pyx_t_10) {
   } else {
-    __pyx_t_10 = __pyx_t_12;
-    goto __pyx_L11_bool_binop_done;
+    __pyx_t_11 = __pyx_t_10;
+    goto __pyx_L12_bool_binop_done;
   }
   __pyx_t_9 = 3;
   __pyx_t_6 = (*((npy_intp *) ( /* dim=0 */ (__pyx_v_r.data + __pyx_t_9 * __pyx_v_r.strides[0]) )));
-  __pyx_t_12 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_6)) ))) == 0) != 0);
-  __pyx_t_10 = __pyx_t_12;
-  __pyx_L11_bool_binop_done:;
-  if (__pyx_t_10) {
+  __pyx_t_10 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_6)) ))) == 0) != 0);
+  __pyx_t_11 = __pyx_t_10;
+  __pyx_L12_bool_binop_done:;
+  if (__pyx_t_11) {
 
-    /* "ppsim/simulator.pyx":391
+    /* "ppsim/simulator.pyx":442
  *         # if any products were not already present, will updated enabled_reactions
  *         if self.config[r[2]] == 0 or self.config[r[3]] == 0:
  *             enabled_reactions_changed = True             # <<<<<<<<<<<<<<
@@ -7848,7 +8496,7 @@ __pyx_v_r = __pyx_t_11;
  */
     __pyx_v_enabled_reactions_changed = 1;
 
-    /* "ppsim/simulator.pyx":390
+    /* "ppsim/simulator.pyx":441
  *         # updated with the successful reaction r
  *         # if any products were not already present, will updated enabled_reactions
  *         if self.config[r[2]] == 0 or self.config[r[3]] == 0:             # <<<<<<<<<<<<<<
@@ -7857,7 +8505,7 @@ __pyx_v_r = __pyx_t_11;
  */
   }
 
-  /* "ppsim/simulator.pyx":393
+  /* "ppsim/simulator.pyx":444
  *             enabled_reactions_changed = True
  *         ## this is a bit wasteful, but want to make sure the urn data structure stays intact
  *         self.urn.add_to_entry(r[0], -1)             # <<<<<<<<<<<<<<
@@ -7869,7 +8517,7 @@ __pyx_v_r = __pyx_t_11;
   __pyx_t_13.amount = -1L;
   ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->add_to_entry(__pyx_v_self->urn, (*((npy_intp *) ( /* dim=0 */ (__pyx_v_r.data + __pyx_t_9 * __pyx_v_r.strides[0]) ))), &__pyx_t_13); 
 
-  /* "ppsim/simulator.pyx":394
+  /* "ppsim/simulator.pyx":445
  *         ## this is a bit wasteful, but want to make sure the urn data structure stays intact
  *         self.urn.add_to_entry(r[0], -1)
  *         self.urn.add_to_entry(r[1], -1)             # <<<<<<<<<<<<<<
@@ -7881,7 +8529,7 @@ __pyx_v_r = __pyx_t_11;
   __pyx_t_13.amount = -1L;
   ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->add_to_entry(__pyx_v_self->urn, (*((npy_intp *) ( /* dim=0 */ (__pyx_v_r.data + __pyx_t_9 * __pyx_v_r.strides[0]) ))), &__pyx_t_13); 
 
-  /* "ppsim/simulator.pyx":395
+  /* "ppsim/simulator.pyx":446
  *         self.urn.add_to_entry(r[0], -1)
  *         self.urn.add_to_entry(r[1], -1)
  *         self.urn.add_to_entry(r[2], 1)             # <<<<<<<<<<<<<<
@@ -7893,7 +8541,7 @@ __pyx_v_r = __pyx_t_11;
   __pyx_t_13.amount = 1;
   ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->add_to_entry(__pyx_v_self->urn, (*((npy_intp *) ( /* dim=0 */ (__pyx_v_r.data + __pyx_t_9 * __pyx_v_r.strides[0]) ))), &__pyx_t_13); 
 
-  /* "ppsim/simulator.pyx":396
+  /* "ppsim/simulator.pyx":447
  *         self.urn.add_to_entry(r[1], -1)
  *         self.urn.add_to_entry(r[2], 1)
  *         self.urn.add_to_entry(r[3], 1)             # <<<<<<<<<<<<<<
@@ -7905,42 +8553,42 @@ __pyx_v_r = __pyx_t_11;
   __pyx_t_13.amount = 1;
   ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->add_to_entry(__pyx_v_self->urn, (*((npy_intp *) ( /* dim=0 */ (__pyx_v_r.data + __pyx_t_9 * __pyx_v_r.strides[0]) ))), &__pyx_t_13); 
 
-  /* "ppsim/simulator.pyx":398
+  /* "ppsim/simulator.pyx":449
  *         self.urn.add_to_entry(r[3], 1)
  *         # if any reactants are now absent, will updated enabled_reactions
  *         if enabled_reactions_changed or self.config[r[0]] == 0 or self.config[r[1]] == 0:             # <<<<<<<<<<<<<<
  *             self.get_enabled_reactions()
  * 
  */
-  __pyx_t_12 = (__pyx_v_enabled_reactions_changed != 0);
-  if (!__pyx_t_12) {
+  __pyx_t_10 = (__pyx_v_enabled_reactions_changed != 0);
+  if (!__pyx_t_10) {
   } else {
-    __pyx_t_10 = __pyx_t_12;
-    goto __pyx_L14_bool_binop_done;
+    __pyx_t_11 = __pyx_t_10;
+    goto __pyx_L15_bool_binop_done;
   }
   __pyx_t_9 = 0;
   __pyx_t_6 = (*((npy_intp *) ( /* dim=0 */ (__pyx_v_r.data + __pyx_t_9 * __pyx_v_r.strides[0]) )));
-  __pyx_t_12 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_6)) ))) == 0) != 0);
-  if (!__pyx_t_12) {
+  __pyx_t_10 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_6)) ))) == 0) != 0);
+  if (!__pyx_t_10) {
   } else {
-    __pyx_t_10 = __pyx_t_12;
-    goto __pyx_L14_bool_binop_done;
+    __pyx_t_11 = __pyx_t_10;
+    goto __pyx_L15_bool_binop_done;
   }
   __pyx_t_9 = 1;
   __pyx_t_6 = (*((npy_intp *) ( /* dim=0 */ (__pyx_v_r.data + __pyx_t_9 * __pyx_v_r.strides[0]) )));
-  __pyx_t_12 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_6)) ))) == 0) != 0);
-  __pyx_t_10 = __pyx_t_12;
-  __pyx_L14_bool_binop_done:;
-  if (__pyx_t_10) {
+  __pyx_t_10 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_6)) ))) == 0) != 0);
+  __pyx_t_11 = __pyx_t_10;
+  __pyx_L15_bool_binop_done:;
+  if (__pyx_t_11) {
 
-    /* "ppsim/simulator.pyx":399
+    /* "ppsim/simulator.pyx":450
  *         # if any reactants are now absent, will updated enabled_reactions
  *         if enabled_reactions_changed or self.config[r[0]] == 0 or self.config[r[1]] == 0:
  *             self.get_enabled_reactions()             # <<<<<<<<<<<<<<
  * 
- *     def multibatch_step(self):
+ *     def multibatch_step(self, int64_t t_max = 0):
  */
-    __pyx_t_15 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_enabled_reactions); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 399, __pyx_L1_error)
+    __pyx_t_15 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_enabled_reactions); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 450, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
     __pyx_t_16 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_15))) {
@@ -7954,12 +8602,12 @@ __pyx_v_r = __pyx_t_11;
     }
     __pyx_t_14 = (__pyx_t_16) ? __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_16) : __Pyx_PyObject_CallNoArg(__pyx_t_15);
     __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
-    if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 399, __pyx_L1_error)
+    if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 450, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-    /* "ppsim/simulator.pyx":398
+    /* "ppsim/simulator.pyx":449
  *         self.urn.add_to_entry(r[3], 1)
  *         # if any reactants are now absent, will updated enabled_reactions
  *         if enabled_reactions_changed or self.config[r[0]] == 0 or self.config[r[1]] == 0:             # <<<<<<<<<<<<<<
@@ -7968,19 +8616,19 @@ __pyx_v_r = __pyx_t_11;
  */
   }
 
-  /* "ppsim/simulator.pyx":357
+  /* "ppsim/simulator.pyx":394
  *                 self.num_enabled_reactions += 1
  * 
- *     def gillespie_step(self):             # <<<<<<<<<<<<<<
- *         """Samples the time until the next non-null interaction and updates."""
- *         cdef npy_intp i, j
+ *     def gillespie_step(self, int64_t t_max = 0):             # <<<<<<<<<<<<<<
+ *         """Samples the time until the next non-null interaction and updates.
+ * 
  */
 
   /* function exit code */
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
   __pyx_L1_error:;
-  __PYX_XDEC_MEMVIEW(&__pyx_t_11, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
   __Pyx_XDECREF(__pyx_t_14);
   __Pyx_XDECREF(__pyx_t_15);
   __Pyx_XDECREF(__pyx_t_16);
@@ -7993,29 +8641,78 @@ __pyx_v_r = __pyx_t_11;
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":401
+/* "ppsim/simulator.pyx":452
  *             self.get_enabled_reactions()
  * 
- *     def multibatch_step(self):             # <<<<<<<<<<<<<<
+ *     def multibatch_step(self, int64_t t_max = 0):             # <<<<<<<<<<<<<<
  *         """Sample collisions to build a batch, then update the entire batch in parallel.
  * 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_15multibatch_step(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_15multibatch_step(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static char __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_step[] = "Sample collisions to build a batch, then update the entire batch in parallel.\n\n        See the paper for a more detailed explanation of the algorithm.\n        ";
-static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_15multibatch_step(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_15multibatch_step(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  int64_t __pyx_v_t_max;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("multibatch_step (wrapper)", 0);
-  __pyx_r = __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_step(((struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self));
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_t_max,0};
+    PyObject* values[1] = {0};
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_t_max);
+          if (value) { values[0] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "multibatch_step") < 0)) __PYX_ERR(0, 452, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    if (values[0]) {
+      __pyx_v_t_max = __Pyx_PyInt_As_int64_t(values[0]); if (unlikely((__pyx_v_t_max == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 452, __pyx_L3_error)
+    } else {
+      __pyx_v_t_max = ((int64_t)0);
+    }
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("multibatch_step", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 452, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("ppsim.simulator.SimulatorMultiBatch.multibatch_step", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_step(((struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self), __pyx_v_t_max);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_step(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self) {
+static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_step(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self, int64_t __pyx_v_t_max) {
   int64_t __pyx_v_num_delayed;
   int64_t __pyx_v_l;
   double __pyx_v_t1;
@@ -8023,6 +8720,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
   double __pyx_v_t3;
   double __pyx_v_u;
   CYTHON_UNUSED double __pyx_v_r;
+  double __pyx_v_end_step;
   npy_intp __pyx_v_a;
   npy_intp __pyx_v_b;
   npy_intp __pyx_v_c;
@@ -8041,33 +8739,34 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
   double __pyx_t_5;
   int __pyx_t_6;
   int64_t __pyx_t_7;
-  struct __pyx_opt_args_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll __pyx_t_8;
-  __pyx_ctuple_npy_intp__and_npy_intp __pyx_t_9;
-  npy_intp __pyx_t_10;
-  npy_intp __pyx_t_11;
-  struct __pyx_opt_args_5ppsim_9simulator_3Urn_add_to_entry __pyx_t_12;
+  double __pyx_t_8;
+  struct __pyx_opt_args_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll __pyx_t_9;
+  int __pyx_t_10;
+  __pyx_ctuple_npy_intp__and_npy_intp __pyx_t_11;
+  npy_intp __pyx_t_12;
   npy_intp __pyx_t_13;
-  Py_ssize_t __pyx_t_14;
+  struct __pyx_opt_args_5ppsim_9simulator_3Urn_add_to_entry __pyx_t_14;
   npy_intp __pyx_t_15;
-  npy_intp __pyx_t_16;
+  Py_ssize_t __pyx_t_16;
   npy_intp __pyx_t_17;
-  int __pyx_t_18;
-  Py_ssize_t __pyx_t_19;
+  npy_intp __pyx_t_18;
+  npy_intp __pyx_t_19;
   Py_ssize_t __pyx_t_20;
-  npy_intp __pyx_t_21;
+  Py_ssize_t __pyx_t_21;
   npy_intp __pyx_t_22;
   npy_intp __pyx_t_23;
-  Py_ssize_t __pyx_t_24;
+  npy_intp __pyx_t_24;
   Py_ssize_t __pyx_t_25;
-  int64_t __pyx_t_26;
+  Py_ssize_t __pyx_t_26;
   int64_t __pyx_t_27;
-  long __pyx_t_28;
+  int64_t __pyx_t_28;
+  long __pyx_t_29;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("multibatch_step", 0);
 
-  /* "ppsim/simulator.pyx":411
+  /* "ppsim/simulator.pyx":462
  * 
  * 
  *         self.updated_counts.reset()             # <<<<<<<<<<<<<<
@@ -8076,7 +8775,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
   ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->reset(__pyx_v_self->updated_counts);
 
-  /* "ppsim/simulator.pyx":412
+  /* "ppsim/simulator.pyx":463
  * 
  *         self.updated_counts.reset()
  *         self.updated_counts.order = self.urn.order             # <<<<<<<<<<<<<<
@@ -8090,7 +8789,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
   __pyx_t_1.memview = NULL;
   __pyx_t_1.data = NULL;
 
-  /* "ppsim/simulator.pyx":414
+  /* "ppsim/simulator.pyx":465
  *         self.updated_counts.order = self.urn.order
  *         # start with count 2 of delayed agents (guaranteed for the next interaction)
  *         num_delayed = 2             # <<<<<<<<<<<<<<
@@ -8099,16 +8798,16 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
   __pyx_v_num_delayed = 2;
 
-  /* "ppsim/simulator.pyx":416
+  /* "ppsim/simulator.pyx":467
  *         num_delayed = 2
  * 
  *         t1 = time.perf_counter()             # <<<<<<<<<<<<<<
- *         while num_delayed + self.updated_counts.size < self.batch_threshold:
- *             u = self.bitgen.next_double(self.bitgen.state)
+ *         # batch will go for at least batch_threshold interactions, unless passing t_max
+ *         end_step = self.t + self.batch_threshold
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 416, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 467, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 416, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 467, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -8123,56 +8822,141 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
   }
   __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 416, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 467, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_5 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 416, __pyx_L1_error)
+  __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_5 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 467, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_t1 = __pyx_t_5;
 
-  /* "ppsim/simulator.pyx":417
- * 
+  /* "ppsim/simulator.pyx":469
  *         t1 = time.perf_counter()
- *         while num_delayed + self.updated_counts.size < self.batch_threshold:             # <<<<<<<<<<<<<<
+ *         # batch will go for at least batch_threshold interactions, unless passing t_max
+ *         end_step = self.t + self.batch_threshold             # <<<<<<<<<<<<<<
+ *         if t_max > 0:
+ *             end_step = min(end_step, t_max)
+ */
+  __pyx_v_end_step = (__pyx_v_self->__pyx_base.t + __pyx_v_self->batch_threshold);
+
+  /* "ppsim/simulator.pyx":470
+ *         # batch will go for at least batch_threshold interactions, unless passing t_max
+ *         end_step = self.t + self.batch_threshold
+ *         if t_max > 0:             # <<<<<<<<<<<<<<
+ *             end_step = min(end_step, t_max)
+ *         while self.t + num_delayed // 2 < end_step:
+ */
+  __pyx_t_6 = ((__pyx_v_t_max > 0) != 0);
+  if (__pyx_t_6) {
+
+    /* "ppsim/simulator.pyx":471
+ *         end_step = self.t + self.batch_threshold
+ *         if t_max > 0:
+ *             end_step = min(end_step, t_max)             # <<<<<<<<<<<<<<
+ *         while self.t + num_delayed // 2 < end_step:
+ *             u = self.bitgen.next_double(self.bitgen.state)
+ */
+    __pyx_t_7 = __pyx_v_t_max;
+    __pyx_t_5 = __pyx_v_end_step;
+    if (((__pyx_t_7 < __pyx_t_5) != 0)) {
+      __pyx_t_8 = __pyx_t_7;
+    } else {
+      __pyx_t_8 = __pyx_t_5;
+    }
+    __pyx_v_end_step = __pyx_t_8;
+
+    /* "ppsim/simulator.pyx":470
+ *         # batch will go for at least batch_threshold interactions, unless passing t_max
+ *         end_step = self.t + self.batch_threshold
+ *         if t_max > 0:             # <<<<<<<<<<<<<<
+ *             end_step = min(end_step, t_max)
+ *         while self.t + num_delayed // 2 < end_step:
+ */
+  }
+
+  /* "ppsim/simulator.pyx":472
+ *         if t_max > 0:
+ *             end_step = min(end_step, t_max)
+ *         while self.t + num_delayed // 2 < end_step:             # <<<<<<<<<<<<<<
  *             u = self.bitgen.next_double(self.bitgen.state)
  *             l = self.sample_coll(r = num_delayed + self.updated_counts.size,
  */
   while (1) {
-    __pyx_t_6 = (((__pyx_v_num_delayed + __pyx_v_self->updated_counts->size) < __pyx_v_self->batch_threshold) != 0);
+    __pyx_t_6 = (((__pyx_v_self->__pyx_base.t + (__pyx_v_num_delayed / 2)) < __pyx_v_end_step) != 0);
     if (!__pyx_t_6) break;
 
-    /* "ppsim/simulator.pyx":418
- *         t1 = time.perf_counter()
- *         while num_delayed + self.updated_counts.size < self.batch_threshold:
+    /* "ppsim/simulator.pyx":473
+ *             end_step = min(end_step, t_max)
+ *         while self.t + num_delayed // 2 < end_step:
  *             u = self.bitgen.next_double(self.bitgen.state)             # <<<<<<<<<<<<<<
  *             l = self.sample_coll(r = num_delayed + self.updated_counts.size,
  *                                  u = u, has_bounds=True)
  */
     __pyx_v_u = __pyx_v_self->__pyx_base.bitgen->next_double(__pyx_v_self->__pyx_base.bitgen->state);
 
-    /* "ppsim/simulator.pyx":419
- *         while num_delayed + self.updated_counts.size < self.batch_threshold:
+    /* "ppsim/simulator.pyx":474
+ *         while self.t + num_delayed // 2 < end_step:
  *             u = self.bitgen.next_double(self.bitgen.state)
  *             l = self.sample_coll(r = num_delayed + self.updated_counts.size,             # <<<<<<<<<<<<<<
  *                                  u = u, has_bounds=True)
  *             # add (l-1) // 2 pairs of delayed agents, the lth agent a was already picked, so has a collision
  */
-    __pyx_t_8.__pyx_n = 1;
-    __pyx_t_8.has_bounds = 1;
-    __pyx_t_7 = ((struct __pyx_vtabstruct_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self->__pyx_vtab)->sample_coll(__pyx_v_self, (__pyx_v_num_delayed + __pyx_v_self->updated_counts->size), __pyx_v_u, &__pyx_t_8); 
+    __pyx_t_9.__pyx_n = 1;
+    __pyx_t_9.has_bounds = 1;
+    __pyx_t_7 = ((struct __pyx_vtabstruct_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self->__pyx_vtab)->sample_coll(__pyx_v_self, (__pyx_v_num_delayed + __pyx_v_self->updated_counts->size), __pyx_v_u, &__pyx_t_9); 
     __pyx_v_l = __pyx_t_7;
 
-    /* "ppsim/simulator.pyx":422
+    /* "ppsim/simulator.pyx":477
  *                                  u = u, has_bounds=True)
  *             # add (l-1) // 2 pairs of delayed agents, the lth agent a was already picked, so has a collision
  *             num_delayed += 2 * ((l-1) // 2)             # <<<<<<<<<<<<<<
- *             # sample if a was a delayed or an updated agent
- *             u = self.bitgen.next_double(self.bitgen.state)
+ * 
+ *             # If the sampled collision happens after t_max, then include delayed agents up until t_max
  */
     __pyx_v_num_delayed = (__pyx_v_num_delayed + (2 * ((__pyx_v_l - 1) / 2)));
 
-    /* "ppsim/simulator.pyx":424
- *             num_delayed += 2 * ((l-1) // 2)
+    /* "ppsim/simulator.pyx":481
+ *             # If the sampled collision happens after t_max, then include delayed agents up until t_max
+ *             #   and do not perform the collision.
+ *             if self.t + num_delayed // 2 > t_max > 0:             # <<<<<<<<<<<<<<
+ *                 num_delayed = (t_max - self.t) * 2
+ *                 break
+ */
+    __pyx_t_6 = ((__pyx_v_self->__pyx_base.t + (__pyx_v_num_delayed / 2)) > __pyx_v_t_max);
+    if (__pyx_t_6) {
+      __pyx_t_6 = (__pyx_v_t_max > 0);
+    }
+    __pyx_t_10 = (__pyx_t_6 != 0);
+    if (__pyx_t_10) {
+
+      /* "ppsim/simulator.pyx":482
+ *             #   and do not perform the collision.
+ *             if self.t + num_delayed // 2 > t_max > 0:
+ *                 num_delayed = (t_max - self.t) * 2             # <<<<<<<<<<<<<<
+ *                 break
+ * 
+ */
+      __pyx_v_num_delayed = ((__pyx_v_t_max - __pyx_v_self->__pyx_base.t) * 2);
+
+      /* "ppsim/simulator.pyx":483
+ *             if self.t + num_delayed // 2 > t_max > 0:
+ *                 num_delayed = (t_max - self.t) * 2
+ *                 break             # <<<<<<<<<<<<<<
+ * 
+ *             # sample if a was a delayed or an updated agent
+ */
+      goto __pyx_L5_break;
+
+      /* "ppsim/simulator.pyx":481
+ *             # If the sampled collision happens after t_max, then include delayed agents up until t_max
+ *             #   and do not perform the collision.
+ *             if self.t + num_delayed // 2 > t_max > 0:             # <<<<<<<<<<<<<<
+ *                 num_delayed = (t_max - self.t) * 2
+ *                 break
+ */
+    }
+
+    /* "ppsim/simulator.pyx":486
+ * 
  *             # sample if a was a delayed or an updated agent
  *             u = self.bitgen.next_double(self.bitgen.state)             # <<<<<<<<<<<<<<
  *             r = num_delayed / (num_delayed + self.updated_counts.size)
@@ -8180,7 +8964,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
     __pyx_v_u = __pyx_v_self->__pyx_base.bitgen->next_double(__pyx_v_self->__pyx_base.bitgen->state);
 
-    /* "ppsim/simulator.pyx":425
+    /* "ppsim/simulator.pyx":487
  *             # sample if a was a delayed or an updated agent
  *             u = self.bitgen.next_double(self.bitgen.state)
  *             r = num_delayed / (num_delayed + self.updated_counts.size)             # <<<<<<<<<<<<<<
@@ -8189,18 +8973,18 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
     __pyx_v_r = (__pyx_v_num_delayed / (__pyx_v_num_delayed + __pyx_v_self->updated_counts->size));
 
-    /* "ppsim/simulator.pyx":427
+    /* "ppsim/simulator.pyx":489
  *             r = num_delayed / (num_delayed + self.updated_counts.size)
  *             # true with probability num_delayed / (num_delayed + num_updated)
  *             if u * (num_delayed + self.updated_counts.size) <= num_delayed:             # <<<<<<<<<<<<<<
- *                 # if a was delayed, need to first update a to current its current state
+ *                 # if a was delayed, need to first update a with its first interaction before the collision
  *                 # c is the delayed partner that a interacted with, so add this interaction
  */
-    __pyx_t_6 = (((__pyx_v_u * (__pyx_v_num_delayed + __pyx_v_self->updated_counts->size)) <= __pyx_v_num_delayed) != 0);
-    if (__pyx_t_6) {
+    __pyx_t_10 = (((__pyx_v_u * (__pyx_v_num_delayed + __pyx_v_self->updated_counts->size)) <= __pyx_v_num_delayed) != 0);
+    if (__pyx_t_10) {
 
-      /* "ppsim/simulator.pyx":430
- *                 # if a was delayed, need to first update a to current its current state
+      /* "ppsim/simulator.pyx":492
+ *                 # if a was delayed, need to first update a with its first interaction before the collision
  *                 # c is the delayed partner that a interacted with, so add this interaction
  *                 a = self.urn.sample_one()             # <<<<<<<<<<<<<<
  *                 c = self.urn.sample_one()
@@ -8208,7 +8992,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
       __pyx_v_a = ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->sample_one(__pyx_v_self->urn);
 
-      /* "ppsim/simulator.pyx":431
+      /* "ppsim/simulator.pyx":493
  *                 # c is the delayed partner that a interacted with, so add this interaction
  *                 a = self.urn.sample_one()
  *                 c = self.urn.sample_one()             # <<<<<<<<<<<<<<
@@ -8217,20 +9001,20 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
       __pyx_v_c = ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->sample_one(__pyx_v_self->urn);
 
-      /* "ppsim/simulator.pyx":432
+      /* "ppsim/simulator.pyx":494
  *                 a = self.urn.sample_one()
  *                 c = self.urn.sample_one()
  *                 a, c = self.unordered_delta(a,c)             # <<<<<<<<<<<<<<
  *                 self.t += 1
  *                 # c is moved from delayed to updated, a is currently uncounted
  */
-      __pyx_t_9 = ((struct __pyx_vtabstruct_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self->__pyx_vtab)->unordered_delta(__pyx_v_self, __pyx_v_a, __pyx_v_c);
-      __pyx_t_10 = __pyx_t_9.f0;
-      __pyx_t_11 = __pyx_t_9.f1;
-      __pyx_v_a = __pyx_t_10;
-      __pyx_v_c = __pyx_t_11;
+      __pyx_t_11 = ((struct __pyx_vtabstruct_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self->__pyx_vtab)->unordered_delta(__pyx_v_self, __pyx_v_a, __pyx_v_c);
+      __pyx_t_12 = __pyx_t_11.f0;
+      __pyx_t_13 = __pyx_t_11.f1;
+      __pyx_v_a = __pyx_t_12;
+      __pyx_v_c = __pyx_t_13;
 
-      /* "ppsim/simulator.pyx":433
+      /* "ppsim/simulator.pyx":495
  *                 c = self.urn.sample_one()
  *                 a, c = self.unordered_delta(a,c)
  *                 self.t += 1             # <<<<<<<<<<<<<<
@@ -8239,18 +9023,18 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
       __pyx_v_self->__pyx_base.t = (__pyx_v_self->__pyx_base.t + 1);
 
-      /* "ppsim/simulator.pyx":435
+      /* "ppsim/simulator.pyx":497
  *                 self.t += 1
  *                 # c is moved from delayed to updated, a is currently uncounted
  *                 self.updated_counts.add_to_entry(c, 1)             # <<<<<<<<<<<<<<
  *                 num_delayed -= 2
  *             else:
  */
-      __pyx_t_12.__pyx_n = 1;
-      __pyx_t_12.amount = 1;
-      ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, __pyx_v_c, &__pyx_t_12); 
+      __pyx_t_14.__pyx_n = 1;
+      __pyx_t_14.amount = 1;
+      ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, __pyx_v_c, &__pyx_t_14); 
 
-      /* "ppsim/simulator.pyx":436
+      /* "ppsim/simulator.pyx":498
  *                 # c is moved from delayed to updated, a is currently uncounted
  *                 self.updated_counts.add_to_entry(c, 1)
  *                 num_delayed -= 2             # <<<<<<<<<<<<<<
@@ -8259,17 +9043,17 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
       __pyx_v_num_delayed = (__pyx_v_num_delayed - 2);
 
-      /* "ppsim/simulator.pyx":427
+      /* "ppsim/simulator.pyx":489
  *             r = num_delayed / (num_delayed + self.updated_counts.size)
  *             # true with probability num_delayed / (num_delayed + num_updated)
  *             if u * (num_delayed + self.updated_counts.size) <= num_delayed:             # <<<<<<<<<<<<<<
- *                 # if a was delayed, need to first update a to current its current state
+ *                 # if a was delayed, need to first update a with its first interaction before the collision
  *                 # c is the delayed partner that a interacted with, so add this interaction
  */
-      goto __pyx_L5;
+      goto __pyx_L7;
     }
 
-    /* "ppsim/simulator.pyx":439
+    /* "ppsim/simulator.pyx":501
  *             else:
  *                 # if a was updated, we simply sample a and remove it from updated counts
  *                 a = self.updated_counts.sample_one()             # <<<<<<<<<<<<<<
@@ -8279,19 +9063,19 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
     /*else*/ {
       __pyx_v_a = ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->sample_one(__pyx_v_self->updated_counts);
     }
-    __pyx_L5:;
+    __pyx_L7:;
 
-    /* "ppsim/simulator.pyx":441
+    /* "ppsim/simulator.pyx":503
  *                 a = self.updated_counts.sample_one()
  * 
  *             if l % 2 == 0:  # when l is even, the collision must with with a formally untouched agent             # <<<<<<<<<<<<<<
  *                 b = self.urn.sample_one()
  *             else: # when l is odd, the collision is with the next agent, either untouched, delayed, or updated
  */
-    __pyx_t_6 = (((__pyx_v_l % 2) == 0) != 0);
-    if (__pyx_t_6) {
+    __pyx_t_10 = (((__pyx_v_l % 2) == 0) != 0);
+    if (__pyx_t_10) {
 
-      /* "ppsim/simulator.pyx":442
+      /* "ppsim/simulator.pyx":504
  * 
  *             if l % 2 == 0:  # when l is even, the collision must with with a formally untouched agent
  *                 b = self.urn.sample_one()             # <<<<<<<<<<<<<<
@@ -8300,17 +9084,17 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
       __pyx_v_b = ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->sample_one(__pyx_v_self->urn);
 
-      /* "ppsim/simulator.pyx":441
+      /* "ppsim/simulator.pyx":503
  *                 a = self.updated_counts.sample_one()
  * 
  *             if l % 2 == 0:  # when l is even, the collision must with with a formally untouched agent             # <<<<<<<<<<<<<<
  *                 b = self.urn.sample_one()
  *             else: # when l is odd, the collision is with the next agent, either untouched, delayed, or updated
  */
-      goto __pyx_L6;
+      goto __pyx_L8;
     }
 
-    /* "ppsim/simulator.pyx":444
+    /* "ppsim/simulator.pyx":506
  *                 b = self.urn.sample_one()
  *             else: # when l is odd, the collision is with the next agent, either untouched, delayed, or updated
  *                 u = self.bitgen.next_double(self.bitgen.state)             # <<<<<<<<<<<<<<
@@ -8320,17 +9104,17 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
     /*else*/ {
       __pyx_v_u = __pyx_v_self->__pyx_base.bitgen->next_double(__pyx_v_self->__pyx_base.bitgen->state);
 
-      /* "ppsim/simulator.pyx":445
+      /* "ppsim/simulator.pyx":507
  *             else: # when l is odd, the collision is with the next agent, either untouched, delayed, or updated
  *                 u = self.bitgen.next_double(self.bitgen.state)
  *                 if u * (self.n - 1) < self.updated_counts.size:             # <<<<<<<<<<<<<<
  *                     # b is an updated agent, simply remove it
  *                     b = self.updated_counts.sample_one()
  */
-      __pyx_t_6 = (((__pyx_v_u * (__pyx_v_self->__pyx_base.n - 1)) < __pyx_v_self->updated_counts->size) != 0);
-      if (__pyx_t_6) {
+      __pyx_t_10 = (((__pyx_v_u * (__pyx_v_self->__pyx_base.n - 1)) < __pyx_v_self->updated_counts->size) != 0);
+      if (__pyx_t_10) {
 
-        /* "ppsim/simulator.pyx":447
+        /* "ppsim/simulator.pyx":509
  *                 if u * (self.n - 1) < self.updated_counts.size:
  *                     # b is an updated agent, simply remove it
  *                     b = self.updated_counts.sample_one()             # <<<<<<<<<<<<<<
@@ -8339,17 +9123,17 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
         __pyx_v_b = ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->sample_one(__pyx_v_self->updated_counts);
 
-        /* "ppsim/simulator.pyx":445
+        /* "ppsim/simulator.pyx":507
  *             else: # when l is odd, the collision is with the next agent, either untouched, delayed, or updated
  *                 u = self.bitgen.next_double(self.bitgen.state)
  *                 if u * (self.n - 1) < self.updated_counts.size:             # <<<<<<<<<<<<<<
  *                     # b is an updated agent, simply remove it
  *                     b = self.updated_counts.sample_one()
  */
-        goto __pyx_L7;
+        goto __pyx_L9;
       }
 
-      /* "ppsim/simulator.pyx":450
+      /* "ppsim/simulator.pyx":512
  *                 else:
  *                     # we simply remove b from C is b is untouched
  *                     b = self.urn.sample_one()             # <<<<<<<<<<<<<<
@@ -8359,17 +9143,17 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
       /*else*/ {
         __pyx_v_b = ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->sample_one(__pyx_v_self->urn);
 
-        /* "ppsim/simulator.pyx":452
+        /* "ppsim/simulator.pyx":514
  *                     b = self.urn.sample_one()
  *                     # if b was delayed, we have to do the past interaction
  *                     if u * (self.n - 1) < self.updated_counts.size + num_delayed:             # <<<<<<<<<<<<<<
  *                         c = self.urn.sample_one()
  *                         b, c = self.unordered_delta(b,c)
  */
-        __pyx_t_6 = (((__pyx_v_u * (__pyx_v_self->__pyx_base.n - 1)) < (__pyx_v_self->updated_counts->size + __pyx_v_num_delayed)) != 0);
-        if (__pyx_t_6) {
+        __pyx_t_10 = (((__pyx_v_u * (__pyx_v_self->__pyx_base.n - 1)) < (__pyx_v_self->updated_counts->size + __pyx_v_num_delayed)) != 0);
+        if (__pyx_t_10) {
 
-          /* "ppsim/simulator.pyx":453
+          /* "ppsim/simulator.pyx":515
  *                     # if b was delayed, we have to do the past interaction
  *                     if u * (self.n - 1) < self.updated_counts.size + num_delayed:
  *                         c = self.urn.sample_one()             # <<<<<<<<<<<<<<
@@ -8378,20 +9162,20 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
           __pyx_v_c = ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->sample_one(__pyx_v_self->urn);
 
-          /* "ppsim/simulator.pyx":454
+          /* "ppsim/simulator.pyx":516
  *                     if u * (self.n - 1) < self.updated_counts.size + num_delayed:
  *                         c = self.urn.sample_one()
  *                         b, c = self.unordered_delta(b,c)             # <<<<<<<<<<<<<<
  *                         self.t += 1
  *                         self.updated_counts.add_to_entry(c, 1)
  */
-          __pyx_t_9 = ((struct __pyx_vtabstruct_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self->__pyx_vtab)->unordered_delta(__pyx_v_self, __pyx_v_b, __pyx_v_c);
-          __pyx_t_11 = __pyx_t_9.f0;
-          __pyx_t_10 = __pyx_t_9.f1;
-          __pyx_v_b = __pyx_t_11;
-          __pyx_v_c = __pyx_t_10;
+          __pyx_t_11 = ((struct __pyx_vtabstruct_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self->__pyx_vtab)->unordered_delta(__pyx_v_self, __pyx_v_b, __pyx_v_c);
+          __pyx_t_13 = __pyx_t_11.f0;
+          __pyx_t_12 = __pyx_t_11.f1;
+          __pyx_v_b = __pyx_t_13;
+          __pyx_v_c = __pyx_t_12;
 
-          /* "ppsim/simulator.pyx":455
+          /* "ppsim/simulator.pyx":517
  *                         c = self.urn.sample_one()
  *                         b, c = self.unordered_delta(b,c)
  *                         self.t += 1             # <<<<<<<<<<<<<<
@@ -8400,18 +9184,18 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
           __pyx_v_self->__pyx_base.t = (__pyx_v_self->__pyx_base.t + 1);
 
-          /* "ppsim/simulator.pyx":456
+          /* "ppsim/simulator.pyx":518
  *                         b, c = self.unordered_delta(b,c)
  *                         self.t += 1
  *                         self.updated_counts.add_to_entry(c, 1)             # <<<<<<<<<<<<<<
  *                         num_delayed -= 2
  * 
  */
-          __pyx_t_12.__pyx_n = 1;
-          __pyx_t_12.amount = 1;
-          ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, __pyx_v_c, &__pyx_t_12); 
+          __pyx_t_14.__pyx_n = 1;
+          __pyx_t_14.amount = 1;
+          ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, __pyx_v_c, &__pyx_t_14); 
 
-          /* "ppsim/simulator.pyx":457
+          /* "ppsim/simulator.pyx":519
  *                         self.t += 1
  *                         self.updated_counts.add_to_entry(c, 1)
  *                         num_delayed -= 2             # <<<<<<<<<<<<<<
@@ -8420,7 +9204,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
           __pyx_v_num_delayed = (__pyx_v_num_delayed - 2);
 
-          /* "ppsim/simulator.pyx":452
+          /* "ppsim/simulator.pyx":514
  *                     b = self.urn.sample_one()
  *                     # if b was delayed, we have to do the past interaction
  *                     if u * (self.n - 1) < self.updated_counts.size + num_delayed:             # <<<<<<<<<<<<<<
@@ -8429,24 +9213,24 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
         }
       }
-      __pyx_L7:;
+      __pyx_L9:;
     }
-    __pyx_L6:;
+    __pyx_L8:;
 
-    /* "ppsim/simulator.pyx":459
+    /* "ppsim/simulator.pyx":521
  *                         num_delayed -= 2
  * 
  *             a, b = self.unordered_delta(a,b)             # <<<<<<<<<<<<<<
  *             self.t += 1
  *             self.updated_counts.add_to_entry(a, 1)
  */
-    __pyx_t_9 = ((struct __pyx_vtabstruct_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self->__pyx_vtab)->unordered_delta(__pyx_v_self, __pyx_v_a, __pyx_v_b);
-    __pyx_t_10 = __pyx_t_9.f0;
-    __pyx_t_11 = __pyx_t_9.f1;
-    __pyx_v_a = __pyx_t_10;
-    __pyx_v_b = __pyx_t_11;
+    __pyx_t_11 = ((struct __pyx_vtabstruct_5ppsim_9simulator_SimulatorMultiBatch *)__pyx_v_self->__pyx_vtab)->unordered_delta(__pyx_v_self, __pyx_v_a, __pyx_v_b);
+    __pyx_t_12 = __pyx_t_11.f0;
+    __pyx_t_13 = __pyx_t_11.f1;
+    __pyx_v_a = __pyx_t_12;
+    __pyx_v_b = __pyx_t_13;
 
-    /* "ppsim/simulator.pyx":460
+    /* "ppsim/simulator.pyx":522
  * 
  *             a, b = self.unordered_delta(a,b)
  *             self.t += 1             # <<<<<<<<<<<<<<
@@ -8455,39 +9239,40 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
     __pyx_v_self->__pyx_base.t = (__pyx_v_self->__pyx_base.t + 1);
 
-    /* "ppsim/simulator.pyx":461
+    /* "ppsim/simulator.pyx":523
  *             a, b = self.unordered_delta(a,b)
  *             self.t += 1
  *             self.updated_counts.add_to_entry(a, 1)             # <<<<<<<<<<<<<<
  *             self.updated_counts.add_to_entry(b, 1)
  * 
  */
-    __pyx_t_12.__pyx_n = 1;
-    __pyx_t_12.amount = 1;
-    ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, __pyx_v_a, &__pyx_t_12); 
+    __pyx_t_14.__pyx_n = 1;
+    __pyx_t_14.amount = 1;
+    ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, __pyx_v_a, &__pyx_t_14); 
 
-    /* "ppsim/simulator.pyx":462
+    /* "ppsim/simulator.pyx":524
  *             self.t += 1
  *             self.updated_counts.add_to_entry(a, 1)
  *             self.updated_counts.add_to_entry(b, 1)             # <<<<<<<<<<<<<<
  * 
  *         t2 = time.perf_counter()
  */
-    __pyx_t_12.__pyx_n = 1;
-    __pyx_t_12.amount = 1;
-    ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, __pyx_v_b, &__pyx_t_12); 
+    __pyx_t_14.__pyx_n = 1;
+    __pyx_t_14.amount = 1;
+    ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, __pyx_v_b, &__pyx_t_14); 
   }
+  __pyx_L5_break:;
 
-  /* "ppsim/simulator.pyx":464
+  /* "ppsim/simulator.pyx":526
  *             self.updated_counts.add_to_entry(b, 1)
  * 
  *         t2 = time.perf_counter()             # <<<<<<<<<<<<<<
  *         self.do_gillespie = True  # if entire batch are null reactions, stays true and switches to gillspie
  *         i_max = self.urn.sample_vector(num_delayed // 2, self.row_sums)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_time); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 464, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_time); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 526, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 464, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 526, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -8502,14 +9287,14 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
   }
   __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 464, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 526, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_5 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 464, __pyx_L1_error)
+  __pyx_t_8 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_8 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 526, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_t2 = __pyx_t_5;
+  __pyx_v_t2 = __pyx_t_8;
 
-  /* "ppsim/simulator.pyx":465
+  /* "ppsim/simulator.pyx":527
  * 
  *         t2 = time.perf_counter()
  *         self.do_gillespie = True  # if entire batch are null reactions, stays true and switches to gillspie             # <<<<<<<<<<<<<<
@@ -8518,7 +9303,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
   __pyx_v_self->do_gillespie = 1;
 
-  /* "ppsim/simulator.pyx":466
+  /* "ppsim/simulator.pyx":528
  *         t2 = time.perf_counter()
  *         self.do_gillespie = True  # if entire batch are null reactions, stays true and switches to gillspie
  *         i_max = self.urn.sample_vector(num_delayed // 2, self.row_sums)             # <<<<<<<<<<<<<<
@@ -8527,82 +9312,82 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
   __pyx_v_i_max = ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->sample_vector(__pyx_v_self->urn, (__pyx_v_num_delayed / 2), __pyx_v_self->row_sums);
 
-  /* "ppsim/simulator.pyx":467
+  /* "ppsim/simulator.pyx":529
  *         self.do_gillespie = True  # if entire batch are null reactions, stays true and switches to gillspie
  *         i_max = self.urn.sample_vector(num_delayed // 2, self.row_sums)
  *         for i in range(i_max):             # <<<<<<<<<<<<<<
  *             o_i = self.urn.order[i]
  *             j_max = self.urn.sample_vector(self.row_sums[o_i], self.row)
  */
-  __pyx_t_11 = __pyx_v_i_max;
-  __pyx_t_10 = __pyx_t_11;
-  for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_10; __pyx_t_13+=1) {
-    __pyx_v_i = __pyx_t_13;
+  __pyx_t_13 = __pyx_v_i_max;
+  __pyx_t_12 = __pyx_t_13;
+  for (__pyx_t_15 = 0; __pyx_t_15 < __pyx_t_12; __pyx_t_15+=1) {
+    __pyx_v_i = __pyx_t_15;
 
-    /* "ppsim/simulator.pyx":468
+    /* "ppsim/simulator.pyx":530
  *         i_max = self.urn.sample_vector(num_delayed // 2, self.row_sums)
  *         for i in range(i_max):
  *             o_i = self.urn.order[i]             # <<<<<<<<<<<<<<
  *             j_max = self.urn.sample_vector(self.row_sums[o_i], self.row)
  *             for j in range(j_max):
  */
-    __pyx_t_14 = __pyx_v_i;
-    __pyx_v_o_i = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->urn->order.data) + __pyx_t_14)) )));
+    __pyx_t_16 = __pyx_v_i;
+    __pyx_v_o_i = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->urn->order.data) + __pyx_t_16)) )));
 
-    /* "ppsim/simulator.pyx":469
+    /* "ppsim/simulator.pyx":531
  *         for i in range(i_max):
  *             o_i = self.urn.order[i]
  *             j_max = self.urn.sample_vector(self.row_sums[o_i], self.row)             # <<<<<<<<<<<<<<
  *             for j in range(j_max):
  *                 o_j = self.urn.order[j]
  */
-    __pyx_t_14 = __pyx_v_o_i;
-    __pyx_v_j_max = ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->sample_vector(__pyx_v_self->urn, (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->row_sums.data) + __pyx_t_14)) ))), __pyx_v_self->row);
+    __pyx_t_16 = __pyx_v_o_i;
+    __pyx_v_j_max = ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->sample_vector(__pyx_v_self->urn, (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->row_sums.data) + __pyx_t_16)) ))), __pyx_v_self->row);
 
-    /* "ppsim/simulator.pyx":470
+    /* "ppsim/simulator.pyx":532
  *             o_i = self.urn.order[i]
  *             j_max = self.urn.sample_vector(self.row_sums[o_i], self.row)
  *             for j in range(j_max):             # <<<<<<<<<<<<<<
  *                 o_j = self.urn.order[j]
  *                 if self.is_random and self.random_transitions[o_i, o_j, 0]:
  */
-    __pyx_t_15 = __pyx_v_j_max;
-    __pyx_t_16 = __pyx_t_15;
-    for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
-      __pyx_v_j = __pyx_t_17;
+    __pyx_t_17 = __pyx_v_j_max;
+    __pyx_t_18 = __pyx_t_17;
+    for (__pyx_t_19 = 0; __pyx_t_19 < __pyx_t_18; __pyx_t_19+=1) {
+      __pyx_v_j = __pyx_t_19;
 
-      /* "ppsim/simulator.pyx":471
+      /* "ppsim/simulator.pyx":533
  *             j_max = self.urn.sample_vector(self.row_sums[o_i], self.row)
  *             for j in range(j_max):
  *                 o_j = self.urn.order[j]             # <<<<<<<<<<<<<<
  *                 if self.is_random and self.random_transitions[o_i, o_j, 0]:
  *                     # don't switch to gillespie because we did a random transition
  */
-      __pyx_t_14 = __pyx_v_j;
-      __pyx_v_o_j = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->urn->order.data) + __pyx_t_14)) )));
+      __pyx_t_16 = __pyx_v_j;
+      __pyx_v_o_j = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->urn->order.data) + __pyx_t_16)) )));
 
-      /* "ppsim/simulator.pyx":472
+      /* "ppsim/simulator.pyx":534
  *             for j in range(j_max):
  *                 o_j = self.urn.order[j]
  *                 if self.is_random and self.random_transitions[o_i, o_j, 0]:             # <<<<<<<<<<<<<<
  *                     # don't switch to gillespie because we did a random transition
  *                     # TODO: this might not switch to gillespie soon enough in certain cases
  */
-      __pyx_t_18 = (__pyx_v_self->__pyx_base.is_random != 0);
-      if (__pyx_t_18) {
-      } else {
-        __pyx_t_6 = __pyx_t_18;
-        goto __pyx_L14_bool_binop_done;
-      }
-      __pyx_t_14 = __pyx_v_o_i;
-      __pyx_t_19 = __pyx_v_o_j;
-      __pyx_t_20 = 0;
-      __pyx_t_18 = ((*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_14 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_19 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_20 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) ))) != 0);
-      __pyx_t_6 = __pyx_t_18;
-      __pyx_L14_bool_binop_done:;
+      __pyx_t_6 = (__pyx_v_self->__pyx_base.is_random != 0);
       if (__pyx_t_6) {
+      } else {
+        __pyx_t_10 = __pyx_t_6;
+        goto __pyx_L16_bool_binop_done;
+      }
+      __pyx_t_16 = __pyx_v_o_i;
+      __pyx_t_20 = __pyx_v_o_j;
+      __pyx_t_21 = 0;
+      __pyx_t_6 = ((*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_16 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_20 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_21 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) ))) != 0);
+      __pyx_t_10 = __pyx_t_6;
+      __pyx_L16_bool_binop_done:;
+      if (__pyx_t_10) {
 
-        /* "ppsim/simulator.pyx":475
+        /* "ppsim/simulator.pyx":537
  *                     # don't switch to gillespie because we did a random transition
  *                     # TODO: this might not switch to gillespie soon enough in certain cases
  *                     self.do_gillespie = False             # <<<<<<<<<<<<<<
@@ -8611,31 +9396,31 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
         __pyx_v_self->do_gillespie = 0;
 
-        /* "ppsim/simulator.pyx":476
+        /* "ppsim/simulator.pyx":538
  *                     # TODO: this might not switch to gillespie soon enough in certain cases
  *                     self.do_gillespie = False
  *                     a = self.random_transitions[o_i, o_j, 0]  # better written using walrus operator             # <<<<<<<<<<<<<<
  *                     b = self.random_transitions[o_i, o_j, 1]
  *                     # updates the first a entries of m to hold a multinomial,
  */
-        __pyx_t_20 = __pyx_v_o_i;
-        __pyx_t_19 = __pyx_v_o_j;
-        __pyx_t_14 = 0;
-        __pyx_v_a = (*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_20 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_19 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_14 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) )));
+        __pyx_t_21 = __pyx_v_o_i;
+        __pyx_t_20 = __pyx_v_o_j;
+        __pyx_t_16 = 0;
+        __pyx_v_a = (*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_21 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_20 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_16 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) )));
 
-        /* "ppsim/simulator.pyx":477
+        /* "ppsim/simulator.pyx":539
  *                     self.do_gillespie = False
  *                     a = self.random_transitions[o_i, o_j, 0]  # better written using walrus operator
  *                     b = self.random_transitions[o_i, o_j, 1]             # <<<<<<<<<<<<<<
  *                     # updates the first a entries of m to hold a multinomial,
  *                     # giving the number of times for each random transition
  */
-        __pyx_t_14 = __pyx_v_o_i;
-        __pyx_t_19 = __pyx_v_o_j;
-        __pyx_t_20 = 1;
-        __pyx_v_b = (*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_14 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_19 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_20 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) )));
+        __pyx_t_16 = __pyx_v_o_i;
+        __pyx_t_20 = __pyx_v_o_j;
+        __pyx_t_21 = 1;
+        __pyx_v_b = (*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_transitions.data + __pyx_t_16 * __pyx_v_self->__pyx_base.random_transitions.strides[0]) ) + __pyx_t_20 * __pyx_v_self->__pyx_base.random_transitions.strides[1]) ) + __pyx_t_21 * __pyx_v_self->__pyx_base.random_transitions.strides[2]) )));
 
-        /* "ppsim/simulator.pyx":480
+        /* "ppsim/simulator.pyx":542
  *                     # updates the first a entries of m to hold a multinomial,
  *                     # giving the number of times for each random transition
  *                     self.m[:] = 0             # <<<<<<<<<<<<<<
@@ -8655,78 +9440,78 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
             }
         }
 
-        /* "ppsim/simulator.pyx":481
+        /* "ppsim/simulator.pyx":543
  *                     # giving the number of times for each random transition
  *                     self.m[:] = 0
  *                     random_multinomial(self.bitgen, self.row[o_j], &self.m[0], &self.transition_probabilities[b],             # <<<<<<<<<<<<<<
  *                                        a, &self._binomial)
  *                     for c in range(a):
  */
-        __pyx_t_20 = __pyx_v_o_j;
-        __pyx_t_19 = 0;
-        __pyx_t_14 = __pyx_v_b;
+        __pyx_t_21 = __pyx_v_o_j;
+        __pyx_t_20 = 0;
+        __pyx_t_16 = __pyx_v_b;
 
-        /* "ppsim/simulator.pyx":482
+        /* "ppsim/simulator.pyx":544
  *                     self.m[:] = 0
  *                     random_multinomial(self.bitgen, self.row[o_j], &self.m[0], &self.transition_probabilities[b],
  *                                        a, &self._binomial)             # <<<<<<<<<<<<<<
  *                     for c in range(a):
  *                         self.updated_counts.add_to_entry(self.random_outputs[b+c,0], self.m[c])
  */
-        random_multinomial(__pyx_v_self->__pyx_base.bitgen, (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->row.data) + __pyx_t_20)) ))), (&(*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->m.data) + __pyx_t_19)) )))), (&(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->__pyx_base.transition_probabilities.data) + __pyx_t_14)) )))), __pyx_v_a, (&__pyx_v_self->_binomial));
+        random_multinomial(__pyx_v_self->__pyx_base.bitgen, (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->row.data) + __pyx_t_21)) ))), (&(*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->m.data) + __pyx_t_20)) )))), (&(*((double *) ( /* dim=0 */ ((char *) (((double *) __pyx_v_self->__pyx_base.transition_probabilities.data) + __pyx_t_16)) )))), __pyx_v_a, (&__pyx_v_self->_binomial));
 
-        /* "ppsim/simulator.pyx":483
+        /* "ppsim/simulator.pyx":545
  *                     random_multinomial(self.bitgen, self.row[o_j], &self.m[0], &self.transition_probabilities[b],
  *                                        a, &self._binomial)
  *                     for c in range(a):             # <<<<<<<<<<<<<<
  *                         self.updated_counts.add_to_entry(self.random_outputs[b+c,0], self.m[c])
  *                         self.updated_counts.add_to_entry(self.random_outputs[b+c,1], self.m[c])
  */
-        __pyx_t_21 = __pyx_v_a;
-        __pyx_t_22 = __pyx_t_21;
-        for (__pyx_t_23 = 0; __pyx_t_23 < __pyx_t_22; __pyx_t_23+=1) {
-          __pyx_v_c = __pyx_t_23;
+        __pyx_t_22 = __pyx_v_a;
+        __pyx_t_23 = __pyx_t_22;
+        for (__pyx_t_24 = 0; __pyx_t_24 < __pyx_t_23; __pyx_t_24+=1) {
+          __pyx_v_c = __pyx_t_24;
 
-          /* "ppsim/simulator.pyx":484
+          /* "ppsim/simulator.pyx":546
  *                                        a, &self._binomial)
  *                     for c in range(a):
  *                         self.updated_counts.add_to_entry(self.random_outputs[b+c,0], self.m[c])             # <<<<<<<<<<<<<<
  *                         self.updated_counts.add_to_entry(self.random_outputs[b+c,1], self.m[c])
  *                 else:
  */
-          __pyx_t_14 = (__pyx_v_b + __pyx_v_c);
-          __pyx_t_19 = 0;
-          __pyx_t_20 = __pyx_v_c;
-          __pyx_t_12.__pyx_n = 1;
-          __pyx_t_12.amount = (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->m.data) + __pyx_t_20)) )));
-          ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, (*((npy_intp *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_outputs.data + __pyx_t_14 * __pyx_v_self->__pyx_base.random_outputs.strides[0]) ) + __pyx_t_19 * __pyx_v_self->__pyx_base.random_outputs.strides[1]) ))), &__pyx_t_12); 
+          __pyx_t_16 = (__pyx_v_b + __pyx_v_c);
+          __pyx_t_20 = 0;
+          __pyx_t_21 = __pyx_v_c;
+          __pyx_t_14.__pyx_n = 1;
+          __pyx_t_14.amount = (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->m.data) + __pyx_t_21)) )));
+          ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, (*((npy_intp *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_outputs.data + __pyx_t_16 * __pyx_v_self->__pyx_base.random_outputs.strides[0]) ) + __pyx_t_20 * __pyx_v_self->__pyx_base.random_outputs.strides[1]) ))), &__pyx_t_14); 
 
-          /* "ppsim/simulator.pyx":485
+          /* "ppsim/simulator.pyx":547
  *                     for c in range(a):
  *                         self.updated_counts.add_to_entry(self.random_outputs[b+c,0], self.m[c])
  *                         self.updated_counts.add_to_entry(self.random_outputs[b+c,1], self.m[c])             # <<<<<<<<<<<<<<
  *                 else:
  *                     if self.do_gillespie:
  */
-          __pyx_t_20 = (__pyx_v_b + __pyx_v_c);
-          __pyx_t_19 = 1;
-          __pyx_t_14 = __pyx_v_c;
-          __pyx_t_12.__pyx_n = 1;
-          __pyx_t_12.amount = (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->m.data) + __pyx_t_14)) )));
-          ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, (*((npy_intp *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_outputs.data + __pyx_t_20 * __pyx_v_self->__pyx_base.random_outputs.strides[0]) ) + __pyx_t_19 * __pyx_v_self->__pyx_base.random_outputs.strides[1]) ))), &__pyx_t_12); 
+          __pyx_t_21 = (__pyx_v_b + __pyx_v_c);
+          __pyx_t_20 = 1;
+          __pyx_t_16 = __pyx_v_c;
+          __pyx_t_14.__pyx_n = 1;
+          __pyx_t_14.amount = (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->m.data) + __pyx_t_16)) )));
+          ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->updated_counts->__pyx_vtab)->add_to_entry(__pyx_v_self->updated_counts, (*((npy_intp *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.random_outputs.data + __pyx_t_21 * __pyx_v_self->__pyx_base.random_outputs.strides[0]) ) + __pyx_t_20 * __pyx_v_self->__pyx_base.random_outputs.strides[1]) ))), &__pyx_t_14); 
         }
 
-        /* "ppsim/simulator.pyx":472
+        /* "ppsim/simulator.pyx":534
  *             for j in range(j_max):
  *                 o_j = self.urn.order[j]
  *                 if self.is_random and self.random_transitions[o_i, o_j, 0]:             # <<<<<<<<<<<<<<
  *                     # don't switch to gillespie because we did a random transition
  *                     # TODO: this might not switch to gillespie soon enough in certain cases
  */
-        goto __pyx_L13;
+        goto __pyx_L15;
       }
 
-      /* "ppsim/simulator.pyx":487
+      /* "ppsim/simulator.pyx":549
  *                         self.updated_counts.add_to_entry(self.random_outputs[b+c,1], self.m[c])
  *                 else:
  *                     if self.do_gillespie:             # <<<<<<<<<<<<<<
@@ -8734,21 +9519,21 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  *                         self.do_gillespie = self.null_transitions[o_i, o_j]
  */
       /*else*/ {
-        __pyx_t_6 = (__pyx_v_self->do_gillespie != 0);
-        if (__pyx_t_6) {
+        __pyx_t_10 = (__pyx_v_self->do_gillespie != 0);
+        if (__pyx_t_10) {
 
-          /* "ppsim/simulator.pyx":489
+          /* "ppsim/simulator.pyx":551
  *                     if self.do_gillespie:
  *                         # if transition is non-null, we will set do_gillespie = False
  *                         self.do_gillespie = self.null_transitions[o_i, o_j]             # <<<<<<<<<<<<<<
  *                     # We are directly adding to updated_counts.config rather than using the function
  *                     #   updated_counts.add_to_entry for speed. None of the other urn features of updated_counts will
  */
-          __pyx_t_14 = __pyx_v_o_i;
-          __pyx_t_19 = __pyx_v_o_j;
-          __pyx_v_self->do_gillespie = (*((uint8_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.null_transitions.data + __pyx_t_14 * __pyx_v_self->__pyx_base.null_transitions.strides[0]) ) + __pyx_t_19 * __pyx_v_self->__pyx_base.null_transitions.strides[1]) )));
+          __pyx_t_16 = __pyx_v_o_i;
+          __pyx_t_20 = __pyx_v_o_j;
+          __pyx_v_self->do_gillespie = (*((uint8_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.null_transitions.data + __pyx_t_16 * __pyx_v_self->__pyx_base.null_transitions.strides[0]) ) + __pyx_t_20 * __pyx_v_self->__pyx_base.null_transitions.strides[1]) )));
 
-          /* "ppsim/simulator.pyx":487
+          /* "ppsim/simulator.pyx":549
  *                         self.updated_counts.add_to_entry(self.random_outputs[b+c,1], self.m[c])
  *                 else:
  *                     if self.do_gillespie:             # <<<<<<<<<<<<<<
@@ -8757,39 +9542,39 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
         }
 
-        /* "ppsim/simulator.pyx":493
+        /* "ppsim/simulator.pyx":555
  *                     #   updated_counts.add_to_entry for speed. None of the other urn features of updated_counts will
  *                     #   be used until it is reset in the next loop, so this is fine.
  *                     self.updated_counts.config[self.delta[o_i, o_j, 0]] += self.row[o_j]             # <<<<<<<<<<<<<<
  *                     self.updated_counts.config[self.delta[o_i, o_j, 1]] += self.row[o_j]
  * 
  */
-        __pyx_t_19 = __pyx_v_o_j;
-        __pyx_t_14 = __pyx_v_o_i;
         __pyx_t_20 = __pyx_v_o_j;
-        __pyx_t_24 = 0;
-        __pyx_t_25 = (*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.delta.data + __pyx_t_14 * __pyx_v_self->__pyx_base.delta.strides[0]) ) + __pyx_t_20 * __pyx_v_self->__pyx_base.delta.strides[1]) ) + __pyx_t_24 * __pyx_v_self->__pyx_base.delta.strides[2]) )));
-        *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->updated_counts->config.data) + __pyx_t_25)) )) += (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->row.data) + __pyx_t_19)) )));
+        __pyx_t_16 = __pyx_v_o_i;
+        __pyx_t_21 = __pyx_v_o_j;
+        __pyx_t_25 = 0;
+        __pyx_t_26 = (*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.delta.data + __pyx_t_16 * __pyx_v_self->__pyx_base.delta.strides[0]) ) + __pyx_t_21 * __pyx_v_self->__pyx_base.delta.strides[1]) ) + __pyx_t_25 * __pyx_v_self->__pyx_base.delta.strides[2]) )));
+        *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->updated_counts->config.data) + __pyx_t_26)) )) += (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->row.data) + __pyx_t_20)) )));
 
-        /* "ppsim/simulator.pyx":494
+        /* "ppsim/simulator.pyx":556
  *                     #   be used until it is reset in the next loop, so this is fine.
  *                     self.updated_counts.config[self.delta[o_i, o_j, 0]] += self.row[o_j]
  *                     self.updated_counts.config[self.delta[o_i, o_j, 1]] += self.row[o_j]             # <<<<<<<<<<<<<<
  * 
  *         self.t += num_delayed // 2
  */
-        __pyx_t_19 = __pyx_v_o_j;
-        __pyx_t_24 = __pyx_v_o_i;
         __pyx_t_20 = __pyx_v_o_j;
-        __pyx_t_14 = 1;
-        __pyx_t_25 = (*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.delta.data + __pyx_t_24 * __pyx_v_self->__pyx_base.delta.strides[0]) ) + __pyx_t_20 * __pyx_v_self->__pyx_base.delta.strides[1]) ) + __pyx_t_14 * __pyx_v_self->__pyx_base.delta.strides[2]) )));
-        *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->updated_counts->config.data) + __pyx_t_25)) )) += (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->row.data) + __pyx_t_19)) )));
+        __pyx_t_25 = __pyx_v_o_i;
+        __pyx_t_21 = __pyx_v_o_j;
+        __pyx_t_16 = 1;
+        __pyx_t_26 = (*((npy_intp *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->__pyx_base.delta.data + __pyx_t_25 * __pyx_v_self->__pyx_base.delta.strides[0]) ) + __pyx_t_21 * __pyx_v_self->__pyx_base.delta.strides[1]) ) + __pyx_t_16 * __pyx_v_self->__pyx_base.delta.strides[2]) )));
+        *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->updated_counts->config.data) + __pyx_t_26)) )) += (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->row.data) + __pyx_t_20)) )));
       }
-      __pyx_L13:;
+      __pyx_L15:;
     }
   }
 
-  /* "ppsim/simulator.pyx":496
+  /* "ppsim/simulator.pyx":558
  *                     self.updated_counts.config[self.delta[o_i, o_j, 1]] += self.row[o_j]
  * 
  *         self.t += num_delayed // 2             # <<<<<<<<<<<<<<
@@ -8798,7 +9583,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
   __pyx_v_self->__pyx_base.t = (__pyx_v_self->__pyx_base.t + (__pyx_v_num_delayed / 2));
 
-  /* "ppsim/simulator.pyx":498
+  /* "ppsim/simulator.pyx":560
  *         self.t += num_delayed // 2
  *         # TODO: this is the only part scaling when the number of states (but not reached states) blows up
  *         self.urn.add_vector(self.updated_counts.config)             # <<<<<<<<<<<<<<
@@ -8807,16 +9592,16 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
   ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->add_vector(__pyx_v_self->urn, __pyx_v_self->updated_counts->config);
 
-  /* "ppsim/simulator.pyx":500
+  /* "ppsim/simulator.pyx":562
  *         self.urn.add_vector(self.updated_counts.config)
  * 
  *         t3 = time.perf_counter()             # <<<<<<<<<<<<<<
  * 
  *         # Dynamically update batch threshold, by comparing the times t2 - t1 of the collision sampling and
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 500, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_time); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 500, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_perf_counter); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -8831,14 +9616,14 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
   }
   __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 500, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_5 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 500, __pyx_L1_error)
+  __pyx_t_8 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_8 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_t3 = __pyx_t_5;
+  __pyx_v_t3 = __pyx_t_8;
 
-  /* "ppsim/simulator.pyx":505
+  /* "ppsim/simulator.pyx":567
  *         #   the time t_3 - t_2 of the batch processing. Batch_threshold is adjusted to try to ensure
  *         #   t_2 - t_1 = t_3 - t_2
  *         self.batch_threshold = int(((t3 - t2) / (t2 - t1)) ** 0.1 * self.batch_threshold)             # <<<<<<<<<<<<<<
@@ -8847,7 +9632,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
   __pyx_v_self->batch_threshold = ((int64_t)(pow(((__pyx_v_t3 - __pyx_v_t2) / (__pyx_v_t2 - __pyx_v_t1)), 0.1) * __pyx_v_self->batch_threshold));
 
-  /* "ppsim/simulator.pyx":507
+  /* "ppsim/simulator.pyx":569
  *         self.batch_threshold = int(((t3 - t2) / (t2 - t1)) ** 0.1 * self.batch_threshold)
  *         # Keep the batch threshold within some fixed bounds.
  *         self.batch_threshold = min(self.batch_threshold, 2 * self.n // 3)             # <<<<<<<<<<<<<<
@@ -8855,31 +9640,31 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  * 
  */
   __pyx_t_7 = ((2 * __pyx_v_self->__pyx_base.n) / 3);
-  __pyx_t_26 = __pyx_v_self->batch_threshold;
-  if (((__pyx_t_7 < __pyx_t_26) != 0)) {
-    __pyx_t_27 = __pyx_t_7;
+  __pyx_t_27 = __pyx_v_self->batch_threshold;
+  if (((__pyx_t_7 < __pyx_t_27) != 0)) {
+    __pyx_t_28 = __pyx_t_7;
   } else {
-    __pyx_t_27 = __pyx_t_26;
+    __pyx_t_28 = __pyx_t_27;
   }
-  __pyx_v_self->batch_threshold = __pyx_t_27;
+  __pyx_v_self->batch_threshold = __pyx_t_28;
 
-  /* "ppsim/simulator.pyx":508
+  /* "ppsim/simulator.pyx":570
  *         # Keep the batch threshold within some fixed bounds.
  *         self.batch_threshold = min(self.batch_threshold, 2 * self.n // 3)
  *         self.batch_threshold = max(self.batch_threshold, 3)             # <<<<<<<<<<<<<<
  * 
  *         self.urn.sort()
  */
-  __pyx_t_28 = 3;
-  __pyx_t_27 = __pyx_v_self->batch_threshold;
-  if (((__pyx_t_28 > __pyx_t_27) != 0)) {
-    __pyx_t_7 = __pyx_t_28;
+  __pyx_t_29 = 3;
+  __pyx_t_28 = __pyx_v_self->batch_threshold;
+  if (((__pyx_t_29 > __pyx_t_28) != 0)) {
+    __pyx_t_7 = __pyx_t_29;
   } else {
-    __pyx_t_7 = __pyx_t_27;
+    __pyx_t_7 = __pyx_t_28;
   }
   __pyx_v_self->batch_threshold = __pyx_t_7;
 
-  /* "ppsim/simulator.pyx":510
+  /* "ppsim/simulator.pyx":572
  *         self.batch_threshold = max(self.batch_threshold, 3)
  * 
  *         self.urn.sort()             # <<<<<<<<<<<<<<
@@ -8888,24 +9673,24 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
   ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_self->urn->__pyx_vtab)->sort(__pyx_v_self->urn, 0);
 
-  /* "ppsim/simulator.pyx":513
+  /* "ppsim/simulator.pyx":575
  * 
  *         # update enabled_reactions if switching to gillespie
  *         if self.do_gillespie:             # <<<<<<<<<<<<<<
  *             self.get_enabled_reactions()
  * 
  */
-  __pyx_t_6 = (__pyx_v_self->do_gillespie != 0);
-  if (__pyx_t_6) {
+  __pyx_t_10 = (__pyx_v_self->do_gillespie != 0);
+  if (__pyx_t_10) {
 
-    /* "ppsim/simulator.pyx":514
+    /* "ppsim/simulator.pyx":576
  *         # update enabled_reactions if switching to gillespie
  *         if self.do_gillespie:
  *             self.get_enabled_reactions()             # <<<<<<<<<<<<<<
  * 
  *     cdef int64_t sample_coll(self, int64_t r, double u, bint has_bounds=True):
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_enabled_reactions); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 514, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_get_enabled_reactions); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 576, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_3 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
@@ -8919,12 +9704,12 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
     }
     __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 514, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 576, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "ppsim/simulator.pyx":513
+    /* "ppsim/simulator.pyx":575
  * 
  *         # update enabled_reactions if switching to gillespie
  *         if self.do_gillespie:             # <<<<<<<<<<<<<<
@@ -8933,10 +9718,10 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
  */
   }
 
-  /* "ppsim/simulator.pyx":401
+  /* "ppsim/simulator.pyx":452
  *             self.get_enabled_reactions()
  * 
- *     def multibatch_step(self):             # <<<<<<<<<<<<<<
+ *     def multibatch_step(self, int64_t t_max = 0):             # <<<<<<<<<<<<<<
  *         """Sample collisions to build a batch, then update the entire batch in parallel.
  * 
  */
@@ -8957,7 +9742,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_s
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":516
+/* "ppsim/simulator.pyx":578
  *             self.get_enabled_reactions()
  * 
  *     cdef int64_t sample_coll(self, int64_t r, double u, bint has_bounds=True):             # <<<<<<<<<<<<<<
@@ -8992,7 +9777,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
     }
   }
 
-  /* "ppsim/simulator.pyx":550
+  /* "ppsim/simulator.pyx":612
  *         cdef npy_intp i, j
  *         cdef double logu, lhs
  *         logu = log(u)             # <<<<<<<<<<<<<<
@@ -9001,7 +9786,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
  */
   __pyx_v_logu = log(__pyx_v_u);
 
-  /* "ppsim/simulator.pyx":551
+  /* "ppsim/simulator.pyx":613
  *         cdef double logu, lhs
  *         logu = log(u)
  *         lhs = lgamma(self.n-r+1) - logu             # <<<<<<<<<<<<<<
@@ -9010,7 +9795,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
  */
   __pyx_v_lhs = (lgamma(((__pyx_v_self->__pyx_base.n - __pyx_v_r) + 1)) - __pyx_v_logu);
 
-  /* "ppsim/simulator.pyx":555
+  /* "ppsim/simulator.pyx":617
  *         #     lhs < lgamma(n - r - t + 1) + t * log(n)
  * 
  *         if has_bounds:             # <<<<<<<<<<<<<<
@@ -9020,7 +9805,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
   __pyx_t_1 = (__pyx_v_has_bounds != 0);
   if (__pyx_t_1) {
 
-    /* "ppsim/simulator.pyx":560
+    /* "ppsim/simulator.pyx":622
  *             # For r values, we invert the definition of self.coll_table_r_values:
  *             #   np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)] + [self.n])
  *             i = int(sqrt((r - 2) / self.r_constant))             # <<<<<<<<<<<<<<
@@ -9029,7 +9814,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
  */
     __pyx_v_i = ((npy_intp)sqrt(((__pyx_v_r - 2) / __pyx_v_self->r_constant)));
 
-    /* "ppsim/simulator.pyx":561
+    /* "ppsim/simulator.pyx":623
  *             #   np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)] + [self.n])
  *             i = int(sqrt((r - 2) / self.r_constant))
  *             i = min(i, self.num_r_values - 2)             # <<<<<<<<<<<<<<
@@ -9045,7 +9830,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
     }
     __pyx_v_i = __pyx_t_4;
 
-    /* "ppsim/simulator.pyx":564
+    /* "ppsim/simulator.pyx":626
  * 
  *             # for u values we similarly invert the definition: np.linspace(0, 1, num_u_values)
  *             j = int(u * (self.num_u_values - 1))             # <<<<<<<<<<<<<<
@@ -9054,7 +9839,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
  */
     __pyx_v_j = ((npy_intp)(__pyx_v_u * (__pyx_v_self->num_u_values - 1)));
 
-    /* "ppsim/simulator.pyx":568
+    /* "ppsim/simulator.pyx":630
  *             # assert self.coll_table_r_values[i] <= r <= self.coll_table_r_values[i+1]
  *             # assert self.coll_table_u_values[j] <= u <= self.coll_table_u_values[j+1]
  *             t_lo = self.coll_table[i + 1, j + 1]             # <<<<<<<<<<<<<<
@@ -9065,7 +9850,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
     __pyx_t_6 = (__pyx_v_j + 1);
     __pyx_v_t_lo = (*((int64_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->coll_table.data + __pyx_t_5 * __pyx_v_self->coll_table.strides[0]) ) + __pyx_t_6 * __pyx_v_self->coll_table.strides[1]) )));
 
-    /* "ppsim/simulator.pyx":569
+    /* "ppsim/simulator.pyx":631
  *             # assert self.coll_table_u_values[j] <= u <= self.coll_table_u_values[j+1]
  *             t_lo = self.coll_table[i + 1, j + 1]
  *             t_hi = min(self.coll_table[i, j], self.n - r)             # <<<<<<<<<<<<<<
@@ -9083,7 +9868,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
     }
     __pyx_v_t_hi = __pyx_t_9;
 
-    /* "ppsim/simulator.pyx":555
+    /* "ppsim/simulator.pyx":617
  *         #     lhs < lgamma(n - r - t + 1) + t * log(n)
  * 
  *         if has_bounds:             # <<<<<<<<<<<<<<
@@ -9093,7 +9878,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
     goto __pyx_L3;
   }
 
-  /* "ppsim/simulator.pyx":572
+  /* "ppsim/simulator.pyx":634
  *         else:
  *             # When building the table, we start with bounds that always hold.
  *             if r >= self.n:             # <<<<<<<<<<<<<<
@@ -9104,7 +9889,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
     __pyx_t_1 = ((__pyx_v_r >= __pyx_v_self->__pyx_base.n) != 0);
     if (__pyx_t_1) {
 
-      /* "ppsim/simulator.pyx":573
+      /* "ppsim/simulator.pyx":635
  *             # When building the table, we start with bounds that always hold.
  *             if r >= self.n:
  *                 return 1             # <<<<<<<<<<<<<<
@@ -9114,7 +9899,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
       __pyx_r = 1;
       goto __pyx_L0;
 
-      /* "ppsim/simulator.pyx":572
+      /* "ppsim/simulator.pyx":634
  *         else:
  *             # When building the table, we start with bounds that always hold.
  *             if r >= self.n:             # <<<<<<<<<<<<<<
@@ -9123,7 +9908,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
  */
     }
 
-    /* "ppsim/simulator.pyx":574
+    /* "ppsim/simulator.pyx":636
  *             if r >= self.n:
  *                 return 1
  *             t_lo = 0             # <<<<<<<<<<<<<<
@@ -9132,7 +9917,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
  */
     __pyx_v_t_lo = 0;
 
-    /* "ppsim/simulator.pyx":575
+    /* "ppsim/simulator.pyx":637
  *                 return 1
  *             t_lo = 0
  *             t_hi = self.n - r             # <<<<<<<<<<<<<<
@@ -9143,7 +9928,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
   }
   __pyx_L3:;
 
-  /* "ppsim/simulator.pyx":580
+  /* "ppsim/simulator.pyx":642
  *         # Equivalently, lhs >= lgamma(n - r - t_lo + 1) + t_lo * logn and
  *         #               lhs <  lgamma(n - r - t_hi + 1) + t_hi * logn
  *         while t_lo < t_hi - 1:             # <<<<<<<<<<<<<<
@@ -9154,7 +9939,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
     __pyx_t_1 = ((__pyx_v_t_lo < (__pyx_v_t_hi - 1)) != 0);
     if (!__pyx_t_1) break;
 
-    /* "ppsim/simulator.pyx":581
+    /* "ppsim/simulator.pyx":643
  *         #               lhs <  lgamma(n - r - t_hi + 1) + t_hi * logn
  *         while t_lo < t_hi - 1:
  *             t_mid = (t_lo + t_hi) // 2             # <<<<<<<<<<<<<<
@@ -9163,7 +9948,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
  */
     __pyx_v_t_mid = ((__pyx_v_t_lo + __pyx_v_t_hi) / 2);
 
-    /* "ppsim/simulator.pyx":582
+    /* "ppsim/simulator.pyx":644
  *         while t_lo < t_hi - 1:
  *             t_mid = (t_lo + t_hi) // 2
  *             if lhs < lgamma(self.n - r + 1 - t_mid) + t_mid * self.logn:             # <<<<<<<<<<<<<<
@@ -9173,7 +9958,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
     __pyx_t_1 = ((__pyx_v_lhs < (lgamma((((__pyx_v_self->__pyx_base.n - __pyx_v_r) + 1) - __pyx_v_t_mid)) + (__pyx_v_t_mid * __pyx_v_self->logn))) != 0);
     if (__pyx_t_1) {
 
-      /* "ppsim/simulator.pyx":583
+      /* "ppsim/simulator.pyx":645
  *             t_mid = (t_lo + t_hi) // 2
  *             if lhs < lgamma(self.n - r + 1 - t_mid) + t_mid * self.logn:
  *                 t_hi = t_mid             # <<<<<<<<<<<<<<
@@ -9182,7 +9967,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
  */
       __pyx_v_t_hi = __pyx_v_t_mid;
 
-      /* "ppsim/simulator.pyx":582
+      /* "ppsim/simulator.pyx":644
  *         while t_lo < t_hi - 1:
  *             t_mid = (t_lo + t_hi) // 2
  *             if lhs < lgamma(self.n - r + 1 - t_mid) + t_mid * self.logn:             # <<<<<<<<<<<<<<
@@ -9192,7 +9977,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
       goto __pyx_L7;
     }
 
-    /* "ppsim/simulator.pyx":585
+    /* "ppsim/simulator.pyx":647
  *                 t_hi = t_mid
  *             else:
  *                 t_lo = t_mid             # <<<<<<<<<<<<<<
@@ -9205,7 +9990,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
     __pyx_L7:;
   }
 
-  /* "ppsim/simulator.pyx":586
+  /* "ppsim/simulator.pyx":648
  *             else:
  *                 t_lo = t_mid
  *         return t_hi             # <<<<<<<<<<<<<<
@@ -9215,7 +10000,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
   __pyx_r = __pyx_v_t_hi;
   goto __pyx_L0;
 
-  /* "ppsim/simulator.pyx":516
+  /* "ppsim/simulator.pyx":578
  *             self.get_enabled_reactions()
  * 
  *     cdef int64_t sample_coll(self, int64_t r, double u, bint has_bounds=True):             # <<<<<<<<<<<<<<
@@ -9229,7 +10014,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":188
+/* "ppsim/simulator.pyx":225
  *     """
  * 
  *     cdef public Urn urn             # <<<<<<<<<<<<<<
@@ -9287,7 +10072,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_3urn_2__set__(struct
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  if (!(likely(((__pyx_v_value) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_value, __pyx_ptype_5ppsim_9simulator_Urn))))) __PYX_ERR(0, 188, __pyx_L1_error)
+  if (!(likely(((__pyx_v_value) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_value, __pyx_ptype_5ppsim_9simulator_Urn))))) __PYX_ERR(0, 225, __pyx_L1_error)
   __pyx_t_1 = __pyx_v_value;
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -9337,7 +10122,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_3urn_4__del__(struct
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":193
+/* "ppsim/simulator.pyx":230
  *     cdef int64_t batch_threshold
  *     cdef int64_t [::1] row_sums, row, m
  *     cdef public bint do_gillespie, silent             # <<<<<<<<<<<<<<
@@ -9367,7 +10152,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12do_gillespie
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->do_gillespie); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->do_gillespie); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9405,7 +10190,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_12do_gillespie_2__se
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 230, __pyx_L1_error)
   __pyx_v_self->do_gillespie = __pyx_t_1;
 
   /* function exit code */
@@ -9441,7 +10226,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_6silent___get_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->silent); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->silent); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 230, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9479,7 +10264,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_6silent_2__set__(str
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_IsTrue(__pyx_v_value); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 230, __pyx_L1_error)
   __pyx_v_self->silent = __pyx_t_1;
 
   /* function exit code */
@@ -9493,7 +10278,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_6silent_2__set__(str
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":194
+/* "ppsim/simulator.pyx":231
  *     cdef int64_t [::1] row_sums, row, m
  *     cdef public bint do_gillespie, silent
  *     cdef public npy_intp [:,:] reactions             # <<<<<<<<<<<<<<
@@ -9523,7 +10308,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_9reactions___g
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->reactions, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->reactions, 2, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 231, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9561,7 +10346,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_9reactions_2__set__(
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn_npy_intp(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn_npy_intp(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 231, __pyx_L1_error)
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->reactions, 0);
   __pyx_v_self->reactions = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -9579,7 +10364,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_9reactions_2__set__(
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":195
+/* "ppsim/simulator.pyx":232
  *     cdef public bint do_gillespie, silent
  *     cdef public npy_intp [:,:] reactions
  *     cdef public npy_intp [:] enabled_reactions             # <<<<<<<<<<<<<<
@@ -9609,7 +10394,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_17enabled_reac
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->enabled_reactions, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->enabled_reactions, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_npy_intp, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_npy_intp, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9647,7 +10432,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_17enabled_reactions_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn_npy_intp(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn_npy_intp(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 232, __pyx_L1_error)
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->enabled_reactions, 0);
   __pyx_v_self->enabled_reactions = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -9665,7 +10450,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_17enabled_reactions_
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":196
+/* "ppsim/simulator.pyx":233
  *     cdef public npy_intp [:,:] reactions
  *     cdef public npy_intp [:] enabled_reactions
  *     cdef public npy_intp num_enabled_reactions             # <<<<<<<<<<<<<<
@@ -9695,7 +10480,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_21num_enabled_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_enabled_reactions); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_Py_intptr_t(__pyx_v_self->num_enabled_reactions); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9733,7 +10518,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_21num_enabled_reacti
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __Pyx_PyInt_As_Py_intptr_t(__pyx_v_value); if (unlikely((__pyx_t_1 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_Py_intptr_t(__pyx_v_value); if (unlikely((__pyx_t_1 == ((npy_intp)-1)) && PyErr_Occurred())) __PYX_ERR(0, 233, __pyx_L1_error)
   __pyx_v_self->num_enabled_reactions = __pyx_t_1;
 
   /* function exit code */
@@ -9747,7 +10532,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_21num_enabled_reacti
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":198
+/* "ppsim/simulator.pyx":235
  *     cdef public npy_intp num_enabled_reactions
  *     cdef double [::1] propensities
  *     cdef public double [::1] reaction_probabilities             # <<<<<<<<<<<<<<
@@ -9777,7 +10562,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_22reaction_pro
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->reaction_probabilities, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->reaction_probabilities, 1, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 235, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9815,7 +10600,7 @@ static int __pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_22reaction_probabili
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 198, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_double(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 235, __pyx_L1_error)
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->reaction_probabilities, 0);
   __pyx_v_self->reaction_probabilities = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -9946,7 +10731,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_18__setstate_c
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":606
+/* "ppsim/simulator.pyx":668
  * 
  *     @staticmethod
  *     cdef Urn create(int64_t [::1] config, bitgen_t * bitgen):             # <<<<<<<<<<<<<<
@@ -9971,19 +10756,19 @@ static struct __pyx_obj_5ppsim_9simulator_Urn *__pyx_f_5ppsim_9simulator_3Urn_cr
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("create", 0);
 
-  /* "ppsim/simulator.pyx":615
+  /* "ppsim/simulator.pyx":677
  *                 Calling this create method is a workaround.
  *         """
  *         cdef Urn urn = Urn.__new__(Urn)             # <<<<<<<<<<<<<<
  *         urn.config = config
  *         urn.bitgen = bitgen
  */
-  __pyx_t_1 = ((PyObject *)__pyx_tp_new_5ppsim_9simulator_Urn(((PyTypeObject *)__pyx_ptype_5ppsim_9simulator_Urn), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 615, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_tp_new_5ppsim_9simulator_Urn(((PyTypeObject *)__pyx_ptype_5ppsim_9simulator_Urn), __pyx_empty_tuple, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 677, __pyx_L1_error)
   __Pyx_GOTREF(((PyObject *)__pyx_t_1));
   __pyx_v_urn = ((struct __pyx_obj_5ppsim_9simulator_Urn *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "ppsim/simulator.pyx":616
+  /* "ppsim/simulator.pyx":678
  *         """
  *         cdef Urn urn = Urn.__new__(Urn)
  *         urn.config = config             # <<<<<<<<<<<<<<
@@ -9994,7 +10779,7 @@ static struct __pyx_obj_5ppsim_9simulator_Urn *__pyx_f_5ppsim_9simulator_3Urn_cr
   __PYX_INC_MEMVIEW(&__pyx_v_config, 0);
   __pyx_v_urn->config = __pyx_v_config;
 
-  /* "ppsim/simulator.pyx":617
+  /* "ppsim/simulator.pyx":679
  *         cdef Urn urn = Urn.__new__(Urn)
  *         urn.config = config
  *         urn.bitgen = bitgen             # <<<<<<<<<<<<<<
@@ -10003,23 +10788,23 @@ static struct __pyx_obj_5ppsim_9simulator_Urn *__pyx_f_5ppsim_9simulator_3Urn_cr
  */
   __pyx_v_urn->bitgen = __pyx_v_bitgen;
 
-  /* "ppsim/simulator.pyx":618
+  /* "ppsim/simulator.pyx":680
  *         urn.config = config
  *         urn.bitgen = bitgen
  *         urn.size = sum(config)             # <<<<<<<<<<<<<<
  *         urn.length = len(config)
  *         urn.order = np.array(range(len(config)), dtype=np.intp)
  */
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_config, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_int64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_int64_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 618, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_config, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_int64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_int64_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 680, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_sum, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 618, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_sum, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 680, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_int64_t(__pyx_t_2); if (unlikely((__pyx_t_3 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 618, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_int64_t(__pyx_t_2); if (unlikely((__pyx_t_3 == ((int64_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 680, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_urn->size = __pyx_t_3;
 
-  /* "ppsim/simulator.pyx":619
+  /* "ppsim/simulator.pyx":681
  *         urn.bitgen = bitgen
  *         urn.size = sum(config)
  *         urn.length = len(config)             # <<<<<<<<<<<<<<
@@ -10029,51 +10814,51 @@ static struct __pyx_obj_5ppsim_9simulator_Urn *__pyx_f_5ppsim_9simulator_3Urn_cr
   __pyx_t_4 = __Pyx_MemoryView_Len(__pyx_v_config); 
   __pyx_v_urn->length = __pyx_t_4;
 
-  /* "ppsim/simulator.pyx":620
+  /* "ppsim/simulator.pyx":682
  *         urn.size = sum(config)
  *         urn.length = len(config)
  *         urn.order = np.array(range(len(config)), dtype=np.intp)             # <<<<<<<<<<<<<<
  *         urn.sort()
  *         return urn
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 682, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_array); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 682, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_4 = __Pyx_MemoryView_Len(__pyx_v_config); 
-  __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_FromSize_t(__pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 682, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 682, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 682, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_5);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_5);
   __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 682, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 682, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_intp); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_intp); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 682, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_7) < 0) __PYX_ERR(0, 620, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_t_7) < 0) __PYX_ERR(0, 682, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 682, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_npy_intp(__pyx_t_7, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_npy_intp(__pyx_t_7, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 682, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_urn->order, 0);
   __pyx_v_urn->order = __pyx_t_8;
   __pyx_t_8.memview = NULL;
   __pyx_t_8.data = NULL;
 
-  /* "ppsim/simulator.pyx":621
+  /* "ppsim/simulator.pyx":683
  *         urn.length = len(config)
  *         urn.order = np.array(range(len(config)), dtype=np.intp)
  *         urn.sort()             # <<<<<<<<<<<<<<
@@ -10082,7 +10867,7 @@ static struct __pyx_obj_5ppsim_9simulator_Urn *__pyx_f_5ppsim_9simulator_3Urn_cr
  */
   ((struct __pyx_vtabstruct_5ppsim_9simulator_Urn *)__pyx_v_urn->__pyx_vtab)->sort(__pyx_v_urn, 0);
 
-  /* "ppsim/simulator.pyx":622
+  /* "ppsim/simulator.pyx":684
  *         urn.order = np.array(range(len(config)), dtype=np.intp)
  *         urn.sort()
  *         return urn             # <<<<<<<<<<<<<<
@@ -10094,7 +10879,7 @@ static struct __pyx_obj_5ppsim_9simulator_Urn *__pyx_f_5ppsim_9simulator_3Urn_cr
   __pyx_r = __pyx_v_urn;
   goto __pyx_L0;
 
-  /* "ppsim/simulator.pyx":606
+  /* "ppsim/simulator.pyx":668
  * 
  *     @staticmethod
  *     cdef Urn create(int64_t [::1] config, bitgen_t * bitgen):             # <<<<<<<<<<<<<<
@@ -10119,7 +10904,7 @@ static struct __pyx_obj_5ppsim_9simulator_Urn *__pyx_f_5ppsim_9simulator_3Urn_cr
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":624
+/* "ppsim/simulator.pyx":686
  *         return urn
  * 
  *     cpdef void sort(self):             # <<<<<<<<<<<<<<
@@ -10162,7 +10947,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9simulat
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_sort); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 624, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_sort); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 686, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_5ppsim_9simulator_3Urn_1sort)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -10178,7 +10963,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9simulat
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 624, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 686, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -10198,7 +10983,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9simulat
     #endif
   }
 
-  /* "ppsim/simulator.pyx":633
+  /* "ppsim/simulator.pyx":695
  *         cdef npy_intp i, j, k, o_i
  * 
  *         for i in range(1,len(self.config)):             # <<<<<<<<<<<<<<
@@ -10210,7 +10995,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9simulat
   for (__pyx_t_7 = 1; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "ppsim/simulator.pyx":636
+    /* "ppsim/simulator.pyx":698
  *             # See if the entry at self.order[i] needs to be moved earlier.
  *             # Recursively, we have ensured that order[0], ..., order[i-1] have the correct order.
  *             o_i = self.order[i]             # <<<<<<<<<<<<<<
@@ -10220,7 +11005,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9simulat
     __pyx_t_8 = __pyx_v_i;
     __pyx_v_o_i = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->order.data) + __pyx_t_8)) )));
 
-    /* "ppsim/simulator.pyx":638
+    /* "ppsim/simulator.pyx":700
  *             o_i = self.order[i]
  *             # j will be the index where self.order[i] should be inserted to.
  *             j = i             # <<<<<<<<<<<<<<
@@ -10229,7 +11014,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9simulat
  */
     __pyx_v_j = __pyx_v_i;
 
-    /* "ppsim/simulator.pyx":639
+    /* "ppsim/simulator.pyx":701
  *             # j will be the index where self.order[i] should be inserted to.
  *             j = i
  *             while j > 0 and self.config[o_i] > self.config[self.order[j-1]]:             # <<<<<<<<<<<<<<
@@ -10251,7 +11036,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9simulat
       __pyx_L7_bool_binop_done:;
       if (!__pyx_t_9) break;
 
-      /* "ppsim/simulator.pyx":640
+      /* "ppsim/simulator.pyx":702
  *             j = i
  *             while j > 0 and self.config[o_i] > self.config[self.order[j-1]]:
  *                 j -= 1             # <<<<<<<<<<<<<<
@@ -10261,7 +11046,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9simulat
       __pyx_v_j = (__pyx_v_j - 1);
     }
 
-    /* "ppsim/simulator.pyx":643
+    /* "ppsim/simulator.pyx":705
  *             # Index at order[i] will get moved to order[j], and all indices order[j], ..., order[i-1] get right shifted
  *             # First do the right shift, moving order[i-k] for k = 1, ..., i-j
  *             for k in range(1, i-j+1):             # <<<<<<<<<<<<<<
@@ -10273,7 +11058,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9simulat
     for (__pyx_t_15 = 1; __pyx_t_15 < __pyx_t_14; __pyx_t_15+=1) {
       __pyx_v_k = __pyx_t_15;
 
-      /* "ppsim/simulator.pyx":644
+      /* "ppsim/simulator.pyx":706
  *             # First do the right shift, moving order[i-k] for k = 1, ..., i-j
  *             for k in range(1, i-j+1):
  *                 self.order[i + 1 - k] = self.order[i - k]             # <<<<<<<<<<<<<<
@@ -10285,7 +11070,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9simulat
       *((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->order.data) + __pyx_t_12)) )) = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->order.data) + __pyx_t_11)) )));
     }
 
-    /* "ppsim/simulator.pyx":645
+    /* "ppsim/simulator.pyx":707
  *             for k in range(1, i-j+1):
  *                 self.order[i + 1 - k] = self.order[i - k]
  *             self.order[j] = o_i             # <<<<<<<<<<<<<<
@@ -10296,7 +11081,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9simulat
     *((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->order.data) + __pyx_t_11)) )) = __pyx_v_o_i;
   }
 
-  /* "ppsim/simulator.pyx":624
+  /* "ppsim/simulator.pyx":686
  *         return urn
  * 
  *     cpdef void sort(self):             # <<<<<<<<<<<<<<
@@ -10339,7 +11124,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("sort", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5ppsim_9simulator_3Urn_sort(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 624, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_void_to_None(__pyx_f_5ppsim_9simulator_3Urn_sort(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 686, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10356,7 +11141,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_3Urn_sort(struct __pyx_obj_5ppsim_9s
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":647
+/* "ppsim/simulator.pyx":709
  *             self.order[j] = o_i
  * 
  *     cdef npy_intp sample_one(self):             # <<<<<<<<<<<<<<
@@ -10374,7 +11159,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_one(struct __pyx_obj_5ppsi
   Py_ssize_t __pyx_t_2;
   __Pyx_RefNannySetupContext("sample_one", 0);
 
-  /* "ppsim/simulator.pyx":653
+  /* "ppsim/simulator.pyx":715
  *             The index of the random sample from the urn.
  *         """
  *         cdef npy_intp index, i=0             # <<<<<<<<<<<<<<
@@ -10383,7 +11168,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_one(struct __pyx_obj_5ppsi
  */
   __pyx_v_i = 0;
 
-  /* "ppsim/simulator.pyx":654
+  /* "ppsim/simulator.pyx":716
  *         """
  *         cdef npy_intp index, i=0
  *         cdef int64_t x = random_interval(self.bitgen, self.size - 1)             # <<<<<<<<<<<<<<
@@ -10392,7 +11177,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_one(struct __pyx_obj_5ppsi
  */
   __pyx_v_x = random_interval(__pyx_v_self->bitgen, (__pyx_v_self->size - 1));
 
-  /* "ppsim/simulator.pyx":655
+  /* "ppsim/simulator.pyx":717
  *         cdef npy_intp index, i=0
  *         cdef int64_t x = random_interval(self.bitgen, self.size - 1)
  *         while x >= 0:             # <<<<<<<<<<<<<<
@@ -10403,7 +11188,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_one(struct __pyx_obj_5ppsi
     __pyx_t_1 = ((__pyx_v_x >= 0) != 0);
     if (!__pyx_t_1) break;
 
-    /* "ppsim/simulator.pyx":656
+    /* "ppsim/simulator.pyx":718
  *         cdef int64_t x = random_interval(self.bitgen, self.size - 1)
  *         while x >= 0:
  *             index = self.order[i]             # <<<<<<<<<<<<<<
@@ -10413,7 +11198,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_one(struct __pyx_obj_5ppsi
     __pyx_t_2 = __pyx_v_i;
     __pyx_v_index = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->order.data) + __pyx_t_2)) )));
 
-    /* "ppsim/simulator.pyx":657
+    /* "ppsim/simulator.pyx":719
  *         while x >= 0:
  *             index = self.order[i]
  *             x -= self.config[index]             # <<<<<<<<<<<<<<
@@ -10423,7 +11208,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_one(struct __pyx_obj_5ppsi
     __pyx_t_2 = __pyx_v_index;
     __pyx_v_x = (__pyx_v_x - (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->config.data) + __pyx_t_2)) ))));
 
-    /* "ppsim/simulator.pyx":658
+    /* "ppsim/simulator.pyx":720
  *             index = self.order[i]
  *             x -= self.config[index]
  *             i += 1             # <<<<<<<<<<<<<<
@@ -10433,7 +11218,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_one(struct __pyx_obj_5ppsi
     __pyx_v_i = (__pyx_v_i + 1);
   }
 
-  /* "ppsim/simulator.pyx":659
+  /* "ppsim/simulator.pyx":721
  *             x -= self.config[index]
  *             i += 1
  *         self.config[index] -= 1             # <<<<<<<<<<<<<<
@@ -10443,7 +11228,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_one(struct __pyx_obj_5ppsi
   __pyx_t_2 = __pyx_v_index;
   *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->config.data) + __pyx_t_2)) )) -= 1;
 
-  /* "ppsim/simulator.pyx":660
+  /* "ppsim/simulator.pyx":722
  *             i += 1
  *         self.config[index] -= 1
  *         self.size -= 1             # <<<<<<<<<<<<<<
@@ -10452,7 +11237,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_one(struct __pyx_obj_5ppsi
  */
   __pyx_v_self->size = (__pyx_v_self->size - 1);
 
-  /* "ppsim/simulator.pyx":661
+  /* "ppsim/simulator.pyx":723
  *         self.config[index] -= 1
  *         self.size -= 1
  *         return index             # <<<<<<<<<<<<<<
@@ -10462,7 +11247,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_one(struct __pyx_obj_5ppsi
   __pyx_r = __pyx_v_index;
   goto __pyx_L0;
 
-  /* "ppsim/simulator.pyx":647
+  /* "ppsim/simulator.pyx":709
  *             self.order[j] = o_i
  * 
  *     cdef npy_intp sample_one(self):             # <<<<<<<<<<<<<<
@@ -10476,7 +11261,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_one(struct __pyx_obj_5ppsi
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":663
+/* "ppsim/simulator.pyx":725
  *         return index
  * 
  *     cdef void add_to_entry(self, npy_intp index, int64_t amount = 1):             # <<<<<<<<<<<<<<
@@ -10495,7 +11280,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_add_to_entry(struct __pyx_obj_5ppsim_
     }
   }
 
-  /* "ppsim/simulator.pyx":670
+  /* "ppsim/simulator.pyx":732
  *             amount: The integer amount to add / subtract.
  *         """
  *         self.config[index] += amount             # <<<<<<<<<<<<<<
@@ -10505,7 +11290,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_add_to_entry(struct __pyx_obj_5ppsim_
   __pyx_t_1 = __pyx_v_index;
   *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->config.data) + __pyx_t_1)) )) += __pyx_v_amount;
 
-  /* "ppsim/simulator.pyx":671
+  /* "ppsim/simulator.pyx":733
  *         """
  *         self.config[index] += amount
  *         self.size += amount             # <<<<<<<<<<<<<<
@@ -10514,7 +11299,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_add_to_entry(struct __pyx_obj_5ppsim_
  */
   __pyx_v_self->size = (__pyx_v_self->size + __pyx_v_amount);
 
-  /* "ppsim/simulator.pyx":663
+  /* "ppsim/simulator.pyx":725
  *         return index
  * 
  *     cdef void add_to_entry(self, npy_intp index, int64_t amount = 1):             # <<<<<<<<<<<<<<
@@ -10526,7 +11311,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_add_to_entry(struct __pyx_obj_5ppsim_
   __Pyx_RefNannyFinishContext();
 }
 
-/* "ppsim/simulator.pyx":673
+/* "ppsim/simulator.pyx":735
  *         self.size += amount
  * 
  *     cdef npy_intp sample_vector(self, int64_t n, int64_t [::1] v):             # <<<<<<<<<<<<<<
@@ -10549,7 +11334,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
   Py_ssize_t __pyx_t_5;
   __Pyx_RefNannySetupContext("sample_vector", 0);
 
-  /* "ppsim/simulator.pyx":686
+  /* "ppsim/simulator.pyx":748
  *                     the nonzero entries of the vector
  *         """
  *         cdef int64_t init_n = n             # <<<<<<<<<<<<<<
@@ -10558,7 +11343,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
  */
   __pyx_v_init_n = __pyx_v_n;
 
-  /* "ppsim/simulator.pyx":687
+  /* "ppsim/simulator.pyx":749
  *         """
  *         cdef int64_t init_n = n
  *         cdef npy_intp index, entries, i = 0             # <<<<<<<<<<<<<<
@@ -10567,7 +11352,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
  */
   __pyx_v_i = 0;
 
-  /* "ppsim/simulator.pyx":688
+  /* "ppsim/simulator.pyx":750
  *         cdef int64_t init_n = n
  *         cdef npy_intp index, entries, i = 0
  *         cdef int64_t total = self.size             # <<<<<<<<<<<<<<
@@ -10577,7 +11362,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
   __pyx_t_1 = __pyx_v_self->size;
   __pyx_v_total = __pyx_t_1;
 
-  /* "ppsim/simulator.pyx":690
+  /* "ppsim/simulator.pyx":752
  *         cdef int64_t total = self.size
  *         cdef int64_t h
  *         v[:] = 0             # <<<<<<<<<<<<<<
@@ -10597,7 +11382,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
       }
   }
 
-  /* "ppsim/simulator.pyx":691
+  /* "ppsim/simulator.pyx":753
  *         cdef int64_t h
  *         v[:] = 0
  *         while n > 0 and i < self.length - 1:             # <<<<<<<<<<<<<<
@@ -10616,7 +11401,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
     __pyx_L5_bool_binop_done:;
     if (!__pyx_t_2) break;
 
-    /* "ppsim/simulator.pyx":692
+    /* "ppsim/simulator.pyx":754
  *         v[:] = 0
  *         while n > 0 and i < self.length - 1:
  *             index = self.order[i]             # <<<<<<<<<<<<<<
@@ -10626,7 +11411,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
     __pyx_t_4 = __pyx_v_i;
     __pyx_v_index = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->order.data) + __pyx_t_4)) )));
 
-    /* "ppsim/simulator.pyx":693
+    /* "ppsim/simulator.pyx":755
  *         while n > 0 and i < self.length - 1:
  *             index = self.order[i]
  *             total -= self.config[index]             # <<<<<<<<<<<<<<
@@ -10636,7 +11421,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
     __pyx_t_4 = __pyx_v_index;
     __pyx_v_total = (__pyx_v_total - (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->config.data) + __pyx_t_4)) ))));
 
-    /* "ppsim/simulator.pyx":694
+    /* "ppsim/simulator.pyx":756
  *             index = self.order[i]
  *             total -= self.config[index]
  *             h = random_hypergeometric(self.bitgen, self.config[index], total, n)             # <<<<<<<<<<<<<<
@@ -10646,7 +11431,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
     __pyx_t_4 = __pyx_v_index;
     __pyx_v_h = random_hypergeometric(__pyx_v_self->bitgen, (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->config.data) + __pyx_t_4)) ))), __pyx_v_total, __pyx_v_n);
 
-    /* "ppsim/simulator.pyx":695
+    /* "ppsim/simulator.pyx":757
  *             total -= self.config[index]
  *             h = random_hypergeometric(self.bitgen, self.config[index], total, n)
  *             v[index] = h             # <<<<<<<<<<<<<<
@@ -10656,7 +11441,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
     __pyx_t_4 = __pyx_v_index;
     *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_v.data) + __pyx_t_4)) )) = __pyx_v_h;
 
-    /* "ppsim/simulator.pyx":696
+    /* "ppsim/simulator.pyx":758
  *             h = random_hypergeometric(self.bitgen, self.config[index], total, n)
  *             v[index] = h
  *             n -= h             # <<<<<<<<<<<<<<
@@ -10665,7 +11450,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
  */
     __pyx_v_n = (__pyx_v_n - __pyx_v_h);
 
-    /* "ppsim/simulator.pyx":697
+    /* "ppsim/simulator.pyx":759
  *             v[index] = h
  *             n -= h
  *             self.size -= h             # <<<<<<<<<<<<<<
@@ -10674,7 +11459,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
  */
     __pyx_v_self->size = (__pyx_v_self->size - __pyx_v_h);
 
-    /* "ppsim/simulator.pyx":698
+    /* "ppsim/simulator.pyx":760
  *             n -= h
  *             self.size -= h
  *             self.config[index] -= h             # <<<<<<<<<<<<<<
@@ -10684,7 +11469,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
     __pyx_t_4 = __pyx_v_index;
     *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->config.data) + __pyx_t_4)) )) -= __pyx_v_h;
 
-    /* "ppsim/simulator.pyx":699
+    /* "ppsim/simulator.pyx":761
  *             self.size -= h
  *             self.config[index] -= h
  *             i += 1             # <<<<<<<<<<<<<<
@@ -10694,7 +11479,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
     __pyx_v_i = (__pyx_v_i + 1);
   }
 
-  /* "ppsim/simulator.pyx":700
+  /* "ppsim/simulator.pyx":762
  *             self.config[index] -= h
  *             i += 1
  *         if n:             # <<<<<<<<<<<<<<
@@ -10704,7 +11489,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
   __pyx_t_2 = (__pyx_v_n != 0);
   if (__pyx_t_2) {
 
-    /* "ppsim/simulator.pyx":701
+    /* "ppsim/simulator.pyx":763
  *             i += 1
  *         if n:
  *             v[self.order[i]] = n             # <<<<<<<<<<<<<<
@@ -10715,7 +11500,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
     __pyx_t_5 = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->order.data) + __pyx_t_4)) )));
     *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_v.data) + __pyx_t_5)) )) = __pyx_v_n;
 
-    /* "ppsim/simulator.pyx":702
+    /* "ppsim/simulator.pyx":764
  *         if n:
  *             v[self.order[i]] = n
  *             self.config[self.order[i]] -= n             # <<<<<<<<<<<<<<
@@ -10726,7 +11511,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
     __pyx_t_5 = (*((npy_intp *) ( /* dim=0 */ ((char *) (((npy_intp *) __pyx_v_self->order.data) + __pyx_t_4)) )));
     *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->config.data) + __pyx_t_5)) )) -= __pyx_v_n;
 
-    /* "ppsim/simulator.pyx":703
+    /* "ppsim/simulator.pyx":765
  *             v[self.order[i]] = n
  *             self.config[self.order[i]] -= n
  *             self.size -= n             # <<<<<<<<<<<<<<
@@ -10735,7 +11520,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
  */
     __pyx_v_self->size = (__pyx_v_self->size - __pyx_v_n);
 
-    /* "ppsim/simulator.pyx":704
+    /* "ppsim/simulator.pyx":766
  *             self.config[self.order[i]] -= n
  *             self.size -= n
  *             i += 1             # <<<<<<<<<<<<<<
@@ -10744,7 +11529,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
  */
     __pyx_v_i = (__pyx_v_i + 1);
 
-    /* "ppsim/simulator.pyx":700
+    /* "ppsim/simulator.pyx":762
  *             self.config[index] -= h
  *             i += 1
  *         if n:             # <<<<<<<<<<<<<<
@@ -10753,7 +11538,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
  */
   }
 
-  /* "ppsim/simulator.pyx":705
+  /* "ppsim/simulator.pyx":767
  *             self.size -= n
  *             i += 1
  *         return i             # <<<<<<<<<<<<<<
@@ -10763,7 +11548,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
   __pyx_r = __pyx_v_i;
   goto __pyx_L0;
 
-  /* "ppsim/simulator.pyx":673
+  /* "ppsim/simulator.pyx":735
  *         self.size += amount
  * 
  *     cdef npy_intp sample_vector(self, int64_t n, int64_t [::1] v):             # <<<<<<<<<<<<<<
@@ -10777,7 +11562,7 @@ static npy_intp __pyx_f_5ppsim_9simulator_3Urn_sample_vector(struct __pyx_obj_5p
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":707
+/* "ppsim/simulator.pyx":769
  *         return i
  * 
  *     cdef void add_vector(self, int64_t [::1] vector):             # <<<<<<<<<<<<<<
@@ -10795,7 +11580,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_add_vector(struct __pyx_obj_5ppsim_9s
   Py_ssize_t __pyx_t_5;
   __Pyx_RefNannySetupContext("add_vector", 0);
 
-  /* "ppsim/simulator.pyx":713
+  /* "ppsim/simulator.pyx":775
  *             vector: An integer vector to add to the urn.
  *         """
  *         cdef npy_intp i = 0             # <<<<<<<<<<<<<<
@@ -10804,7 +11589,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_add_vector(struct __pyx_obj_5ppsim_9s
  */
   __pyx_v_i = 0;
 
-  /* "ppsim/simulator.pyx":714
+  /* "ppsim/simulator.pyx":776
  *         """
  *         cdef npy_intp i = 0
  *         for i in range(self.length):             # <<<<<<<<<<<<<<
@@ -10816,7 +11601,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_add_vector(struct __pyx_obj_5ppsim_9s
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "ppsim/simulator.pyx":715
+    /* "ppsim/simulator.pyx":777
  *         cdef npy_intp i = 0
  *         for i in range(self.length):
  *             self.config[i] += vector[i]             # <<<<<<<<<<<<<<
@@ -10827,7 +11612,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_add_vector(struct __pyx_obj_5ppsim_9s
     __pyx_t_5 = __pyx_v_i;
     *((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->config.data) + __pyx_t_5)) )) += (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_vector.data) + __pyx_t_4)) )));
 
-    /* "ppsim/simulator.pyx":716
+    /* "ppsim/simulator.pyx":778
  *         for i in range(self.length):
  *             self.config[i] += vector[i]
  *             self.size += vector[i]             # <<<<<<<<<<<<<<
@@ -10838,7 +11623,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_add_vector(struct __pyx_obj_5ppsim_9s
     __pyx_v_self->size = (__pyx_v_self->size + (*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_vector.data) + __pyx_t_4)) ))));
   }
 
-  /* "ppsim/simulator.pyx":707
+  /* "ppsim/simulator.pyx":769
  *         return i
  * 
  *     cdef void add_vector(self, int64_t [::1] vector):             # <<<<<<<<<<<<<<
@@ -10850,7 +11635,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_add_vector(struct __pyx_obj_5ppsim_9s
   __Pyx_RefNannyFinishContext();
 }
 
-/* "ppsim/simulator.pyx":718
+/* "ppsim/simulator.pyx":780
  *             self.size += vector[i]
  * 
  *     cdef void reset(self):             # <<<<<<<<<<<<<<
@@ -10862,7 +11647,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_reset(struct __pyx_obj_5ppsim_9simula
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("reset", 0);
 
-  /* "ppsim/simulator.pyx":720
+  /* "ppsim/simulator.pyx":782
  *     cdef void reset(self):
  *         """Set the counts back to zero."""
  *         self.config[:] = 0             # <<<<<<<<<<<<<<
@@ -10881,14 +11666,14 @@ static void __pyx_f_5ppsim_9simulator_3Urn_reset(struct __pyx_obj_5ppsim_9simula
       }
   }
 
-  /* "ppsim/simulator.pyx":721
+  /* "ppsim/simulator.pyx":783
  *         """Set the counts back to zero."""
  *         self.config[:] = 0
  *         self.size = 0             # <<<<<<<<<<<<<<
  */
   __pyx_v_self->size = 0;
 
-  /* "ppsim/simulator.pyx":718
+  /* "ppsim/simulator.pyx":780
  *             self.size += vector[i]
  * 
  *     cdef void reset(self):             # <<<<<<<<<<<<<<
@@ -10900,7 +11685,7 @@ static void __pyx_f_5ppsim_9simulator_3Urn_reset(struct __pyx_obj_5ppsim_9simula
   __Pyx_RefNannyFinishContext();
 }
 
-/* "ppsim/simulator.pyx":599
+/* "ppsim/simulator.pyx":661
  *         length: len(config).
  *     """
  *     cdef public int64_t [::1] config             # <<<<<<<<<<<<<<
@@ -10930,7 +11715,7 @@ static PyObject *__pyx_pf_5ppsim_9simulator_3Urn_6config___get__(struct __pyx_ob
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->config, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_int64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_int64_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 599, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->config, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_int64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_int64_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 661, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10968,7 +11753,7 @@ static int __pyx_pf_5ppsim_9simulator_3Urn_6config_2__set__(struct __pyx_obj_5pp
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 599, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn_int64_t(__pyx_v_value, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 661, __pyx_L1_error)
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->config, 0);
   __pyx_v_self->config = __pyx_t_1;
   __pyx_t_1.memview = NULL;
@@ -25267,9 +26052,10 @@ static int __pyx_setprop_5ppsim_9simulator_9Simulator_null_transitions(PyObject 
 }
 
 static PyMethodDef __pyx_methods_5ppsim_9simulator_Simulator[] = {
-  {"run", (PyCFunction)__pyx_pw_5ppsim_9simulator_9Simulator_3run, METH_O, __pyx_doc_5ppsim_9simulator_9Simulator_2run},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5ppsim_9simulator_9Simulator_5__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5ppsim_9simulator_9Simulator_7__setstate_cython__, METH_O, 0},
+  {"run", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5ppsim_9simulator_9Simulator_3run, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5ppsim_9simulator_9Simulator_2run},
+  {"reset", (PyCFunction)__pyx_pw_5ppsim_9simulator_9Simulator_5reset, METH_O, __pyx_doc_5ppsim_9simulator_9Simulator_4reset},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_5ppsim_9simulator_9Simulator_7__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_5ppsim_9simulator_9Simulator_9__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -25375,9 +26161,11 @@ static void __pyx_tp_dealloc_5ppsim_9simulator_SimulatorSequentialArray(PyObject
 }
 
 static PyMethodDef __pyx_methods_5ppsim_9simulator_SimulatorSequentialArray[] = {
-  {"run", (PyCFunction)__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_3run, METH_O, __pyx_doc_5ppsim_9simulator_24SimulatorSequentialArray_2run},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_5__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_7__setstate_cython__, METH_O, 0},
+  {"make_population", (PyCFunction)__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_3make_population, METH_NOARGS, __pyx_doc_5ppsim_9simulator_24SimulatorSequentialArray_2make_population},
+  {"run", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_5run, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5ppsim_9simulator_24SimulatorSequentialArray_4run},
+  {"reset", (PyCFunction)__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_7reset, METH_O, __pyx_doc_5ppsim_9simulator_24SimulatorSequentialArray_6reset},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_9__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_5ppsim_9simulator_24SimulatorSequentialArray_11__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -25632,11 +26420,11 @@ static int __pyx_setprop_5ppsim_9simulator_19SimulatorMultiBatch_reaction_probab
 static PyMethodDef __pyx_methods_5ppsim_9simulator_SimulatorMultiBatch[] = {
   {"set_n_parameters", (PyCFunction)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_3set_n_parameters, METH_NOARGS, __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_2set_n_parameters},
   {"reset", (PyCFunction)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_5reset, METH_O, __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_4reset},
-  {"run", (PyCFunction)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_7run, METH_O, __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_6run},
+  {"run", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_7run, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_6run},
   {"run_until_silent", (PyCFunction)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_9run_until_silent, METH_O, __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_8run_until_silent},
   {"get_enabled_reactions", (PyCFunction)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_11get_enabled_reactions, METH_NOARGS, __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_10get_enabled_reactions},
-  {"gillespie_step", (PyCFunction)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_13gillespie_step, METH_NOARGS, __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_step},
-  {"multibatch_step", (PyCFunction)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_15multibatch_step, METH_NOARGS, __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_step},
+  {"gillespie_step", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_13gillespie_step, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_12gillespie_step},
+  {"multibatch_step", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_15multibatch_step, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch_14multibatch_step},
   {"__reduce_cython__", (PyCFunction)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_17__reduce_cython__, METH_NOARGS, 0},
   {"__setstate_cython__", (PyCFunction)__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_19__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
@@ -25684,7 +26472,7 @@ static PyTypeObject __pyx_type_5ppsim_9simulator_SimulatorMultiBatch = {
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
-  "Uses the MultiBatch algorithm to simulate O(sqrt(n)) interactions in parallel.\n\n    The MultiBatch algorithm comes from the paper\n        'Simulating Population Protocols in Subconstant Time per Interaction' (https://arxiv.org/abs/2005.03584).\n    Beyond the methods described in the paper, this class also dynamically switches to Gillespie's algorithm when\n    the number of null interactions is high.\n\n    Attributes:\n        urn: An Urn object which stores the configuration and has methods for sampling.\n        updated_counts: An additional Urn where agents are stored that have been updated during a batch.\n        logn: Precomputed log(n).\n        batch_threshold: Required size of the batch that must be found from sampling collision lengths\n            before doing the parallel batch processing.\n        row_sums: Array which stores sampled counts of initiator agents (row sums of the 'D' matrix from the paper).\n        row: Array which stores the counts of responder agents for each type of initiator agent\n            (one row of the 'D' matrix from the paper).\n        m: Array which holds the outputs of samples from a multinomial distribution for batch random transitions.\n        do_gillespie: A boolean determining if the we are currently doing Gillespie steps.\n        silent: A boolean determining if the configuration is silent (all interactions are null).\n        reactions: A (num_reactions) x 4 array giving a list of reactions, as [input input output output]\n        enabled_reactions: An array holding indices of all reactions which are currently applicable.\n        num_enabled_reactions: Gives the number of meaningful indices contained in enabled_reactions.\n        propensities: A num_reactions x 1 array holding the propensities of each reaction.\n            The propensity of a reaction is the probability of that reaction * (n choose 2).\n        reaction_probabilities: A num_reactions x 1 array giving the probability of each reaction given t""hat those\n            two agents interact.\n        gillespie_threshold: The probability of a non-null interaction must be below this threshold to keep\n            doing Gillespie steps.\n        coll_table: Precomputed values of the distribution to speed up the function sample_coll(r, u).\n        coll_table_r_values: Values of r, giving one axis of coll_table.\n        coll_table_u_values: Values of u, giving the other axis of coll_table.\n        num_r_values: len(coll_table_r_values), first axis of coll_table.\n        num_u_values: len(coll_table_u_values), second axis of coll_table.\n        r_constant: Used in definition of coll_table_r_values.\n    ", /*tp_doc*/
+  "Uses the MultiBatch algorithm to simulate O(sqrt(n)) interactions in parallel.\n\n    The MultiBatch algorithm comes from the paper\n        'Simulating Population Protocols in Subconstant Time per Interaction'\n        (https://arxiv.org/abs/2005.03584).\n    Beyond the methods described in the paper, this class also dynamically switches\n    to Gillespie's algorithm when the number of null interactions is high.\n\n    Attributes:\n        urn: An Urn object which stores the configuration and has methods for sampling.\n        updated_counts: An additional Urn where agents are stored that have been\n            updated during a batch.\n        logn: Precomputed log(n).\n        batch_threshold: Minimum number of interactions that must be simulated in each\n            batch. Collisions will be repeatedly sampled up until batch_threshold\n            interaction steps, then all non-colliding pairs of 'delayed agents' are\n            processed in parallel.\n        row_sums: Array which stores sampled counts of initiator agents\n            (row sums of the 'D' matrix from the paper).\n        row: Array which stores the counts of responder agents for each type of\n            initiator agent (one row of the 'D' matrix from the paper).\n        m: Array which holds the outputs of samples from a multinomial distribution\n            for batch random transitions.\n        do_gillespie: A boolean determining if the we are currently doing Gillespie steps.\n        silent: A boolean determining if the configuration is silent\n            (all interactions are null).\n        reactions: A (num_reactions) x 4 array giving a list of reactions,\n            as [input input output output]\n        enabled_reactions: An array holding indices of all currently applicable reactions.\n        num_enabled_reactions: The number of meaningful indices in enabled_reactions.\n        propensities: A num_reactions x 1 array holding the propensities of each reaction.\n            The prop""ensity of a reaction is the probability of that reaction * (n choose 2).\n        reaction_probabilities: A num_reactions x 1 array giving the probability of each\n            reaction, given that those two agents interact.\n        gillespie_threshold: The probability of a non-null interaction must be below this\n            threshold to keep doing Gillespie steps.\n        coll_table: Precomputed values to speed up the function sample_coll(r, u).\n        coll_table_r_values: Values of r, giving one axis of coll_table.\n        coll_table_u_values: Values of u, giving the other axis of coll_table.\n        num_r_values: len(coll_table_r_values), first axis of coll_table.\n        num_u_values: len(coll_table_u_values), second axis of coll_table.\n        r_constant: Used in definition of coll_table_r_values.\n    ", /*tp_doc*/
   __pyx_tp_traverse_5ppsim_9simulator_SimulatorMultiBatch, /*tp_traverse*/
   __pyx_tp_clear_5ppsim_9simulator_SimulatorMultiBatch, /*tp_clear*/
   0, /*tp_richcompare*/
@@ -26654,6 +27442,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
   {&__pyx_n_s_dtype_is_object, __pyx_k_dtype_is_object, sizeof(__pyx_k_dtype_is_object), 0, 0, 1, 1},
   {&__pyx_n_s_encode, __pyx_k_encode, sizeof(__pyx_k_encode), 0, 0, 1, 1},
+  {&__pyx_n_s_end_step, __pyx_k_end_step, sizeof(__pyx_k_end_step), 0, 0, 1, 1},
   {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
   {&__pyx_n_s_error, __pyx_k_error, sizeof(__pyx_k_error), 0, 0, 1, 1},
   {&__pyx_n_s_flags, __pyx_k_flags, sizeof(__pyx_k_flags), 0, 0, 1, 1},
@@ -26674,6 +27463,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_itemsize_0_for_cython_array, __pyx_k_itemsize_0_for_cython_array, sizeof(__pyx_k_itemsize_0_for_cython_array), 0, 0, 1, 0},
   {&__pyx_n_s_linspace, __pyx_k_linspace, sizeof(__pyx_k_linspace), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
+  {&__pyx_n_s_make_population, __pyx_k_make_population, sizeof(__pyx_k_make_population), 0, 0, 1, 1},
+  {&__pyx_n_s_max_wallclock_time, __pyx_k_max_wallclock_time, sizeof(__pyx_k_max_wallclock_time), 0, 0, 1, 1},
   {&__pyx_n_s_memview, __pyx_k_memview, sizeof(__pyx_k_memview), 0, 0, 1, 1},
   {&__pyx_n_s_mode, __pyx_k_mode, sizeof(__pyx_k_mode), 0, 0, 1, 1},
   {&__pyx_n_s_multibatch_step, __pyx_k_multibatch_step, sizeof(__pyx_k_multibatch_step), 0, 0, 1, 1},
@@ -26684,6 +27475,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_null_transitions, __pyx_k_null_transitions, sizeof(__pyx_k_null_transitions), 0, 0, 1, 1},
+  {&__pyx_n_s_num_steps, __pyx_k_num_steps, sizeof(__pyx_k_num_steps), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
   {&__pyx_kp_u_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 1, 0, 0},
   {&__pyx_kp_u_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 1, 0, 0},
@@ -26723,6 +27515,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_stringsource, __pyx_k_stringsource, sizeof(__pyx_k_stringsource), 0, 0, 1, 0},
   {&__pyx_n_s_struct, __pyx_k_struct, sizeof(__pyx_k_struct), 0, 0, 1, 1},
   {&__pyx_n_s_sum, __pyx_k_sum, sizeof(__pyx_k_sum), 0, 0, 1, 1},
+  {&__pyx_n_s_t_max, __pyx_k_t_max, sizeof(__pyx_k_t_max), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_time, __pyx_k_time, sizeof(__pyx_k_time), 0, 0, 1, 1},
   {&__pyx_n_s_transition_probabilities, __pyx_k_transition_probabilities, sizeof(__pyx_k_transition_probabilities), 0, 0, 1, 1},
@@ -27192,7 +27985,7 @@ static int __Pyx_modinit_type_init_code(void) {
   if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5ppsim_9simulator_Simulator) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
   __pyx_ptype_5ppsim_9simulator_Simulator = &__pyx_type_5ppsim_9simulator_Simulator;
   __pyx_type_5ppsim_9simulator_SimulatorSequentialArray.tp_base = __pyx_ptype_5ppsim_9simulator_Simulator;
-  if (PyType_Ready(&__pyx_type_5ppsim_9simulator_SimulatorSequentialArray) < 0) __PYX_ERR(0, 100, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_5ppsim_9simulator_SimulatorSequentialArray) < 0) __PYX_ERR(0, 109, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_5ppsim_9simulator_SimulatorSequentialArray.tp_print = 0;
   #endif
@@ -27201,7 +27994,7 @@ static int __Pyx_modinit_type_init_code(void) {
   }
   #if CYTHON_COMPILING_IN_CPYTHON
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_5ppsim_9simulator_SimulatorSequentialArray, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 100, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_5ppsim_9simulator_SimulatorSequentialArray, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 109, __pyx_L1_error)
     if (Py_TYPE(wrapper) == &PyWrapperDescr_Type) {
       __pyx_wrapperbase_5ppsim_9simulator_24SimulatorSequentialArray___init__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_5ppsim_9simulator_24SimulatorSequentialArray___init__.doc = __pyx_doc_5ppsim_9simulator_24SimulatorSequentialArray___init__;
@@ -27209,14 +28002,14 @@ static int __Pyx_modinit_type_init_code(void) {
     }
   }
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_SimulatorSequentialArray, (PyObject *)&__pyx_type_5ppsim_9simulator_SimulatorSequentialArray) < 0) __PYX_ERR(0, 100, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5ppsim_9simulator_SimulatorSequentialArray) < 0) __PYX_ERR(0, 100, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_SimulatorSequentialArray, (PyObject *)&__pyx_type_5ppsim_9simulator_SimulatorSequentialArray) < 0) __PYX_ERR(0, 109, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5ppsim_9simulator_SimulatorSequentialArray) < 0) __PYX_ERR(0, 109, __pyx_L1_error)
   __pyx_ptype_5ppsim_9simulator_SimulatorSequentialArray = &__pyx_type_5ppsim_9simulator_SimulatorSequentialArray;
   __pyx_vtabptr_5ppsim_9simulator_SimulatorMultiBatch = &__pyx_vtable_5ppsim_9simulator_SimulatorMultiBatch;
   __pyx_vtable_5ppsim_9simulator_SimulatorMultiBatch.unordered_delta = (__pyx_ctuple_npy_intp__and_npy_intp (*)(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *, npy_intp, npy_intp))__pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_unordered_delta;
   __pyx_vtable_5ppsim_9simulator_SimulatorMultiBatch.sample_coll = (int64_t (*)(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *, int64_t, double, struct __pyx_opt_args_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll *__pyx_optional_args))__pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll;
   __pyx_type_5ppsim_9simulator_SimulatorMultiBatch.tp_base = __pyx_ptype_5ppsim_9simulator_Simulator;
-  if (PyType_Ready(&__pyx_type_5ppsim_9simulator_SimulatorMultiBatch) < 0) __PYX_ERR(0, 151, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_5ppsim_9simulator_SimulatorMultiBatch) < 0) __PYX_ERR(0, 180, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_5ppsim_9simulator_SimulatorMultiBatch.tp_print = 0;
   #endif
@@ -27225,7 +28018,7 @@ static int __Pyx_modinit_type_init_code(void) {
   }
   #if CYTHON_COMPILING_IN_CPYTHON
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_5ppsim_9simulator_SimulatorMultiBatch, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 151, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_5ppsim_9simulator_SimulatorMultiBatch, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 180, __pyx_L1_error)
     if (Py_TYPE(wrapper) == &PyWrapperDescr_Type) {
       __pyx_wrapperbase_5ppsim_9simulator_19SimulatorMultiBatch___init__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_5ppsim_9simulator_19SimulatorMultiBatch___init__.doc = __pyx_doc_5ppsim_9simulator_19SimulatorMultiBatch___init__;
@@ -27233,9 +28026,9 @@ static int __Pyx_modinit_type_init_code(void) {
     }
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_type_5ppsim_9simulator_SimulatorMultiBatch.tp_dict, __pyx_vtabptr_5ppsim_9simulator_SimulatorMultiBatch) < 0) __PYX_ERR(0, 151, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_SimulatorMultiBatch, (PyObject *)&__pyx_type_5ppsim_9simulator_SimulatorMultiBatch) < 0) __PYX_ERR(0, 151, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5ppsim_9simulator_SimulatorMultiBatch) < 0) __PYX_ERR(0, 151, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_5ppsim_9simulator_SimulatorMultiBatch.tp_dict, __pyx_vtabptr_5ppsim_9simulator_SimulatorMultiBatch) < 0) __PYX_ERR(0, 180, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_SimulatorMultiBatch, (PyObject *)&__pyx_type_5ppsim_9simulator_SimulatorMultiBatch) < 0) __PYX_ERR(0, 180, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5ppsim_9simulator_SimulatorMultiBatch) < 0) __PYX_ERR(0, 180, __pyx_L1_error)
   __pyx_ptype_5ppsim_9simulator_SimulatorMultiBatch = &__pyx_type_5ppsim_9simulator_SimulatorMultiBatch;
   __pyx_vtabptr_5ppsim_9simulator_Urn = &__pyx_vtable_5ppsim_9simulator_Urn;
   __pyx_vtable_5ppsim_9simulator_Urn.create = (struct __pyx_obj_5ppsim_9simulator_Urn *(*)(__Pyx_memviewslice, bitgen_t *))__pyx_f_5ppsim_9simulator_3Urn_create;
@@ -27245,16 +28038,16 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_5ppsim_9simulator_Urn.sample_vector = (npy_intp (*)(struct __pyx_obj_5ppsim_9simulator_Urn *, int64_t, __Pyx_memviewslice))__pyx_f_5ppsim_9simulator_3Urn_sample_vector;
   __pyx_vtable_5ppsim_9simulator_Urn.add_vector = (void (*)(struct __pyx_obj_5ppsim_9simulator_Urn *, __Pyx_memviewslice))__pyx_f_5ppsim_9simulator_3Urn_add_vector;
   __pyx_vtable_5ppsim_9simulator_Urn.reset = (void (*)(struct __pyx_obj_5ppsim_9simulator_Urn *))__pyx_f_5ppsim_9simulator_3Urn_reset;
-  if (PyType_Ready(&__pyx_type_5ppsim_9simulator_Urn) < 0) __PYX_ERR(0, 589, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_5ppsim_9simulator_Urn) < 0) __PYX_ERR(0, 651, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_5ppsim_9simulator_Urn.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_5ppsim_9simulator_Urn.tp_dictoffset && __pyx_type_5ppsim_9simulator_Urn.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_5ppsim_9simulator_Urn.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_5ppsim_9simulator_Urn.tp_dict, __pyx_vtabptr_5ppsim_9simulator_Urn) < 0) __PYX_ERR(0, 589, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Urn, (PyObject *)&__pyx_type_5ppsim_9simulator_Urn) < 0) __PYX_ERR(0, 589, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5ppsim_9simulator_Urn) < 0) __PYX_ERR(0, 589, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_5ppsim_9simulator_Urn.tp_dict, __pyx_vtabptr_5ppsim_9simulator_Urn) < 0) __PYX_ERR(0, 651, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_Urn, (PyObject *)&__pyx_type_5ppsim_9simulator_Urn) < 0) __PYX_ERR(0, 651, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5ppsim_9simulator_Urn) < 0) __PYX_ERR(0, 651, __pyx_L1_error)
   __pyx_ptype_5ppsim_9simulator_Urn = &__pyx_type_5ppsim_9simulator_Urn;
   __pyx_vtabptr_array = &__pyx_vtable_array;
   __pyx_vtable_array.get_memview = (PyObject *(*)(struct __pyx_array_obj *))__pyx_array_get_memview;
@@ -28705,6 +29498,28 @@ invalid_keyword:
     return 0;
 }
 
+/* PyObjectCallNoArg */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
+#if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(func)) {
+        return __Pyx_PyFunction_FastCall(func, NULL, 0);
+    }
+#endif
+#ifdef __Pyx_CyFunction_USED
+    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
+#else
+    if (likely(PyCFunction_Check(func)))
+#endif
+    {
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
+            return __Pyx_PyObject_CallMethO(func, NULL);
+        }
+    }
+    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
+}
+#endif
+
 /* RaiseTooManyValuesToUnpack */
 static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
     PyErr_Format(PyExc_ValueError,
@@ -28764,28 +29579,6 @@ static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
     }
     return 0;
 }
-
-/* PyObjectCallNoArg */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
-#if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(func)) {
-        return __Pyx_PyFunction_FastCall(func, NULL, 0);
-    }
-#endif
-#ifdef __Pyx_CyFunction_USED
-    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
-#else
-    if (likely(PyCFunction_Check(func)))
-#endif
-    {
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
-            return __Pyx_PyObject_CallMethO(func, NULL);
-        }
-    }
-    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
-}
-#endif
 
 /* PyIntFromDouble */
 #if PY_MAJOR_VERSION < 3
