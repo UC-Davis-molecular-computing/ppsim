@@ -18,7 +18,7 @@ time_trials is a convenience function used for gathering data about the
 import dataclasses
 import math
 import time
-from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List
+from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable
 
 import ipywidgets as widgets
 import matplotlib.pyplot as plt
@@ -29,11 +29,12 @@ import seaborn as sns
 from tqdm.auto import tqdm
 
 from . import simulator
+from ppsim.crn import Reaction, reactions_to_dict
 
 # TODO: these names are not showing up in the mouseover information
 State = Hashable
 Output = Union[Tuple[State, State], Dict[Tuple[State, State], float]]
-Rule = Union[Callable[[State, State], Output], Dict[Tuple[State, State], Output]]
+Rule = Union[Callable[[State, State], Output], Dict[Tuple[State, State], Output], Iterable[Reaction]]
 
 
 # TODO: give other option for when the number of reachable states is large or unbounded
@@ -191,12 +192,26 @@ class Simulation:
             **kwargs: If rule is a function, other keyword function parameters are
                 passed in here.
         """
+
+        # if rule is iterable of Reactions from the crn module, then convert to dict
+        rule_is_reaction_iterable = True
+        try:
+            for reaction in rule:
+                if not isinstance(reaction, Reaction):
+                    rule_is_reaction_iterable = False
+                    break
+        except:
+            # might end up here if rule is not even iterable, e.g., is a function
+            rule_is_reaction_iterable = False
+        if rule_is_reaction_iterable:
+            rule, rate_max = reactions_to_dict(rule)
+
         self._rule = rule
         self._rule_kwargs = kwargs
 
         # Get a list of all reachable states, use the natsort library to put in a nice order.
         self.state_list = natsorted(list(state_enumeration(init_config, self.rule)),
-                                    key=lambda x:x.__repr__())
+                                    key=lambda x: repr(x))
         self.state_dict = {state: i for i, state in enumerate(self.state_list)}
 
         if simulator_method.lower() == 'multibatch':
