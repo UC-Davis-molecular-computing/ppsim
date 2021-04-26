@@ -14,9 +14,7 @@ def main():
     sim = Simulation(init_config, approx_majority)
     sim.run()
     sim.history.plot()
-    plt.title('4 state majority protocol')
-    plt.xscale('symlog')
-    plt.yscale('symlog')
+    plt.title('approximate majority protocol')
     plt.xlim(0, sim.times[-1])
     plt.ylim(0, n)
 

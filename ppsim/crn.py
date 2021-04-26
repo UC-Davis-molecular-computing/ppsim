@@ -248,7 +248,7 @@ class Reaction:
             The left hand side of the stoichiometric equation
         products: Expression
             The right hand side of the stoichiometric equation
-        coeff: float
+        rate_constant: float
             The rate constant of the reaction
     """
 
@@ -380,15 +380,3 @@ class Reaction:
         """
         return (self.products.species.get(species_, 0) -
                 self.reactants.species.get(species_, 0))
-
-    def propensity(self, counts):
-        """
-        Returns the value of Reaction.discrete_flux given the currently
-        present molecules/species in 'counts'.
-        """
-
-        def flux_part(i):
-            s, c = i
-            return reduce(mul, (counts.get(s, 0) - i for i in range(c)))
-
-        return reduce(mul, map(flux_part, self.reactants.species.items()))
