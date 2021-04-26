@@ -16,6 +16,7 @@ time_trials is a convenience function used for gathering data about the
 """
 
 import dataclasses
+import math
 import time
 from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List
 
@@ -350,6 +351,7 @@ class Simulation:
         if len(self.snapshots) == 0 and timer is True:
             self.add_snapshot(TimeUpdate())
 
+        final_step = None
         # stop_condition() returns True when it is time to stop
         if run_until is None:
             if type(self.simulator) != simulator.SimulatorMultiBatch:
@@ -359,7 +361,7 @@ class Simulation:
                 return self.simulator.silent
         elif type(run_until) is float or type(run_until) is int:
             end_time = self.time + run_until
-
+            final_step = math.ceil(end_time * self.simulator.n)
             def stop_condition():
                 return self.time >= end_time
         elif callable(run_until):
@@ -389,7 +391,10 @@ class Simulation:
         if len(self.snapshots) > 0:
             run_kwargs['max_wallclock_time'] = min([s.update_time for s in self.snapshots])
         while stop_condition() is False:
-            self.simulator.run(min(self.simulator.t + interval_length, next_step), **run_kwargs)
+            end_step = min(self.simulator.t + interval_length, next_step)
+            if final_step is not None:
+                end_step = min(end_step, final_step)
+            self.simulator.run(end_step, **run_kwargs)
             if self.simulator.t >= next_step:
                 self.add_config()
                 next_step = self.simulator.t + step_length
