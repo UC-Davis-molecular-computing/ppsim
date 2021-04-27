@@ -8,7 +8,6 @@
 
 from libc.math cimport log, lgamma, sqrt
 from libc.stdint cimport int64_t, uint8_t, uint32_t
-from libc.time cimport clock
 cimport cython
 from numpy cimport npy_intp
 import numpy as np
@@ -97,11 +96,12 @@ cdef class Simulator:
         """
         pass
 
-    def reset(self, int64_t [::1] config):
+    def reset(self, int64_t [::1] config, int64_t t = 0):
         """Base function which will be called to reset the simulation.
 
         Args:
             config: The configuration array to reset to.
+            t: The new value of self.t. Defaults to 0.
         """
         pass
 
@@ -163,16 +163,17 @@ cdef class SimulatorSequentialArray(Simulator):
             self.t += 1
         return self.config
 
-    def reset(self, int64_t [::1] config):
+    def reset(self, int64_t [::1] config, int64_t t = 0):
         """Reset to a given configuration.
 
         Sets all parameters necessary to change the configuration.
 
         Args:
             config: The configuration array to reset to.
+            t: The new value of self.t. Defaults to 0.
         """
         self.config = config
-        self.t = 0
+        self.t = t
         self.n = sum(config)
         self.make_population()
 
@@ -321,13 +322,14 @@ cdef class SimulatorMultiBatch(Simulator):
                 self.coll_table[i, j] = self.sample_coll(self.coll_table_r_values[i],
                                                          self.coll_table_u_values[j], has_bounds=False)
 
-    def reset(self, int64_t [::1] config):
+    def reset(self, int64_t [::1] config, int64_t t = 0):
         """Reset to a given configuration.
 
         Sets all parameters necessary to change the configuration.
 
         Args:
             config: The configuration array to reset to.
+            t: The new value of self.t. Defaults to 0.
         """
         self.config = config
         self.urn = Urn.create(self.config, self.bitgen)
@@ -335,7 +337,7 @@ cdef class SimulatorMultiBatch(Simulator):
         if n != self.n:
             self.n = n
             self.set_n_parameters()
-        self.t = 0
+        self.t = t
         self.silent = False
         self.do_gillespie = False
 
@@ -343,7 +345,8 @@ cdef class SimulatorMultiBatch(Simulator):
         """Run the simulation for a fixed number of steps.
 
         Args:
-            num_steps: The number of steps to run the simulation.
+            end_step: Will run until self.t = end_step.
+            max_wallclock_time: A bound in seconds this will run for.
         """
         cdef double end_time = time.perf_counter() + max_wallclock_time
         while self.t < end_step and time.perf_counter() < end_time:
@@ -478,7 +481,7 @@ cdef class SimulatorMultiBatch(Simulator):
 
             # If the sampled collision happens after t_max, then include delayed agents up until t_max
             #   and do not perform the collision.
-            if self.t + num_delayed // 2 > t_max > 0:
+            if self.t + num_delayed // 2 >= t_max > 0:
                 num_delayed = (t_max - self.t) * 2
                 break
 

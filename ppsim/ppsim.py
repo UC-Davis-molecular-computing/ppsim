@@ -341,7 +341,7 @@ class Simulation:
             a[self.state_dict[k]] += d[k]
         return a
 
-    def run(self, run_until=None, recording_step=1., convergence_step=1., timer=True):
+    def run(self, run_until=None, history_interval=1., stopping_interval=1., timer=True):
         """Runs the simulation.
 
         Can give a fixed amount of time to run the simulation, or a function that checks
@@ -356,10 +356,12 @@ class Simulation:
                 is silent (all transitions are null). This only works with the multibatch
                 simulator method, if another simulator method is given, then using None will
                 raise a ValueError.
-            recording_step: The length to run the simulator before recording each step of data,
+            history_interval: The length to run the simulator before recording data,
                 in units of parallel time (n steps). Defaults to 1.
-            convergence_step: The length to run the simulator before checking for the stop
-                condition
+                This can either be a float, or a function that takes the current time and
+                and returns a float.
+            stopping_interval: The length to run the simulator before checking for the stop
+                condition.
             timer: If True, and there are no other snapshot objects, a default TimeUpdate
                 Snapshot will be created to print the current parallel time.
         """
@@ -376,7 +378,8 @@ class Simulation:
                 return self.simulator.silent
         elif type(run_until) is float or type(run_until) is int:
             end_time = self.time + run_until
-            final_step = math.ceil(end_time * self.simulator.n)
+            final_step = self.time_to_steps(end_time)
+
             def stop_condition():
                 return self.time >= end_time
         elif callable(run_until):
@@ -387,17 +390,21 @@ class Simulation:
             raise TypeError('run_until must be a float, int, function, or None.')
 
         # step_length is the number of interaction steps between recordings
-        step_length = int(recording_step * self.simulator.n)
+        def step_length():
+            if callable(history_interval):
+                steps = self.time_to_steps(history_interval(self.time))
+            else:
+                steps = self.time_to_steps(history_interval)
+            if steps == 0:
+                raise ValueError('history_interval must always be strictly positive.')
+            return steps
 
-        # interval_length is the number of interaction steps to run for. In slow simulations, it will shrink to
-        # accomodate more rapid snapshots.
-        interval_length = min(step_length, int(convergence_step * self.simulator.n))
+        # interval_length is the number of interaction steps to run for between checking for stop condition
+        interval_length = self.time_to_steps(stopping_interval)
+        if interval_length == 0:
+            raise ValueError('stopping_interval must always be strictly positive.')
 
-        # Ensure these lengths are at least a positive number of steps
-        step_length = max(step_length, 1)
-        interval_length = max(interval_length, 1)
-
-        next_step = self.simulator.t + step_length
+        next_step = self.simulator.t + step_length()
 
         for snapshot in self.snapshots:
             snapshot.next_snapshot_time = time.perf_counter() + snapshot.update_time
@@ -412,7 +419,7 @@ class Simulation:
             self.simulator.run(end_step, **run_kwargs)
             if self.simulator.t >= next_step:
                 self.add_config()
-                next_step = self.simulator.t + step_length
+                next_step = self.simulator.t + step_length()
             for snapshot in self.snapshots:
                 t = time.perf_counter()
                 if t >= snapshot.next_snapshot_time:
@@ -435,7 +442,11 @@ class Simulation:
 
         Each reaction is separated by \n, so that print(self.reactions) will
             display all reactions.
+        Only works with simulator method multibatch, otherwise will raise a
+            ValueError.
         """
+        if type(self.simulator) != simulator.SimulatorMultiBatch:
+            raise ValueError('reactions must be defined by multibatch simulator.')
         w = max([len(str(state)) for state in self.state_list])
         reactions = [self._reaction_string(r, p, w) for (r, p) in
                      zip(self.simulator.reactions, self.simulator.reaction_probabilities)]
@@ -449,6 +460,8 @@ class Simulation:
         Each reaction is separated by \n, so that print(self.enabled_reactions) will
             display all enabled reactions.
         """
+        if type(self.simulator) != simulator.SimulatorMultiBatch:
+            raise ValueError('reactions must be defined by multibatch simulator.')
         w = max([len(str(state)) for state in self.state_list])
         self.simulator.get_enabled_reactions()
 
@@ -500,10 +513,24 @@ class Simulation:
             config_array = self.array_from_dict(config)
         else:
             config_array = np.array(config, dtype=np.int64)
-        t = self.time
-        self.simulator.reset(config_array)
-        self.simulator.t = t * self.simulator.n
+        self.simulator.reset(config_array, self.simulator.t)
         self.add_config()
+
+    def time_to_steps(self, time: float):
+        """Convert length of time into number of steps (rounding up the next step).
+
+        Args:
+            time: The amount of time to convert.
+        """
+        return math.ceil(time * self.simulator.n)
+
+    def steps_to_time(self, steps: int):
+        """Convert number of steps into length of time.
+
+        Args:
+            steps: The number of steps to convert.
+        """
+        return steps / self.simulator.n
 
     @property
     def time(self):
@@ -594,15 +621,37 @@ class Simulation:
 
     def sample_silence_time(self):
         """Starts a new trial from the initial distribution and return time until silence."""
+        if type(self.simulator) != simulator.SimulatorMultiBatch:
+            raise ValueError('silence time can only be found by multibatch simulator.')
         self.simulator.run_until_silent(np.array(self.configs[0]))
         return self.time
+
+    def sample_future_configuration(self, time, num_samples=100):
+        """Repeatedly samples the configuration at a fixed future time.
+
+        Args:
+            time: The amount of time ahead to sample the configuration.
+            num_samples: The number of samples to get.
+
+        Returns:
+            A dataframe whose rows are the sampled configuration.
+        """
+        samples = []
+        t = self.simulator.t
+        for _ in tqdm(range(num_samples)):
+            self.simulator.reset(np.array(self.configs[-1]), t)
+            end_step = t + self.time_to_steps(time)
+            self.simulator.run(end_step)
+            samples.append(np.array(self.simulator.config))
+        return pd.DataFrame(data=samples, index=pd.Index(range(num_samples), name='trial #'),
+                            columns=self._history.columns)
 
     def __getstate__(self):
         """Returns information to be pickled."""
         # Clear _history such that it can be regenerated by self.history
         d = dict(self.__dict__)
         d['_history'] = pd.DataFrame(data=self.configs[0:1], index=pd.Index(self.times[0:1], name='time'),
-                                                 columns=self._history.columns)
+                                     columns=self._history.columns)
         del d['simulator']
         return d
 
@@ -736,9 +785,8 @@ def time_trials(rule: Rule, ns: List[int], initial_conditions: Union[Callable, L
         while j < num_trials and time.perf_counter() < time_limit:
             j += 1
             sim.reset(initial_conditions[i])
-            sim.run(convergence_condition, convergence_step=convergence_check_interval, timer=False)
+            sim.run(convergence_condition, stopping_interval=convergence_check_interval, timer=False)
             d['n'].append(ns[i])
             d['time'].append(sim.time)
 
     return pd.DataFrame(data=d)
-
