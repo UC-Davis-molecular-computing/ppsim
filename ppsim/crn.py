@@ -27,8 +27,11 @@ def species(species_: str) -> Union[Specie, Tuple[Specie]]:
     The names MUST be valid Python identifiers: "X0" is valid but "0X" is not.
     """
     species_list = species_.split()
+
     if len(species_list) == 1:
         return Specie(species_list[0])
+    if len(species_list) != len(set(species_list)):
+        raise ValueError(f'species_list {species_list} cannot contain duplicates.')
 
     return tuple(map(Specie, species_list))
 
