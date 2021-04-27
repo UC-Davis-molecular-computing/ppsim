@@ -628,7 +628,7 @@ cdef class SimulatorMultiBatch(Simulator):
             # assert self.coll_table_r_values[i] <= r <= self.coll_table_r_values[i+1]
             # assert self.coll_table_u_values[j] <= u <= self.coll_table_u_values[j+1]
             t_lo = self.coll_table[i + 1, j + 1]
-            t_hi = min(self.coll_table[i, j], self.n - r)
+            t_hi = min(self.coll_table[i, j], self.n - r + 1)
         else:
             # When building the table, we start with bounds that always hold.
             if r >= self.n:

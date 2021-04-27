@@ -9843,7 +9843,7 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
  *             # assert self.coll_table_r_values[i] <= r <= self.coll_table_r_values[i+1]
  *             # assert self.coll_table_u_values[j] <= u <= self.coll_table_u_values[j+1]
  *             t_lo = self.coll_table[i + 1, j + 1]             # <<<<<<<<<<<<<<
- *             t_hi = min(self.coll_table[i, j], self.n - r)
+ *             t_hi = min(self.coll_table[i, j], self.n - r + 1)
  *         else:
  */
     __pyx_t_5 = (__pyx_v_i + 1);
@@ -9853,11 +9853,11 @@ static int64_t __pyx_f_5ppsim_9simulator_19SimulatorMultiBatch_sample_coll(struc
     /* "ppsim/simulator.pyx":631
  *             # assert self.coll_table_u_values[j] <= u <= self.coll_table_u_values[j+1]
  *             t_lo = self.coll_table[i + 1, j + 1]
- *             t_hi = min(self.coll_table[i, j], self.n - r)             # <<<<<<<<<<<<<<
+ *             t_hi = min(self.coll_table[i, j], self.n - r + 1)             # <<<<<<<<<<<<<<
  *         else:
  *             # When building the table, we start with bounds that always hold.
  */
-    __pyx_t_7 = (__pyx_v_self->__pyx_base.n - __pyx_v_r);
+    __pyx_t_7 = ((__pyx_v_self->__pyx_base.n - __pyx_v_r) + 1);
     __pyx_t_6 = __pyx_v_i;
     __pyx_t_5 = __pyx_v_j;
     __pyx_t_8 = (*((int64_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->coll_table.data + __pyx_t_6 * __pyx_v_self->coll_table.strides[0]) ) + __pyx_t_5 * __pyx_v_self->coll_table.strides[1]) )));
