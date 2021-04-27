@@ -18,7 +18,7 @@ time_trials is a convenience function used for gathering data about the
 import dataclasses
 import math
 import time
-from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable
+from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable, Set
 
 import ipywidgets as widgets
 import matplotlib.pyplot as plt
@@ -35,10 +35,11 @@ from ppsim.crn import Reaction, reactions_to_dict
 State = Hashable
 Output = Union[Tuple[State, State], Dict[Tuple[State, State], float]]
 Rule = Union[Callable[[State, State], Output], Dict[Tuple[State, State], Output], Iterable[Reaction]]
+ConvergenceDetector = Callable[[Dict[State, int]], bool]
 
 
 # TODO: give other option for when the number of reachable states is large or unbounded
-def state_enumeration(init_dist: Dict[State, int], rule: Callable[[State, State], Output]) -> set:
+def state_enumeration(init_dist: Dict[State, int], rule: Callable[[State, State], Output]) -> Set[State]:
     """Finds all reachable states by breadth-first search.
 
     Args:
@@ -82,7 +83,8 @@ class Snapshot:
         config: The configuration array at the current snapshot. Changes when
             self.update is called.
     """
-    def __init__(self):
+
+    def __init__(self) -> None:
         """Init construction for the base class.
 
         Parameters can be passed in here, and any attributes that can be defined
@@ -125,6 +127,7 @@ class TimeUpdate(Snapshot):
     When calling Simulator.run, if there are no current Snapshots present, then
     this object will get added to provide a basic progress update.
     """
+
     def update(self, index: Optional[int] = None):
         super().update(index)
         print(f'\r Time: {self.time:.3f}', end='\r')
@@ -315,18 +318,19 @@ class Simulation:
                         delta[i, j] = delta[j, i]
                         random_transitions[i, j] = random_transitions[j, i]
                     # If i, j and j, i are both non-null, with symmetric_enforced, check outputs are equal
-                    elif self._transition_order.lower() == 'symmetric_enforced' and not null_transitions[j, i]:
+                    elif self._transition_order.lower() == 'symmetric_enforced' \
+                            and not null_transitions[j, i]:
                         if sorted(delta[i, j]) != sorted(delta[j, i]) or \
                                 random_transitions[i, j, 0] != random_transitions[j, i, 0]:
                             a, b = self.state_list[i], self.state_list[j]
                             raise ValueError(f'''Asymmetric interaction:
-                                            {a, b} -> {self.rule(a,b)}
+                                            {a, b} -> {self.rule(a, b)}
                                             {b, a} -> {self.rule(b, a)}''')
 
         self.simulator = self._method(config, delta, null_transitions,
                                       random_transitions, random_outputs, transition_probabilities)
 
-    def array_from_dict(self, d):
+    def array_from_dict(self, d: Dict) -> np.ndarray:
         """Convert a configuration dictionary to an array.
 
         Args:
@@ -341,7 +345,8 @@ class Simulation:
             a[self.state_dict[k]] += d[k]
         return a
 
-    def run(self, run_until=None, history_interval=1., stopping_interval=1., timer=True):
+    def run(self, run_until: Union[float, ConvergenceDetector] = None, history_interval: float = 1.,
+            stopping_interval: float = 1., timer: bool = True) -> None:
         """Runs the simulation.
 
         Can give a fixed amount of time to run the simulation, or a function that checks
@@ -437,7 +442,7 @@ class Simulation:
             print()
 
     @property
-    def reactions(self):
+    def reactions(self) -> str:
         """A string showing all non-null transitions in reaction notation.
 
         Each reaction is separated by \n, so that print(self.reactions) will
@@ -453,7 +458,7 @@ class Simulation:
         return '\n'.join(reactions)
 
     @property
-    def enabled_reactions(self):
+    def enabled_reactions(self) -> str:
         """A string showing all non-null transitions that are currently enabled.
 
         This can only check the current configuration in self.simulator.
@@ -472,7 +477,7 @@ class Simulation:
             reactions.append(self._reaction_string(r, p, w))
         return '\n'.join(reactions)
 
-    def _reaction_string(self, reaction, p=1, w=1):
+    def _reaction_string(self, reaction, p: float = 1, w: int = 1) -> str:
         """A string representation of a reaction."""
 
         reactants = [self.state_list[i] for i in sorted(reaction[0:2])]
@@ -482,7 +487,7 @@ class Simulation:
             s += f'      with probability {p}'
         return s
 
-    def reset(self, init_config: Optional[Dict[State, int]] = None):
+    def reset(self, init_config: Optional[Dict[State, int]] = None) -> None:
         """Reset the Simulation.
 
         Args:
@@ -501,7 +506,7 @@ class Simulation:
                                      columns=self._history.columns)
         self.simulator.reset(config)
 
-    def set_config(self, config):
+    def set_config(self, config: Union[Dict[State, int], np.ndarray]) -> None:
         """Change the current configuration.
 
         Args:
@@ -516,15 +521,15 @@ class Simulation:
         self.simulator.reset(config_array, self.simulator.t)
         self.add_config()
 
-    def time_to_steps(self, time: float):
+    def time_to_steps(self, time_: float) -> int:
         """Convert length of time into number of steps (rounding up the next step).
 
         Args:
-            time: The amount of time to convert.
+            time_: The amount of time to convert.
         """
-        return math.ceil(time * self.simulator.n)
+        return math.ceil(time_ * self.simulator.n)
 
-    def steps_to_time(self, steps: int):
+    def steps_to_time(self, steps: int) -> float:
         """Convert number of steps into length of time.
 
         Args:
@@ -533,17 +538,17 @@ class Simulation:
         return steps / self.simulator.n
 
     @property
-    def time(self):
+    def time(self) -> float:
         """The current parallel time of the simulator."""
         return self.simulator.t / self.simulator.n
 
     @property
-    def config_dict(self):
+    def config_dict(self) -> Dict[State, int]:
         """The current configuration, as a dictionary mapping states to counts."""
         return {self.state_list[i]: self.simulator.config[i] for i in np.nonzero(self.simulator.config)[0]}
 
     @property
-    def config_array(self):
+    def config_array(self) -> np.ndarray:
         """The current configuration in the simulator, as an array of counts.
 
         The array is given in the same order as self.state_list. The index of state s
@@ -552,7 +557,7 @@ class Simulation:
         return np.asarray(self.simulator.config)
 
     @property
-    def history(self):
+    def history(self) -> pd.DataFrame:
         """A pandas dataframe containing the history of all recorded configurations."""
         h = len(self._history)
         if h < len(self.configs):
@@ -561,22 +566,22 @@ class Simulation:
             self._history = pd.concat([self._history, new_history])
         return self._history
 
-    def add_config(self):
+    def add_config(self) -> None:
         """Appends the current simulator configuration and time."""
         self.configs.append(np.array(self.simulator.config))
         self.times.append(self.time)
 
-    def set_snapshot_time(self, time):
+    def set_snapshot_time(self, time_: float) -> None:
         """Updates all snapshots to the nearest recorded configuration to a specified time.
 
         Args:
-            time (float): The parallel time to update the snapshots to.
+            time_ (float): The parallel time to update the snapshots to.
         """
-        index = np.searchsorted(self.times, time)
+        index = np.searchsorted(self.times, time_)
         for snapshot in self.snapshots:
             snapshot.update(index=index)
 
-    def set_snapshot_index(self, index):
+    def set_snapshot_index(self, index: int) -> None:
         """Updates all snapshots to the configuration self.configs[index].
 
         Args:
@@ -585,7 +590,7 @@ class Simulation:
         for snapshot in self.snapshots:
             snapshot.update(index=index)
 
-    def add_snapshot(self, snap: "Snapshot"):
+    def add_snapshot(self, snap: "Snapshot") -> None:
         """Add a new Snapshot to self.snapshots.
 
         Args:
@@ -596,7 +601,7 @@ class Simulation:
         snap.update()
         self.snapshots.append(snap)
 
-    def snapshot_slider(self, var: str = 'index'):
+    def snapshot_slider(self, var: str = 'index') -> widgets.interactive:
         """Returns a slider that updates all Snapshot objects.
 
         Returns a slider from the ipywidgets library.
@@ -617,20 +622,20 @@ class Simulation:
                                                                 layout=widgets.Layout(width='100%'),
                                                                 step=0.01))
         else:
-            return ValueError("var must be either 'index' or 'time'.")
+            raise ValueError("var must be either 'index' or 'time'.")
 
-    def sample_silence_time(self):
+    def sample_silence_time(self) -> float:
         """Starts a new trial from the initial distribution and return time until silence."""
         if type(self.simulator) != simulator.SimulatorMultiBatch:
             raise ValueError('silence time can only be found by multibatch simulator.')
         self.simulator.run_until_silent(np.array(self.configs[0]))
         return self.time
 
-    def sample_future_configuration(self, time, num_samples=100):
+    def sample_future_configuration(self, time_: float, num_samples: int = 100) -> pd.DataFrame:
         """Repeatedly samples the configuration at a fixed future time.
 
         Args:
-            time: The amount of time ahead to sample the configuration.
+            time_: The amount of time ahead to sample the configuration.
             num_samples: The number of samples to get.
 
         Returns:
@@ -640,7 +645,7 @@ class Simulation:
         t = self.simulator.t
         for _ in tqdm(range(num_samples)):
             self.simulator.reset(np.array(self.configs[-1]), t)
-            end_step = t + self.time_to_steps(time)
+            end_step = t + self.time_to_steps(time_)
             self.simulator.run(end_step)
             samples.append(np.array(self.simulator.config))
         return pd.DataFrame(data=samples, index=pd.Index(range(num_samples), name='trial #'),
@@ -655,7 +660,7 @@ class Simulation:
         del d['simulator']
         return d
 
-    def __setstate__(self, state):
+    def __setstate__(self, state) -> None:
         """Instantiates from the pickled state information."""
         self.__dict__ = state
         self.initialize_simulator(self.configs[-1])
@@ -678,7 +683,8 @@ class StatePlotter(Snapshot):
             array self.config (indexed by states), matrix * config gives an array
             of counts of categories. Used internally for the update function.
     """
-    def __init__(self, state_map=None, update_time=0.5):
+
+    def __init__(self, state_map=None, update_time=0.5) -> None:
         """Initializes the StatePlotter.
 
         Args:
@@ -704,7 +710,7 @@ class StatePlotter(Snapshot):
             if m is not None:
                 self._matrix[i, categories_dict[m]] += 1
 
-    def initialize(self):
+    def initialize(self) -> None:
         """Initializes the barplot.
 
         If self.state_map gets changed, call initialize to update the barplot to
@@ -721,7 +727,7 @@ class StatePlotter(Snapshot):
             self.ax.set_xticklabels(self.ax.get_xticklabels(), rotation=90, ha='center')
         self.ax.set_ylim(0, self.simulation.simulator.n)
 
-    def update(self, index=None):
+    def update(self, index: int = Optional[None]) -> None:
         """Update the heights of all bars in the plot."""
         super().update(index)
         if self._matrix is not None:
@@ -740,7 +746,7 @@ def time_trials(rule: Rule, ns: List[int], initial_conditions: Union[Callable, L
                 convergence_condition: Optional[Callable] = None, convergence_check_interval: float = 0.1,
                 num_trials: int = 100, max_wallclock_time: float = 60 * 60 * 24,
 
-                **kwargs):
+                **kwargs) -> pd.DataFrame:
     """Gathers data about the convergence time of a rule.
 
     Args:
