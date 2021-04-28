@@ -92,3 +92,8 @@ class TestCRN(unittest.TestCase):
         self.assertDictEqual({(d, b): 2 / 3}, transitions[(b, b)])
         self.assertDictEqual({(d, c): 2 / 3}, transitions[(b, c)])
         self.assertDictEqual({(d, d): 2 / 3}, transitions[(b, d)])
+
+    def test_reversible_rxn(self):
+        a,b,c,d = species('A B C D')
+        rxn = a+b >= c+d
+        self.assertEqual(True, rxn.reversible)

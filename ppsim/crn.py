@@ -165,6 +165,9 @@ class Specie:
     def __rrshift__(self, other: Union[Specie, Expression]) -> Reaction:
         return Reaction(other, self)
 
+    def __ge__(self, other: Union[Specie, Expression]) -> Reaction:
+        return Reaction(self, other, reversible=True)
+
     def __mul__(self, other: int) -> Expression:
         if type(other) is int:
             return Expression({self: other})
@@ -234,6 +237,9 @@ class Expression:
     def __rshift__(self, expr: Union[Specie, Expression]) -> Reaction:
         return Reaction(self, expr)
 
+    def __ge__(self, other: Union[Specie, Expression]) -> Reaction:
+        return Reaction(self, other, reversible=True)
+
     def __str__(self) -> str:
         return ' + '.join(
             map(lambda i: f"{i[1] if i[1] != 1 else ''}{i[0]}",
@@ -254,7 +260,7 @@ class Expression:
         """
         return set(self.species.keys())
 
-
+@dataclass
 class Reaction:
     """
     Representation of a stoichiometric reaction using a pair of Expressions,
@@ -278,8 +284,11 @@ class Reaction:
     reactants: Expression
     products: Expression
     rate_constant: float
+    rate_constant_rev: float
+    reversible: bool
 
-    def __init__(self, reactants: Union[Specie, Expression], products: Union[Specie, Expression], k: float = 1) -> None:
+    def __init__(self, reactants: Union[Specie, Expression], products: Union[Specie, Expression],
+                 k: float = 1, r: float = 1, reversible: bool = False) -> None:
         if type(reactants) not in (Specie, Expression):
             raise ValueError(
                 "Attempted construction of reaction with type of reactants "
@@ -299,6 +308,8 @@ class Reaction:
         self.reactants = reactants
         self.products = products
         self.rate_constant = float(k)
+        self.rate_constant_rev = float(r)
+        self.reversible = reversible
 
     def is_unimolecular(self) -> bool:
         return self.num_reactants() == 1
@@ -357,10 +368,8 @@ class Reaction:
         return specie_tuple
 
     def __str__(self):
-        return f"{self.reactants} -->({self.rate_constant}) {self.products}"
-        # rcts_str = str(self.reactants)
-        # return (f"{' ' * len(rcts_str)} {self.coeff:.1f} \n"
-        #         f"{self.reactants} ---> {self.products}")
+        rev_rate_str = f'({self.rate_constant_rev})<' if self.reversible else ''
+        return f"{self.reactants} {rev_rate_str}-->({self.rate_constant}) {self.products}"
 
     def __repr__(self):
         return (f"Reaction({repr(self.reactants)}, {repr(self.products)}, "
@@ -382,6 +391,27 @@ class Reaction:
             ...
         """
         self.rate_constant = coeff
+        return self
+
+    def r(self, coeff: float) -> Reaction:
+        """
+        Changes the reverse reactionn reaction rate constant to `coeff` and returns `self`.
+
+        args:
+            coeff: float
+                The new reverse reaction rate constant
+        This is useful for including the rate constant during the construction
+        of a reaction. For example
+            x, y, z = species("X Y Z")
+            sys = CRN(
+                (x + y >> z).k(2.5),
+                (z >> x).k(1.5),
+                (z >> y).k(0.5))
+            ...
+        """
+        if not self.reversible:
+            raise ValueError('cannot set r on an irreversible reaction')
+        self.rate_constant_rev = coeff
         return self
 
     def get_species(self):
