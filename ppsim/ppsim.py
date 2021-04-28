@@ -17,7 +17,7 @@ time_trials is a convenience function used for gathering data about the
 
 import dataclasses
 import math
-import time
+from time import perf_counter
 from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable, Set
 
 import ipywidgets as widgets
@@ -146,8 +146,14 @@ class Simulation:
             perform the steps of the simulation.
         configs (List[nparray[int]]): A list of all configurations that have been
             recorded during the simulation, as integer arrays.
-        times (List[float]): A list of all the corresponding times of for configs,
-            in units of parallel time (steps / population size n).
+        time (float): The current time of the Simulation.
+        times (List[float]): A list of all the corresponding times for configs,
+            in units of parallel time.
+        steps_per_time_unit (float): Number of simulated interactions per time unit.
+        continuous_time (bool): Whether continuous time is used. The regular discrete
+            time model considers a steps_per_time_unit steps to be 1 unit of time.
+            The continuous time model is a poisson process, with expected
+            steps_per_time_unit number of steps per 1 unit of time.
         column_names: Columns representing all states for pandas dataframe.
             If the State is a tuple, NamedTuple, or dataclass, this will be a
             pandas MultiIndex based on the various fields.
@@ -158,7 +164,8 @@ class Simulation:
     """
 
     def __init__(self, init_config: Dict[State, int], rule: Rule, simulator_method: str = "MultiBatch",
-                 transition_order: str = "asymmetric", volume: Optional[float] = None, **kwargs):
+                 transition_order: str = "asymmetric", volume: Optional[float] = None,
+                 continuous_time = False, **kwargs):
         """Initialize a Simulation.
 
         Args:
@@ -198,11 +205,14 @@ class Simulation:
             volume: If a list of Reactions is given for a CRN, then the parameter volume
                 can be passed in here. Defaults to None. If None, the volume will be
                 assumed to be the population size n.
+            continuous_time: Whether continuous time is used. Defaults to False.
+                If a CRN as a list of reactions is passed in, this will be set to True.
             **kwargs: If rule is a function, other keyword function parameters are
                 passed in here.
         """
         self.n = sum(init_config.values())
         self.steps_per_time_unit = self.n
+        self.continuous_time = continuous_time
         # if rule is iterable of Reactions from the crn module, then convert to dict
         rule_is_reaction_iterable = True
         try:
@@ -218,6 +228,8 @@ class Simulation:
                 volume = self.n
             rule, rate_max = reactions_to_dict(rule, self.n, volume)
             self.steps_per_time_unit *= rate_max
+            # Default to continuous time for lists of reactions
+            self.continuous_time = True
 
         self._rule = rule
         self._rule_kwargs = kwargs
@@ -225,6 +237,8 @@ class Simulation:
         # Get a list of all reachable states, use the natsort library to put in a nice order.
         self.state_list = natsorted(list(state_enumeration(init_config, self.rule)),
                                     key=lambda x: repr(x))
+        if len(self.state_list) == len(init_config):
+            raise ValueError(f'All the input states {list(init_config.keys())} have only null interactions.')
         self.state_dict = {state: i for i, state in enumerate(self.state_list)}
 
         if simulator_method.lower() == 'multibatch':
@@ -256,6 +270,7 @@ class Simulation:
             self.column_names = [str(i) for i in self.state_list]
         self.configs = []
         self.times = []
+        self.time = 0
         self.add_config()
         # private history dataframe is initially empty, updated by the getter of property self.history
         self._history = pd.DataFrame(data=self.configs, index=pd.Index(self.times, name='time'),
@@ -385,7 +400,7 @@ class Simulation:
         if len(self.snapshots) == 0 and timer is True:
             self.add_snapshot(TimeUpdate())
 
-        final_step = None
+        end_time = None
         # stop_condition() returns True when it is time to stop
         if run_until is None:
             if type(self.simulator) != simulator.SimulatorMultiBatch:
@@ -395,7 +410,6 @@ class Simulation:
                 return self.simulator.silent
         elif type(run_until) is float or type(run_until) is int:
             end_time = self.time + run_until
-            final_step = self.time_to_steps(end_time)
 
             def stop_condition():
                 return self.time >= end_time
@@ -406,42 +420,60 @@ class Simulation:
         else:
             raise TypeError('run_until must be a float, int, function, or None.')
 
-        # step_length is the number of interaction steps between recordings
-        def step_length():
+        def get_next_history_time():
+            # Get the next time that will be recorded to self.times and self.history
             if callable(history_interval):
-                steps = self.time_to_steps(history_interval(self.time))
+                length = history_interval(self.time)
             else:
-                steps = self.time_to_steps(history_interval)
-            if steps == 0:
+                length = history_interval
+            if length <= 0:
                 raise ValueError('history_interval must always be strictly positive.')
-            return steps
+            return self.time + length
 
-        # interval_length is the number of interaction steps to run for between checking for stop condition
-        interval_length = self.time_to_steps(stopping_interval)
-        if interval_length == 0:
+        if stopping_interval <= 0:
             raise ValueError('stopping_interval must always be strictly positive.')
 
-        next_step = self.simulator.t + step_length()
+        next_history_time = get_next_history_time()
+
+        def get_next_time():
+            # Get the next time simulator will run until
+            t = min(next_history_time, self.time + stopping_interval)
+            if end_time is not None:
+                t = min(t, end_time)
+            return t
+
+        next_time = get_next_time()
+        # The next step that the simulator will be run until, which corresponds to parallel time next_time
+        next_step = self.time_to_steps(next_time)
 
         for snapshot in self.snapshots:
-            snapshot.next_snapshot_time = time.perf_counter() + snapshot.update_time
+            snapshot.next_snapshot_time = perf_counter() + snapshot.update_time
+
         # add max_wall_clock to be the minimum snapshot update time, to put a time bound on calls to simulator.run
-        run_kwargs = {}
-        if len(self.snapshots) > 0:
-            run_kwargs['max_wallclock_time'] = min([s.update_time for s in self.snapshots])
+        max_wallclock_time = [min([s.update_time for s in self.snapshots])] if len(self.snapshots) > 0 else []
         while stop_condition() is False:
-            end_step = min(self.simulator.t + interval_length, next_step)
-            if final_step is not None:
-                end_step = min(end_step, final_step)
-            self.simulator.run(end_step, **run_kwargs)
-            if self.simulator.t >= next_step:
+            if self.time >= next_time:
+                next_step += self.time_to_steps(get_next_time() - next_time)
+                next_time = get_next_time()
+            current_step = self.simulator.t
+            self.simulator.run(next_step, *max_wallclock_time)
+            if self.simulator.t == next_step:
+                self.time = next_time
+            elif self.simulator.t < next_step:
+                # simulator exited early from hitting max_wallclock_time
+                # add a fraction of the time until next_time equal to the fractional progress made by simulator
+                self.time += (next_time - self.time) * (self.simulator.t - current_step) / (next_step - current_step)
+            else:
+                raise RuntimeError('The simulator ran to step {self.simulator.t} past the next step {next_step}.')
+            if self.time >= next_history_time:
+                assert self.time == next_history_time, \
+                    f'self.time = {self.time} overshot next_history_time = {next_history_time}'
                 self.add_config()
-                next_step = self.simulator.t + step_length()
+                next_history_time = get_next_history_time()
             for snapshot in self.snapshots:
-                t = time.perf_counter()
-                if t >= snapshot.next_snapshot_time:
+                if perf_counter() >= snapshot.next_snapshot_time:
                     snapshot.update()
-                    snapshot.next_snapshot_time = time.perf_counter() + snapshot.update_time
+                    snapshot.next_snapshot_time = perf_counter() + snapshot.update_time
         # add the final configuration if it wasn't already recorded
         if self.time > self.times[-1]:
             self.add_config()
@@ -499,6 +531,7 @@ class Simulation:
             s += f'      with probability {p}'
         return s
 
+    # TODO: If this changes n, then the timescale must change
     def reset(self, init_config: Optional[Dict[State, int]] = None) -> None:
         """Reset the Simulation.
 
@@ -518,6 +551,7 @@ class Simulation:
                                      columns=self._history.columns)
         self.simulator.reset(config)
 
+    # TODO: If this changes n, then the timescale must change
     def set_config(self, config: Union[Dict[State, int], np.ndarray]) -> None:
         """Change the current configuration.
 
@@ -533,26 +567,19 @@ class Simulation:
         self.simulator.reset(config_array, self.simulator.t)
         self.add_config()
 
-    def time_to_steps(self, time_: float) -> int:
-        """Convert length of time into number of steps (rounding up the next step).
+    def time_to_steps(self, time: float) -> int:
+        """Convert length of time into number of steps.
 
         Args:
-            time_: The amount of time to convert.
+            time: The amount of time to convert.
         """
-        return math.ceil(time_ * self.steps_per_time_unit)
-
-    def steps_to_time(self, steps: int) -> float:
-        """Convert number of steps into length of time.
-
-        Args:
-            steps: The number of steps to convert.
-        """
-        return steps / self.steps_per_time_unit
-
-    @property
-    def time(self) -> float:
-        """The current parallel time of the simulator."""
-        return self.steps_to_time(self.simulator.t)
+        expected_steps = time * self.steps_per_time_unit
+        if self.continuous_time:
+            # In continuous time the number of steps is a poisson random variable
+            return np.random.poisson(expected_steps)
+        else:
+            # In discrete time we round up to the next step
+            return math.ceil(expected_steps)
 
     @property
     def config_dict(self) -> Dict[State, int]:
@@ -583,13 +610,13 @@ class Simulation:
         self.configs.append(np.array(self.simulator.config))
         self.times.append(self.time)
 
-    def set_snapshot_time(self, time_: float) -> None:
+    def set_snapshot_time(self, time: float) -> None:
         """Updates all snapshots to the nearest recorded configuration to a specified time.
 
         Args:
-            time_ (float): The parallel time to update the snapshots to.
+            time (float): The parallel time to update the snapshots to.
         """
-        index = np.searchsorted(self.times, time_)
+        index = np.searchsorted(self.times, time)
         for snapshot in self.snapshots:
             snapshot.update(index=index)
 
@@ -643,11 +670,11 @@ class Simulation:
         self.simulator.run_until_silent(np.array(self.configs[0]))
         return self.time
 
-    def sample_future_configuration(self, time_: float, num_samples: int = 100) -> pd.DataFrame:
+    def sample_future_configuration(self, time: float, num_samples: int = 100) -> pd.DataFrame:
         """Repeatedly samples the configuration at a fixed future time.
 
         Args:
-            time_: The amount of time ahead to sample the configuration.
+            time: The amount of time ahead to sample the configuration.
             num_samples: The number of samples to get.
 
         Returns:
@@ -657,7 +684,7 @@ class Simulation:
         t = self.simulator.t
         for _ in tqdm(range(num_samples)):
             self.simulator.reset(np.array(self.configs[-1]), t)
-            end_step = t + self.time_to_steps(time_)
+            end_step = t + self.time_to_steps(time)
             self.simulator.run(end_step)
             samples.append(np.array(self.simulator.config))
         return pd.DataFrame(data=samples, index=pd.Index(range(num_samples), name='trial #'),
@@ -792,15 +819,15 @@ def time_trials(rule: Rule, ns: List[int], initial_conditions: Union[Callable, L
             seaborn library, calling sns.lineplot(x='n', y='time', data=df).
     """
     d = {'n': [], 'time': []}
-    end_time = time.perf_counter() + max_wallclock_time
+    end_time = perf_counter() + max_wallclock_time
     if callable(initial_conditions):
         initial_conditions = [initial_conditions(n) for n in ns]
     for i in tqdm(range(len(ns))):
         sim = Simulation(initial_conditions[i], rule, **kwargs)
-        t = time.perf_counter()
+        t = perf_counter()
         time_limit = t + (end_time - t) / (len(ns) - i)
         j = 0
-        while j < num_trials and time.perf_counter() < time_limit:
+        while j < num_trials and perf_counter() < time_limit:
             j += 1
             sim.reset(initial_conditions[i])
             sim.run(convergence_condition, stopping_interval=convergence_check_interval, timer=False)
