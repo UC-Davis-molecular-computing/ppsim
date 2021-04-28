@@ -167,7 +167,7 @@ def main():
 
     volume_for_simulation = 1 if unit_rate_constants else vol
     sim = Simulation(init_config=init_config, rule=all_rps_dsd_rxns, volume=volume_for_simulation)
-    sim.run()
+    sim.run(run_until=10)
     sim.history.plot()
     plt.title('DNA strand displacement implementation of RPS oscillator')
     plt.xlim(0, sim.times[-1])
