@@ -114,12 +114,12 @@ class Snapshot:
                 self.sim.times[index]. Otherwise, the snapshot will use the current
                 configuration self.sim.config_array and current time self.sim.time.
         """
-        if index is None:
-            self.time = self.simulation.time
-            self.config = self.simulation.config_array
-        else:
+        if type(index) is int:
             self.time = self.simulation.times[index]
             self.config = self.simulation.configs[index]
+        else:
+            self.time = self.simulation.time
+            self.config = self.simulation.config_array
 
 
 class TimeUpdate(Snapshot):
@@ -237,8 +237,8 @@ class Simulation:
         # Get a list of all reachable states, use the natsort library to put in a nice order.
         self.state_list = natsorted(list(state_enumeration(init_config, self.rule)),
                                     key=lambda x: repr(x))
-        if len(self.state_list) == len(init_config):
-            raise ValueError(f'All the input states {list(init_config.keys())} have only null interactions.')
+        # TODO: process a dictionary in a more straightforward way, and check that state_list only includes
+        #         states in the dictionary
         self.state_dict = {state: i for i, state in enumerate(self.state_list)}
 
         if simulator_method.lower() == 'multibatch':
@@ -273,7 +273,7 @@ class Simulation:
         self.time = 0
         self.add_config()
         # private history dataframe is initially empty, updated by the getter of property self.history
-        self._history = pd.DataFrame(data=self.configs, index=pd.Index(self.times, name='time'),
+        self._history = pd.DataFrame(data=self.configs, index=pd.Index(self.times),
                                      columns=self.column_names)
         self.snapshots = []
 
@@ -419,6 +419,10 @@ class Simulation:
                 return run_until(self.config_dict)
         else:
             raise TypeError('run_until must be a float, int, function, or None.')
+
+        # Stop if stop_condition is already met
+        if stop_condition():
+            return
 
         def get_next_history_time():
             # Get the next time that will be recorded to self.times and self.history
@@ -600,9 +604,13 @@ class Simulation:
         """A pandas dataframe containing the history of all recorded configurations."""
         h = len(self._history)
         if h < len(self.configs):
-            new_history = pd.DataFrame(data=self.configs[h:], index=pd.Index(self.times[h:], name='time'),
+            new_history = pd.DataFrame(data=self.configs[h:], index=pd.Index(self.times[h:]),
                                        columns=self._history.columns)
             self._history = pd.concat([self._history, new_history])
+            if self.continuous_time:
+                self._history.index.name = 'time (continuous)'
+            else:
+                self._history.index.name = f'time ({self.steps_per_time_unit} interaction steps)'
         return self._history
 
     def add_config(self) -> None:
