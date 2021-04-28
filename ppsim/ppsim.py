@@ -34,7 +34,8 @@ from ppsim.crn import Reaction, reactions_to_dict
 # TODO: these names are not showing up in the mouseover information
 State = Hashable
 Output = Union[Tuple[State, State], Dict[Tuple[State, State], float]]
-Rule = Union[Callable[[State, State], Output], Dict[Tuple[State, State], Output], Iterable[Reaction]]
+TransitionFunction = Callable[[State, State], Output]
+Rule = Union[TransitionFunction, Dict[Tuple[State, State], Output], Iterable[Reaction]]
 ConvergenceDetector = Callable[[Dict[State, int]], bool]
 
 
