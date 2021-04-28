@@ -17,7 +17,7 @@ def species(species_: str) -> Union[Specie, Tuple[Specie]]:
     or a single one.
     args:
         species_: str
-            A space-seperated string representing the names of the species
+            A space-separated string representing the names of the species
             being created
     This is normally used like this:
         w, x, y, z = species("W X Y Z")
@@ -61,8 +61,20 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
         i.e., if we have reactions (a + b >> c + d).k(2) and (a + b >> x + y).k(3),
         then the ordered pair (a,b) has rate 2+3 = 5
     """
+    reactions = list(copy.deepcopy(reactions))
+
+    # add reverse reactions explicitly
+    reversible_reactions = [reaction for reaction in reactions if reaction.reversible]
+    for reaction in reversible_reactions:
+        reversed_reaction = Reaction(reactants=reaction.products,
+                                     products=reaction.reactants,
+                                     k=reaction.rate_constant_rev,
+                                     reversible=False)
+        reactions.append(reversed_reaction)
+        reaction.reversible = False
+
     # Make a copy of reactions because this conversion will mutate the reactions
-    reactions = convert_unimolecular_to_bimolecular(copy.deepcopy(reactions), n, volume)
+    reactions = convert_unimolecular_to_bimolecular(reactions, n, volume)
 
     # for each ordered pair of reactants, calculate sum of rate constants across all reactions with those reactants
     reactant_pair_rates: DefaultDict[SpeciePair, float] = defaultdict(int)
@@ -73,9 +85,6 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
             raise ValueError(f'all reactions must have exactly two products, violated by {reaction}')
         reactants = reaction.reactants_if_bimolecular()
         reactant_pair_rates[reactants] += reaction.rate_constant
-        if reaction.reversible:
-            products = reaction.products_if_exactly_two()
-            reactant_pair_rates[products] += reaction.rate_constant_rev
 
     # divide all rate constants by the max rate (per reactant pair) to help turn them into probabilities
     max_rate = max(reactant_pair_rates.values())
@@ -90,16 +99,11 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
             # should we be worried about floating-point error here?
             # I hope not since dividing a float by itself should always result in 1.0.
             transitions[reactants] = products if prob == 1.0 else {products: prob}
-            if reaction.reversible:
-                transitions[products] = reactants if prob == 1.0 else {reactants: prob}
         else:
             # if we calculated probabilities correctly above, if we assigned a dict entry to be non-randomized
             # (since prob == 1.0 above), we should not encounter another reaction with same reactants
             assert (isinstance(transitions[reactants], dict))
             transitions[reactants][products] = prob
-            if reaction.reversible:
-                assert (isinstance(transitions[products], dict))
-                transitions[products][reactants] = prob
 
     # assert that each possible input for transitions has output probabilities summing to 1
     for reactants, outputs in transitions.items():
