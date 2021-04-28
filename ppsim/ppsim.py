@@ -157,20 +157,22 @@ class Simulation:
     """
 
     def __init__(self, init_config: Dict[State, int], rule: Rule, simulator_method: str = "MultiBatch",
-                 transition_order: str = "asymmetric", **kwargs):
+                 transition_order: str = "asymmetric", volume: Optional[float] = None, **kwargs):
         """Initialize a Simulation.
 
         Args:
             init_config (Dict[State, int]): The starting configuration, as a
                 dictionary mapping states to counts.
-            rule: A representation of the transition rule. This can either be a
-                dictionary, whose keys are tuples of 2 states and values are their
+            rule: A representation of the transition rule. The first two options are
+                a dictionary, whose keys are tuples of 2 states and values are their
                 outputs, or a function which takes pairs of states as input. For a
                 deterministic transition function, the output is a tuple of 2 states.
                 For a probabilistic transition function, the output is a dictionary
                 mapping tuples of states to probabilities. Inputs that are not present
                 in the dictionary, or return None from the function, are interpreted as
                 null transitions that return the same pair of states as the output.
+                The third option is a list of Reactions describing a CRN, which will
+                be parsed into an equivalent population protocol.
             simulator_method (str): Which Simulator method to use, either 'MultiBatch'
                 or 'Sequential'.
                 The MultiBatch simulator does O(sqrt(n)) interaction steps in parallel
@@ -192,10 +194,14 @@ class Simulation:
                 'symmetric_enforced': The same as symmetric, except that if rule(a, b)
                     and rule(b, a) are non-null and do not give the same set of outputs,
                     a ValueError is raised.
+            volume: If a list of Reactions is given for a CRN, then the parameter volume
+                can be passed in here. Defaults to None. If None, the volume will be
+                assumed to be the population size n.
             **kwargs: If rule is a function, other keyword function parameters are
                 passed in here.
         """
-
+        self.n = sum(init_config.values())
+        self.steps_per_time_unit = self.n
         # if rule is iterable of Reactions from the crn module, then convert to dict
         rule_is_reaction_iterable = True
         try:
@@ -207,7 +213,10 @@ class Simulation:
             # might end up here if rule is not even iterable, e.g., is a function
             rule_is_reaction_iterable = False
         if rule_is_reaction_iterable:
-            rule, rate_max = reactions_to_dict(rule)
+            if volume is None:
+                volume = self.n
+            rule, rate_max = reactions_to_dict(rule, self.n, volume)
+            self.steps_per_time_unit *= rate_max
 
         self._rule = rule
         self._rule_kwargs = kwargs
@@ -238,7 +247,9 @@ class Simulation:
             field_names = getattr(state, '_fields', None)
             tuples = self.state_list
         # Check also for tuple.
-        if field_names or isinstance(state, tuple):
+        if (field_names and len(field_names) > 1)\
+                or (isinstance(state, tuple) and len(state) > 1):
+            # Make a MultiIndex only if there are multiple fields
             self.column_names = pd.MultiIndex.from_tuples(tuples, names=field_names)
         else:
             self.column_names = [str(i) for i in self.state_list]
@@ -527,7 +538,7 @@ class Simulation:
         Args:
             time_: The amount of time to convert.
         """
-        return math.ceil(time_ * self.simulator.n)
+        return math.ceil(time_ * self.steps_per_time_unit)
 
     def steps_to_time(self, steps: int) -> float:
         """Convert number of steps into length of time.
@@ -535,12 +546,12 @@ class Simulation:
         Args:
             steps: The number of steps to convert.
         """
-        return steps / self.simulator.n
+        return steps / self.steps_per_time_unit
 
     @property
     def time(self) -> float:
         """The current parallel time of the simulator."""
-        return self.simulator.t / self.simulator.n
+        return self.steps_to_time(self.simulator.t)
 
     @property
     def config_dict(self) -> Dict[State, int]:

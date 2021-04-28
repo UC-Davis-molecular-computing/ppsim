@@ -6,6 +6,7 @@ https://github.com/enricozb/python-crn.
 from __future__ import annotations  # needed for forward references in type hints
 
 from collections import defaultdict
+import copy
 from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List
 from dataclasses import dataclass
 from functools import reduce
@@ -44,7 +45,7 @@ Output = Union[SpeciePair, Dict[SpeciePair, float]]
 # We should think about the logic of that and see if it makes sense to collapse
 # two reversed ordered pairs to a single unordered pair at this step,
 # or whether that should be done explicitly by the user specifying transition_order='symmetric'.
-def reactions_to_dict(reactions: Iterable[Reaction]) -> Tuple[Dict[SpeciePair, Output], float]:
+def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) -> Tuple[Dict[SpeciePair, Output], float]:
     """
     Returns dict representation of `reactions`, transforming unimolecular reactions to bimolecular,
     and converting rates to probabilities, also returning the max rate so the :any:`Simulator` knows
@@ -52,6 +53,8 @@ def reactions_to_dict(reactions: Iterable[Reaction]) -> Tuple[Dict[SpeciePair, O
 
     Args:
         reactions: list of :any:`Reaction`'s
+        n: the population size, necessary for rate conversion
+        volume: parameter as defined in Gillespie algorithm
 
     Returns:
         (transitions_dict, max_rate), where `transitions_dict` is the dict representation of the transitions,
@@ -59,7 +62,8 @@ def reactions_to_dict(reactions: Iterable[Reaction]) -> Tuple[Dict[SpeciePair, O
         i.e., if we have reactions (a + b >> c + d).k(2) and (a + b >> x + y).k(3),
         then the ordered pair (a,b) has rate 2+3 = 5
     """
-    reactions = convert_unimolecular_to_bimolecular(reactions)
+    # Make a copy of reactions because this conversion will mutate the reactions
+    reactions = convert_unimolecular_to_bimolecular(copy.deepcopy(reactions), n, volume)
 
     # for each ordered pair of reactants, calculate sum of rate constants across all reactions with those reactants
     reactant_pair_rates: DefaultDict[SpeciePair, float] = defaultdict(int)
@@ -99,7 +103,13 @@ def reactions_to_dict(reactions: Iterable[Reaction]) -> Tuple[Dict[SpeciePair, O
     return transitions, max_rate
 
 
-def convert_unimolecular_to_bimolecular(reactions: Iterable[Reaction]) -> List[Reaction]:
+def convert_unimolecular_to_bimolecular(reactions: Iterable[Reaction], n: int, volume: float) -> List[Reaction]:
+    """Process all reactions before being added to the dictionary.
+
+    bimolecular reactions have their rates multiplied by the corrective factor (n-1) / (2 * volume).
+    Bimolecular reactions with two different reactants are added twice, with their reactants in both orders.
+    """
+
     # gather set of all species together
     all_species: Set[Specie] = set()
     for reaction in reactions:
@@ -110,8 +120,17 @@ def convert_unimolecular_to_bimolecular(reactions: Iterable[Reaction]) -> List[R
         if reaction.num_reactants() != reaction.num_products():
             raise ValueError(f'each reaction must have same number of reactants and products, violated by {reaction}')
         if reaction.is_bimolecular():
-            # pass along existing bimolecular reactions unchanged
+            # Corrective factor to reaction rate
+            reaction.rate_constant *= (n-1) / (2 * volume)
             converted_reactions.append(reaction)
+            # Add a flipped copy if the reaction has two different reactants
+            reactants = reaction.reactants_if_bimolecular()
+            if len(set(reactants)) > 1:
+                flipped_reaction = copy.copy(reaction)
+                flipped_reaction.reactants = Expression({reactants[1]: 1, reactants[0]: 1})
+                assert flipped_reaction.reactants_if_bimolecular != reactants
+                converted_reactions.append(flipped_reaction)
+
         elif reaction.is_unimolecular():
             # for each unimolecular reaction R -->(k) P and each species S,
             # add a bimolecular reaction R+S -->(k) P+S
@@ -119,6 +138,7 @@ def convert_unimolecular_to_bimolecular(reactions: Iterable[Reaction]) -> List[R
             product = reaction.product_if_unique()
             bimolecular_implementing_reactions = [(reactant + s >> product + s).k(reaction.rate_constant) for s in
                                                   all_species]
+
             converted_reactions.extend(bimolecular_implementing_reactions)
         else:
             raise ValueError(f'each reaction must have exactly one or two reactants, violated by {reaction}')
