@@ -9,8 +9,6 @@ from collections import defaultdict
 import copy
 from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List
 from dataclasses import dataclass
-from functools import reduce
-from operator import mul
 
 
 def species(species_: str) -> Union[Specie, Tuple[Specie]]:
@@ -45,7 +43,8 @@ Output = Union[SpeciePair, Dict[SpeciePair, float]]
 # We should think about the logic of that and see if it makes sense to collapse
 # two reversed ordered pairs to a single unordered pair at this step,
 # or whether that should be done explicitly by the user specifying transition_order='symmetric'.
-def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) -> Tuple[Dict[SpeciePair, Output], float]:
+def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
+        -> Tuple[Dict[SpeciePair, Output], float]:
     """
     Returns dict representation of `reactions`, transforming unimolecular reactions to bimolecular,
     and converting rates to probabilities, also returning the max rate so the :any:`Simulator` knows
@@ -74,6 +73,9 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) -> T
             raise ValueError(f'all reactions must have exactly two products, violated by {reaction}')
         reactants = reaction.reactants_if_bimolecular()
         reactant_pair_rates[reactants] += reaction.rate_constant
+        if reaction.reversible:
+            products = reaction.products_if_exactly_two()
+            reactant_pair_rates[products] += reaction.rate_constant_rev
 
     # divide all rate constants by the max rate (per reactant pair) to help turn them into probabilities
     max_rate = max(reactant_pair_rates.values())
@@ -88,11 +90,16 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) -> T
             # should we be worried about floating-point error here?
             # I hope not since dividing a float by itself should always result in 1.0.
             transitions[reactants] = products if prob == 1.0 else {products: prob}
+            if reaction.reversible:
+                transitions[products] = reactants if prob == 1.0 else {reactants: prob}
         else:
             # if we calculated probabilities correctly above, if we assigned a dict entry to be non-randomized
             # (since prob == 1.0 above), we should not encounter another reaction with same reactants
             assert (isinstance(transitions[reactants], dict))
             transitions[reactants][products] = prob
+            if reaction.reversible:
+                assert (isinstance(transitions[products], dict))
+                transitions[products][reactants] = prob
 
     # assert that each possible input for transitions has output probabilities summing to 1
     for reactants, outputs in transitions.items():
@@ -103,7 +110,8 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) -> T
     return transitions, max_rate
 
 
-def convert_unimolecular_to_bimolecular(reactions: Iterable[Reaction], n: int, volume: float) -> List[Reaction]:
+def convert_unimolecular_to_bimolecular(reactions: Iterable[Reaction], n: int, volume: float) \
+        -> List[Reaction]:
     """Process all reactions before being added to the dictionary.
 
     bimolecular reactions have their rates multiplied by the corrective factor (n-1) / (2 * volume).
@@ -118,16 +126,17 @@ def convert_unimolecular_to_bimolecular(reactions: Iterable[Reaction], n: int, v
     converted_reactions = []
     for reaction in reactions:
         if reaction.num_reactants() != reaction.num_products():
-            raise ValueError(f'each reaction must have same number of reactants and products, violated by {reaction}')
+            raise ValueError(
+                f'each reaction must have same number of reactants and products, violated by {reaction}')
         if reaction.is_bimolecular():
             # Corrective factor to reaction rate
-            reaction.rate_constant *= (n-1) / (2 * volume)
+            reaction.rate_constant *= (n - 1) / (2 * volume)
             converted_reactions.append(reaction)
             # Add a flipped copy if the reaction has two different reactants
             reactants = reaction.reactants_if_bimolecular()
             if len(set(reactants)) > 1:
                 flipped_reaction = copy.copy(reaction)
-                flipped_reaction.reactants = Expression({reactants[1]: 1, reactants[0]: 1})
+                flipped_reaction.reactants = Expression([reactants[1], reactants[0]])
                 assert flipped_reaction.reactants_if_bimolecular != reactants
                 converted_reactions.append(flipped_reaction)
 
@@ -136,8 +145,8 @@ def convert_unimolecular_to_bimolecular(reactions: Iterable[Reaction], n: int, v
             # add a bimolecular reaction R+S -->(k) P+S
             reactant = reaction.reactant_if_unimolecular()
             product = reaction.product_if_unique()
-            bimolecular_implementing_reactions = [(reactant + s >> product + s).k(reaction.rate_constant) for s in
-                                                  all_species]
+            bimolecular_implementing_reactions = [(reactant + s >> product + s).k(reaction.rate_constant)
+                                                  for s in all_species]
 
             converted_reactions.extend(bimolecular_implementing_reactions)
         else:
@@ -151,9 +160,9 @@ class Specie:
 
     def __add__(self, other):
         if type(other) is Expression:
-            return other + Expression({self: 1})
+            return other + Expression([self])
         elif type(other) is Specie:
-            return Expression({self: 1}) + Expression({other: 1})
+            return Expression([self]) + Expression([other])
 
         return NotImplemented
 
@@ -165,18 +174,18 @@ class Specie:
     def __rrshift__(self, other: Union[Specie, Expression]) -> Reaction:
         return Reaction(other, self)
 
-    def __ge__(self, other: Union[Specie, Expression]) -> Reaction:
+    def __or__(self, other: Union[Specie, Expression]) -> Reaction:
         return Reaction(self, other, reversible=True)
 
     def __mul__(self, other: int) -> Expression:
         if type(other) is int:
-            return Expression({self: other})
+            return other * Expression([self])
         else:
             raise NotImplementedError()
 
     def __rmul__(self, other: int) -> Expression:
         if type(other) is int:
-            return Expression({self: other})
+            return other * Expression([self])
         else:
             raise NotImplementedError()
 
@@ -200,9 +209,8 @@ class Expression:
     just use the `species` functions and manipulate those to get their
     reactions.
     args:
-        species: Dict[Specie, int]
-            represents species and their coefficients (ints)
-            all added together.
+        species: List[Specie]
+            represents species in this expression
     properties:
         species: Dict[Specie, int]
             represents species and their coefficients (ints)
@@ -210,24 +218,21 @@ class Expression:
             constructor
     """
 
-    species: Dict[Specie, int]
+    species: List[Specie]
 
     def __add__(self, other: Expression) -> Expression:
         if type(other) is Expression:
-            species_copy = self.species.copy()
-            for s, c in other.species.items():
-                if s not in species_copy:
-                    species_copy[s] = 0
-                species_copy[s] += c
+            species_copy = list(self.species)
+            species_copy.extend(other.species)
             return Expression(species_copy)
         else:
             raise NotImplementedError()
 
     def __rmul__(self, coeff: int) -> Expression:
         if type(coeff) is int:
-            species_copy = {}
-            for s, c in self.species.items():
-                species_copy[s] = c * coeff
+            species_copy = []
+            for _ in range(coeff):
+                species_copy.extend(self.species)
             return Expression(species_copy)
         else:
             raise NotImplementedError()
@@ -237,28 +242,22 @@ class Expression:
     def __rshift__(self, expr: Union[Specie, Expression]) -> Reaction:
         return Reaction(self, expr)
 
-    def __ge__(self, other: Union[Specie, Expression]) -> Reaction:
+    def __or__(self, other: Union[Specie, Expression]) -> Reaction:
         return Reaction(self, other, reversible=True)
 
     def __str__(self) -> str:
-        return ' + '.join(
-            map(lambda i: f"{i[1] if i[1] != 1 else ''}{i[0]}",
-                self.species.items()))
-
-    def __repr__(self) -> str:
-        return ' + '.join(
-            map(lambda i: f"{i[1] if i[1] != 1 else ''}{i[0]}",
-                self.species.items()))
+        return ' + '.join(s.name for s in self.species)
 
     def __len__(self) -> int:
-        return sum(self.species.values())
+        return len(self.species)
 
     def get_species(self) -> Set[Specie]:
         """
         Returns the set of species in this expression, not their
         coefficients.
         """
-        return set(self.species.keys())
+        return set(self.species)
+
 
 @dataclass
 class Reaction:
@@ -301,9 +300,9 @@ class Reaction:
                 "or Expression")
 
         if type(reactants) is Specie:
-            reactants = Expression({reactants: 1})
+            reactants = Expression([reactants])
         if type(products) is Specie:
-            products = Expression({products: 1})
+            products = Expression([products])
 
         self.reactants = reactants
         self.products = products
@@ -328,19 +327,19 @@ class Reaction:
 
     def reactant_if_unimolecular(self) -> Specie:
         if self.is_unimolecular():
-            return next(iter(self.reactants.species.keys()))
+            return self.reactants.species[0]
         else:
             raise ValueError(f'reaction {self} is not unimolecular')
 
     def product_if_unique(self) -> Specie:
         if self.num_products() == 1:
-            return next(iter(self.products.species.keys()))
+            return self.products.species[0]
         else:
             raise ValueError(f'reaction {self} does not have exactly one product')
 
     def reactants_if_bimolecular(self) -> Tuple[Specie, Specie]:
         if self.is_bimolecular():
-            return self._get_exactly_two_species_from_dict(self.reactants.species)
+            return self.reactants.species[0], self.reactants.species[1]
         else:
             raise ValueError(f'reaction {self} is not bimolecular')
 
@@ -350,7 +349,7 @@ class Reaction:
 
     def products_if_exactly_two(self) -> Tuple[Specie, Specie]:
         if self.num_products() == 2:
-            return self._get_exactly_two_species_from_dict(self.products.species)
+            return self.products.species[0], self.products.species[1]
         else:
             raise ValueError(f'reaction {self} does not have exactly two products')
 
@@ -358,14 +357,14 @@ class Reaction:
         p1, p2 = self.products_if_exactly_two()
         return p1.name, p2.name
 
-    def _get_exactly_two_species_from_dict(self, species_dict: Dict[Specie, int]) -> Tuple[Specie, Specie]:
-        if len(species_dict) == 1:
-            # stoichiometric coefficient 2
-            specie1 = specie2 = next(iter(species_dict.keys()))
-            specie_tuple = (specie1, specie2)
-        else:
-            specie_tuple = tuple(species_dict.keys())
-        return specie_tuple
+    # def _get_exactly_two_species_from_dict(self, species_dict: Dict[Specie, int]) -> Tuple[Specie, Specie]:
+    #     if len(species_dict) == 1:
+    #         # stoichiometric coefficient 2
+    #         specie1 = specie2 = next(iter(species_dict.keys()))
+    #         specie_tuple = (specie1, specie2)
+    #     else:
+    #         specie_tuple = tuple(species_dict.keys())
+    #     return specie_tuple
 
     def __str__(self):
         rev_rate_str = f'({self.rate_constant_rev})<' if self.reversible else ''
@@ -422,14 +421,3 @@ class Reaction:
             *self.reactants.get_species(),
             *self.products.get_species()
         }
-
-    def net_production(self, species_):
-        """
-        Returns the net stoichiometric coefficient of a species in this
-        reaction.
-        args:
-            species: str
-                string name of the species
-        """
-        return (self.products.species.get(species_, 0) -
-                self.reactants.species.get(species_, 0))

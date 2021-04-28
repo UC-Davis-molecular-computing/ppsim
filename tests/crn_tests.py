@@ -1,10 +1,14 @@
 import unittest
 
-from ppsim import species, reactions_to_dict
+from ppsim import species, reactions_to_dict, Reaction
 
 
 class TestCRN(unittest.TestCase):
     # tests creating protocols using CRN notation
+
+    def setUp(self):
+        self.n = 10
+        self.volume = 10
 
     def test_unit_rates_deterministic(self) -> None:
         a, b, c = species('A B C')
@@ -13,7 +17,7 @@ class TestCRN(unittest.TestCase):
             b + c >> 2 * c,
             c + a >> a + a,
         ]
-        transitions, max_rate = reactions_to_dict(rxns)
+        transitions, max_rate = reactions_to_dict(rxns, self.n, self.volume)
         self.assertAlmostEqual(1.0, max_rate)
         self.assertEqual(3, len(transitions))
         self.assertIn((a, b), transitions.keys())
@@ -30,8 +34,8 @@ class TestCRN(unittest.TestCase):
             (b + c >> 2 * c).k(3),
             (c + a >> a + a).k(5),
         ]
-        transitions, max_rate = reactions_to_dict(rxns)
-        self.assertAlmostEqual(5.0, max_rate)
+        transitions, max_rate = reactions_to_dict(rxns, self.n, self.volume)
+        self.assertAlmostEqual(2.25, max_rate)
         self.assertEqual(3, len(transitions))
         self.assertIn((a, b), transitions.keys())
         self.assertIn((b, c), transitions.keys())
@@ -47,7 +51,7 @@ class TestCRN(unittest.TestCase):
             a + b >> 2 * c,
             a + c >> a + a,
         ]
-        transitions, max_rate = reactions_to_dict(rxns)
+        transitions, max_rate = reactions_to_dict(rxns, self.n, self.volume)
         self.assertAlmostEqual(2.0, max_rate)
         self.assertEqual(2, len(transitions))
         self.assertIn((a, b), transitions.keys())
@@ -62,7 +66,7 @@ class TestCRN(unittest.TestCase):
             (a + b >> 2 * c).k(3),
             (a + c >> a + a).k(4),
         ]
-        transitions, max_rate = reactions_to_dict(rxns)
+        transitions, max_rate = reactions_to_dict(rxns, self.n, self.volume)
         self.assertAlmostEqual(5.0, max_rate)
         self.assertEqual(2, len(transitions))
         self.assertIn((a, b), transitions.keys())
@@ -77,7 +81,7 @@ class TestCRN(unittest.TestCase):
             (a + c >> 2 * c).k(2),
             (b >> d).k(2),
         ]
-        transitions, max_rate = reactions_to_dict(rxns)
+        transitions, max_rate = reactions_to_dict(rxns, self.n, self.volume)
         self.assertAlmostEqual(3.0, max_rate)
         self.assertEqual(6, len(transitions))
         self.assertIn((a, d), transitions.keys())
@@ -94,6 +98,12 @@ class TestCRN(unittest.TestCase):
         self.assertDictEqual({(d, d): 2 / 3}, transitions[(b, d)])
 
     def test_reversible_rxn(self):
-        a,b,c,d = species('A B C D')
-        rxn = a+b >= c+d
-        self.assertEqual(True, rxn.reversible)
+        a, b, c, d = species('A B C D')
+        rxn: Reaction = a + b >= c + d # type: ignore
+        self.assertTrue(rxn.reversible)
+        transitions, max_rate = reactions_to_dict([rxn], self.n, self.volume)
+        self.assertEqual(2, len(transitions))
+        self.assertIn((a, b), transitions.keys())
+        self.assertIn((c, d), transitions.keys())
+        self.assertEqual((c, d), transitions[(a, b)])
+        self.assertEqual((a, b), transitions[(c, d)])
