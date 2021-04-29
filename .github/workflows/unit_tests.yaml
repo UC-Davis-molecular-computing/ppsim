@@ -20,11 +20,11 @@ jobs:
       uses: s-weigand/setup-conda@v1
       with:
         activate-conda: true
-    - name: Install numpy with conda
-      run: conda install numpy=1.20.2
+    - name: Install numpy with conda # some versions below are behind, but this is what's available on conda repos
+      run: conda install numpy=1.20.1
     - name: Install cython with conda
-      run: conda install cython=0.29.23
+      run: conda install cython=0.29.8
     - name: Install ipywidgets with conda
-      run: conda install ipywidgets=7.6.3
+      run: conda install ipywidgets=7.4.2
     - name: Test with unittest
       run: python -m unittest -v tests/ppsim_tests.py
