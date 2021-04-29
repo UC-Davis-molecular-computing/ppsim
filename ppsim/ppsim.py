@@ -161,11 +161,14 @@ class Simulation:
         snapshots (List[Snapshot]): A list of Snapshot objects, which get
             periodically called during the running of the simulation to give live
             updates.
+        rng: A numpy random generator used to sample random variables outside the
+            cython code.
+        seed: The optional integer seed used for rng and inside cython code.
     """
 
     def __init__(self, init_config: Dict[State, int], rule: Rule, simulator_method: str = "MultiBatch",
                  transition_order: str = "asymmetric", volume: Optional[float] = None,
-                 continuous_time = False, **kwargs):
+                 continuous_time: bool = False, seed: Optional[int] = None, **kwargs):
         """Initialize a Simulation.
 
         Args:
@@ -207,9 +210,13 @@ class Simulation:
                 assumed to be the population size n.
             continuous_time: Whether continuous time is used. Defaults to False.
                 If a CRN as a list of reactions is passed in, this will be set to True.
+            seed: An optional integer used as the seed for all pseudorandom number
+                generation. Defaults to None.
             **kwargs: If rule is a function, other keyword function parameters are
                 passed in here.
         """
+        self.seed = seed
+        self.rng = np.random.default_rng(seed)
         self.n = sum(init_config.values())
         self.steps_per_time_unit = self.n
         self.continuous_time = continuous_time
@@ -355,7 +362,7 @@ class Simulation:
                                             {b, a} -> {self.rule(b, a)}''')
 
         self.simulator = self._method(config, delta, null_transitions,
-                                      random_transitions, random_outputs, transition_probabilities)
+                                      random_transitions, random_outputs, transition_probabilities, self.seed)
 
     def array_from_dict(self, d: Dict) -> np.ndarray:
         """Convert a configuration dictionary to an array.
@@ -580,7 +587,8 @@ class Simulation:
         expected_steps = time * self.steps_per_time_unit
         if self.continuous_time:
             # In continuous time the number of steps is a poisson random variable
-            return np.random.poisson(expected_steps)
+            # TODO: handle the case when expected_steps is larger than an int32 and numpy reports a ValueError
+            return self.rng.poisson(expected_steps)
         else:
             # In discrete time we round up to the next step
             return math.ceil(expected_steps)

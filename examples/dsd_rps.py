@@ -164,13 +164,15 @@ def main():
     init_config.update(init_config_helper)
     init_config.update(init_config_produce)
 
-    volume_for_simulation = 1 if unit_rate_constants else vol
+    #volume_for_simulation = 1 if unit_rate_constants else vol
+    volume_for_simulation = conc_to_count(1, vol)
     sim = Simulation(init_config=init_config, rule=all_rps_dsd_rxns, volume=volume_for_simulation)
-    sim.run(history_interval=0.001, run_until=0.1)
-    sim.history.plot()
-    plt.title('DNA strand displacement implementation of RPS oscillator')
-    plt.xlim(0, sim.times[-1])
-    plt.ylim(0, sim.n)
+    return sim
+    # sim.run(history_interval=0.001, run_until=0.1)
+    # sim.history.plot()
+    # plt.title('DNA strand displacement implementation of RPS oscillator')
+    # plt.xlim(0, sim.times[-1])
+    # plt.ylim(0, sim.n)
 
 if __name__ == '__main__':
-    main()
+    sim = main()
