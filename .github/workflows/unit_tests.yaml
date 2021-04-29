@@ -20,9 +20,11 @@ jobs:
       uses: s-weigand/setup-conda@v1
       with:
         activate-conda: true
-    - name: Install xlwt with conda
-      run: conda install xlwt=1.3.0
-    - name: Install docutils with conda
-      run: conda install docutils=0.16
+    - name: Install ipywidgets with conda
+      run: conda install ipywidgets=7.6.3
+    - name: Install numpy with conda
+      run: conda install numpy=1.20.2
+    - name: Install cython with conda
+      run: conda install cython=0.29.23
     - name: Test with unittest
       run: python -m unittest -v tests/ppsim_tests.py
