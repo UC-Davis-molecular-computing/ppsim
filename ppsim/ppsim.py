@@ -16,6 +16,7 @@ time_trials is a convenience function used for gathering data about the
 """
 
 import dataclasses
+from dataclasses import dataclass
 import math
 from time import perf_counter
 from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable, Set
@@ -135,36 +136,47 @@ class TimeUpdate(Snapshot):
 
 
 # TODO: add seed
+@dataclass
 class Simulation:
-    """Class to simulate a population protocol.
+    """Class to simulate a population protocol."""
 
-    Attributes:
-        state_list (List[State]): A sorted list of all reachable states.
-        state_dict (Dict[State, int]): Maps states to their integer index to be used
-            in array representations.
-        simulator (Simulator): An internal Simulator object, whose methods actually
-            perform the steps of the simulation.
-        configs (List[nparray[int]]): A list of all configurations that have been
-            recorded during the simulation, as integer arrays.
-        time (float): The current time of the Simulation.
-        times (List[float]): A list of all the corresponding times for configs,
-            in units of parallel time.
-        steps_per_time_unit (float): Number of simulated interactions per time unit.
-        continuous_time (bool): Whether continuous time is used. The regular discrete
+    state_list: List[State]
+    """A sorted list of all reachable states."""
+    state_dict: Dict[State, int]
+    """Maps states to their integer index to be used
+            in array representations."""
+    simulator: simulator.Simulator
+    """An internal Simulator object, whose methods actually
+            perform the steps of the simulation."""
+    configs: List[np.ndarray]
+    """A list of all configurations that have been
+            recorded during the simulation, as integer arrays."""
+    time: float
+    """The current time of the Simulation."""
+    times: List[float]
+    """A list of all the corresponding times for configs,
+            in units of parallel time."""
+    steps_per_time_unit: float
+    """Number of simulated interactions per time unit."""
+    continuous_time: bool
+    """Whether continuous time is used. The regular discrete
             time model considers a steps_per_time_unit steps to be 1 unit of time.
             The continuous time model is a poisson process, with expected
-            steps_per_time_unit number of steps per 1 unit of time.
-        column_names: Columns representing all states for pandas dataframe.
+            steps_per_time_unit number of steps per 1 unit of time."""
+    column_names: Union[pd.MultiIndex, List[str]]
+    """Columns representing all states for pandas dataframe.
             If the State is a tuple, NamedTuple, or dataclass, this will be a
             pandas MultiIndex based on the various fields.
-            Otherwise it is list of str(State) for each State.
-        snapshots (List[Snapshot]): A list of Snapshot objects, which get
+            Otherwise it is list of str(State) for each State."""
+    snapshots: List[Snapshot]
+    """A list of Snapshot objects, which get
             periodically called during the running of the simulation to give live
-            updates.
-        rng: A numpy random generator used to sample random variables outside the
-            cython code.
-        seed: The optional integer seed used for rng and inside cython code.
-    """
+            updates."""
+    rng: np.random.Generator
+    """A numpy random generator used to sample random variables outside the
+            cython code."""
+    seed: Optional[int]
+    """The optional integer seed used for rng and inside cython code."""
 
     def __init__(self, init_config: Dict[State, int], rule: Rule, simulator_method: str = "MultiBatch",
                  transition_order: str = "asymmetric", volume: Optional[float] = None,
@@ -720,11 +732,12 @@ class Simulation:
         self.__dict__ = state
         self.initialize_simulator(self.configs[-1])
 
+class Plotter(Snapshot):
+    """Base class for a Snapshot which will make a plot.
 
-class StatePlotter(Snapshot):
-    """Snapshot gives a barplot showing counts of states in a given configuration.
-
-    The requires an interactive matplotlib backend to work.
+    Gives the option to map states to categories, for an easy way to visualize
+        relevant subsets of the states rather than the whole state set.
+        These require an interactive matplotlib backend to work.
 
     Attributes:
         fig: The matplotlib figure that is created which holds the barplot.
@@ -738,7 +751,6 @@ class StatePlotter(Snapshot):
             array self.config (indexed by states), matrix * config gives an array
             of counts of categories. Used internally for the update function.
     """
-
     def __init__(self, state_map=None, update_time=0.5) -> None:
         """Initializes the StatePlotter.
 
@@ -752,12 +764,11 @@ class StatePlotter(Snapshot):
     def _add_state_map(self, state_map):
         """An internal function called to update self.categories and self.matrix."""
         self.categories = []
+        # categories will be ordered in the same order as state_list
         for state in self.simulation.state_list:
             if state_map(state) is not None and state_map(state) not in self.categories:
                 self.categories.append(state_map(state))
-        # self.categories = natsorted(list(set([state_map(state) for state in self.simulation.state_list
-        #                             if state_map(state) is not None])),
-        #                             key=lambda x:x.__repr__())
+
         categories_dict = {j: i for i, j in enumerate(self.categories)}
         self._matrix = np.zeros((len(self.simulation.state_list), len(self.categories)), dtype=np.int64)
         for i, state in enumerate(self.simulation.state_list):
@@ -766,23 +777,31 @@ class StatePlotter(Snapshot):
                 self._matrix[i, categories_dict[m]] += 1
 
     def initialize(self) -> None:
-        """Initializes the barplot.
-
-        If self.state_map gets changed, call initialize to update the barplot to
-            show the new set self.categories.
-        """
+        """Initializes the plotter by creating a fig and ax."""
         self.fig, self.ax = plt.subplots()
         if self.state_map is not None:
             self._add_state_map(self.state_map)
         else:
             self.categories = self.simulation.state_list
+
+
+class StatePlotter(Plotter):
+    """Plotter which produces a barplot of counts."""
+
+    def initialize(self) -> None:
+        """Initializes the barplot.
+
+        If self.state_map gets changed, call initialize to update the barplot to
+            show the new set self.categories.
+        """
+        super().initialize()
         self.ax = sns.barplot(x=[str(c) for c in self.categories], y=np.zeros(len(self.categories)))
         # rotate the x-axis labels if any of the label strings have more than 2 characters
         if max([len(str(c)) for c in self.categories]) > 2:
             self.ax.set_xticklabels(self.ax.get_xticklabels(), rotation=90, ha='center')
         self.ax.set_ylim(0, self.simulation.simulator.n)
 
-    def update(self, index: int = Optional[None]) -> None:
+    def update(self, index: Optional[int] = None) -> None:
         """Update the heights of all bars in the plot."""
         super().update(index)
         if self._matrix is not None:
@@ -794,6 +813,19 @@ class StatePlotter(Snapshot):
 
         self.ax.set_title(f'Time {self.time}')
         self.fig.tight_layout()
+        self.fig.canvas.draw()
+
+
+class HistoryPlotter(Plotter):
+
+    def update(self, index: Optional[int] = None) -> None:
+        super().update(index)
+        self.ax.clear()
+        if self._matrix is not None:
+            df = pd.DataFrame(data=np.matmul(self.simulation.history.to_numpy(), self._matrix), columns=self.categories)
+        else:
+            df = self.simulation.history
+        df.plot(ax=self.ax)
         self.fig.canvas.draw()
 
 

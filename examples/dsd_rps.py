@@ -127,8 +127,8 @@ def main():
 
     unit_rate_constants = False
     if not unit_rate_constants:
-        k = 10e6  # forward rate constant in mass-action units
-        r = 10e6  # reverse rate constant in mass-action units
+        k = 1e6  # forward rate constant in mass-action units
+        r = 1e6  # reverse rate constant in mass-action units
         for rxn in all_rps_dsd_rxns:
             rxn.k(k, units=RateConstantUnits.mass_action)
             if rxn.reversible:
@@ -136,12 +136,17 @@ def main():
 
     vol = 1 * uL
 
+    # scale time to make simulations take less time
+    time_scaling = 100
+    vol /= time_scaling
+
     react_conc = 100 * nM
     back_conc = 100 * nM
     helper_conc = 75 * nM
     produce_conc = 100 * nM
     a1_conc = 13 * nM
     b1_conc = 10 * nM
+    c1_conc = 1 * nM
 
     react_count = concentration_to_count(react_conc, vol)
     back_count = concentration_to_count(back_conc, vol)
@@ -149,27 +154,22 @@ def main():
     produce_count = concentration_to_count(produce_conc, vol)
     a1_count = concentration_to_count(a1_conc, vol)
     b1_count = concentration_to_count(b1_conc, vol)
+    c1_count = concentration_to_count(c1_conc, vol)
 
     init_config_react = {specie: react_count for specie in react_species}
     init_config_back = {specie: back_count for specie in back_species}
     init_config_helper = {specie: helper_count for specie in helper_species}
     init_config_produce = {specie: produce_count for specie in produce_species}
 
-    init_config = {a1: a1_count, b1: b1_count}
+    init_config = {a1: a1_count, b1: b1_count, c1: c1_count}
     init_config.update(init_config_react)
     init_config.update(init_config_back)
     init_config.update(init_config_helper)
     init_config.update(init_config_produce)
 
-    volume_for_simulation = 1 if unit_rate_constants else vol
     # volume_for_simulation = concentration_to_count(1, vol)
-    sim = Simulation(init_config=init_config, rule=all_rps_dsd_rxns, volume=volume_for_simulation)
-    # return sim
-    sim.run(history_interval=0.001, run_until=0.01)
-    sim.history.plot()
-    plt.title('DNA strand displacement implementation of RPS oscillator')
-    plt.xlim(0, sim.times[-1])
-    plt.ylim(0, sim.n)
+    sim = Simulation(init_config=init_config, rule=all_rps_dsd_rxns, volume=vol)
+    return sim
 
 if __name__ == '__main__':
     sim = main()
