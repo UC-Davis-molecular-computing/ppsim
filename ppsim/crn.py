@@ -7,6 +7,7 @@ from __future__ import annotations  # needed for forward references in type hint
 
 from collections import defaultdict
 import copy
+from enum import Enum
 from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List
 from dataclasses import dataclass
 
@@ -68,15 +69,17 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
     for reaction in reversible_reactions:
         reversed_reaction = Reaction(reactants=reaction.products,
                                      products=reaction.reactants,
-                                     k=reaction.rate_constant_rev,
+                                     k=reaction.rate_constant_reverse,
+                                     rate_constant_units=reaction.rate_constant_reverse_units,
                                      reversible=False)
         reactions.append(reversed_reaction)
         reaction.reversible = False
 
     # Make a copy of reactions because this conversion will mutate the reactions
-    reactions = convert_unimolecular_to_bimolecular(reactions, n, volume)
+    reactions = convert_unimolecular_to_bimolecular_and_flip_reactant_order(reactions, n, volume)
 
     # for each ordered pair of reactants, calculate sum of rate constants across all reactions with those reactants
+    # get in stochastic units no matter how they're encoded in the reactions
     reactant_pair_rates: DefaultDict[SpeciePair, float] = defaultdict(int)
     for reaction in reactions:
         if not reaction.is_bimolecular():
@@ -84,7 +87,7 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
         if not reaction.num_products() == 2:
             raise ValueError(f'all reactions must have exactly two products, violated by {reaction}')
         reactants = reaction.reactants_if_bimolecular()
-        reactant_pair_rates[reactants] += reaction.rate_constant
+        reactant_pair_rates[reactants] += reaction.rate_constant_stochastic
 
     # divide all rate constants by the max rate (per reactant pair) to help turn them into probabilities
     max_rate = max(reactant_pair_rates.values())
@@ -92,7 +95,7 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
     # add one randomized transition per reaction
     transitions: Dict[SpeciePair, Output] = {}
     for reaction in reactions:
-        prob = reaction.rate_constant / max_rate
+        prob = reaction.rate_constant_stochastic / max_rate
         reactants = reaction.reactants_if_bimolecular()
         products = reaction.products_if_exactly_two()
         if reactants not in transitions:
@@ -114,7 +117,7 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
     return transitions, max_rate
 
 
-def convert_unimolecular_to_bimolecular(reactions: Iterable[Reaction], n: int, volume: float) \
+def convert_unimolecular_to_bimolecular_and_flip_reactant_order(reactions: Iterable[Reaction], n: int, volume: float) \
         -> List[Reaction]:
     """Process all reactions before being added to the dictionary.
 
@@ -263,6 +266,30 @@ class Expression:
         return set(self.species)
 
 
+avogadro = 6.02214076e23
+
+
+def concentration_to_count(concentration: float, volume: float) -> int:
+    """
+
+    Args:
+        concentration: units of M (molar) = moles / liter
+        volume: units of liter
+
+    Returns:
+        count of molecule with `concentration` in `volume`
+    """
+    return round(avogadro * concentration * volume)
+
+
+class RateConstantUnits(Enum):
+    stochastic = 'stochastic'
+    """Units of L/s. Multiple by Avogadro's number to convert to mass-action units."""
+
+    mass_action = 'mass_action'
+    """Units of /M/s. Divide by Avogadro's number to convert to stochastic units."""
+
+
 @dataclass
 class Reaction:
     """
@@ -286,12 +313,17 @@ class Reaction:
 
     reactants: Expression
     products: Expression
-    rate_constant: float
-    rate_constant_rev: float
-    reversible: bool
+    rate_constant: float = 1
+    rate_constant_reverse: float = 1
+    rate_constant_units: RateConstantUnits = RateConstantUnits.stochastic
+    rate_constant_reverse_units: RateConstantUnits = RateConstantUnits.stochastic
+    reversible: bool = False
 
     def __init__(self, reactants: Union[Specie, Expression], products: Union[Specie, Expression],
-                 k: float = 1, r: float = 1, reversible: bool = False) -> None:
+                 k: float = 1, r: float = 1,
+                 rate_constant_units: RateConstantUnits = RateConstantUnits.stochastic,
+                 rate_constant_reverse_units: RateConstantUnits = RateConstantUnits.stochastic,
+                 reversible: bool = False) -> None:
         if type(reactants) not in (Specie, Expression):
             raise ValueError(
                 "Attempted construction of reaction with type of reactants "
@@ -311,7 +343,9 @@ class Reaction:
         self.reactants = reactants
         self.products = products
         self.rate_constant = float(k)
-        self.rate_constant_rev = float(r)
+        self.rate_constant_reverse = float(r)
+        self.rate_constant_units = rate_constant_units
+        self.rate_constant_reverse_units = rate_constant_reverse_units
         self.reversible = reversible
 
     def is_unimolecular(self) -> bool:
@@ -371,19 +405,35 @@ class Reaction:
     #     return specie_tuple
 
     def __str__(self):
-        rev_rate_str = f'({self.rate_constant_rev})<' if self.reversible else ''
+        rev_rate_str = f'({self.rate_constant_reverse})<' if self.reversible else ''
         return f"{self.reactants} {rev_rate_str}-->({self.rate_constant}) {self.products}"
 
     def __repr__(self):
         return (f"Reaction({repr(self.reactants)}, {repr(self.products)}, "
                 f"{self.rate_constant})")
 
-    def k(self, coeff: float) -> Reaction:
+    @property
+    def rate_constant_stochastic(self) -> float:
+        return self.rate_constant \
+            if self.rate_constant_units == RateConstantUnits.stochastic \
+            else self.rate_constant / avogadro
+
+    @property
+    def rate_constant_reverse_stochastic(self) -> float:
+        return self.rate_constant_reverse \
+            if self.rate_constant_reverse_units == RateConstantUnits.stochastic \
+            else self.rate_constant_reverse / avogadro
+
+    def k(self, coeff: float, units: RateConstantUnits = RateConstantUnits.stochastic) -> Reaction:
         """
         Changes the reaction coefficient to `coeff` and returns `self`.
+
         args:
             coeff: float
                 The new reaction coefficient
+            units: float
+                units of rate constant (default stochastic)
+
         This is useful for including the rate constant during the construction
         of a reaction. For example
             x, y, z = species("X Y Z")
@@ -393,16 +443,22 @@ class Reaction:
                 (z >> y).k(0.5))
             ...
         """
+        if self.is_unimolecular() and units == RateConstantUnits.mass_action:
+            raise ValueError('cannot use mass-action rate constants on a unimolecular reaction')
+        self.rate_constant_units = units
         self.rate_constant = coeff
         return self
 
-    def r(self, coeff: float) -> Reaction:
+    def r(self, coeff: float, units: RateConstantUnits = RateConstantUnits.stochastic) -> Reaction:
         """
         Changes the reverse reactionn reaction rate constant to `coeff` and returns `self`.
 
         args:
             coeff: float
                 The new reverse reaction rate constant
+            units: float
+                units of rate constant (default stochastic)
+
         This is useful for including the rate constant during the construction
         of a reaction. For example
             x, y, z = species("X Y Z")
@@ -412,9 +468,13 @@ class Reaction:
                 (z >> y).k(0.5))
             ...
         """
+        if self.num_products() == 1 and units == RateConstantUnits.mass_action:
+            raise ValueError('cannot use mass-action rate constants on a unimolecular reaction; '
+                             'this reaction has only one product, so its reverse is unimolecular')
         if not self.reversible:
             raise ValueError('cannot set r on an irreversible reaction')
-        self.rate_constant_rev = coeff
+        self.rate_constant_reverse_units = units
+        self.rate_constant_reverse = coeff
         return self
 
     def get_species(self):

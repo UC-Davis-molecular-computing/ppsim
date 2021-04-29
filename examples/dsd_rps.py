@@ -2,6 +2,9 @@
 from ppsim import species, Simulation
 from matplotlib import pyplot as plt
 
+from ppsim.crn import avogadro, concentration_to_count, RateConstantUnits
+
+
 def main():
     # Fig. 1 in https://www.biorxiv.org/content/10.1101/138420v2.full.pdf
     # A+B --> 2B
@@ -122,20 +125,14 @@ def main():
     uL = 10 ** -6  # 1 uL (microliter)
     nM = 10 ** -9  # 1 nM (nanomolar)
 
-    def conc_to_count(conc: float, volume: float) -> int:
-        # converts concentration in Molar to count in given volume
-        # count = avagadro (count/mole) * conc (molar=mole/liter) * volume (liter)
-        avagadro = 6.02214076e23
-        return round(avagadro * conc * volume)
-
     unit_rate_constants = False
     if not unit_rate_constants:
-        k = 10e6  # forward rate constant
-        r = 10e6  # reverse rate constant
+        k = 10e6  # forward rate constant in mass-action units
+        r = 10e6  # reverse rate constant in mass-action units
         for rxn in all_rps_dsd_rxns:
-            rxn.k(k)
+            rxn.k(k, units=RateConstantUnits.mass_action)
             if rxn.reversible:
-                rxn.r(r)
+                rxn.r(r, units=RateConstantUnits.mass_action)
 
     vol = 1 * uL
 
@@ -146,12 +143,12 @@ def main():
     a1_conc = 13 * nM
     b1_conc = 10 * nM
 
-    react_count = conc_to_count(react_conc, vol)
-    back_count = conc_to_count(back_conc, vol)
-    helper_count = conc_to_count(helper_conc, vol)
-    produce_count = conc_to_count(produce_conc, vol)
-    a1_count = conc_to_count(a1_conc, vol)
-    b1_count = conc_to_count(b1_conc, vol)
+    react_count = concentration_to_count(react_conc, vol)
+    back_count = concentration_to_count(back_conc, vol)
+    helper_count = concentration_to_count(helper_conc, vol)
+    produce_count = concentration_to_count(produce_conc, vol)
+    a1_count = concentration_to_count(a1_conc, vol)
+    b1_count = concentration_to_count(b1_conc, vol)
 
     init_config_react = {specie: react_count for specie in react_species}
     init_config_back = {specie: back_count for specie in back_species}
@@ -164,15 +161,15 @@ def main():
     init_config.update(init_config_helper)
     init_config.update(init_config_produce)
 
-    #volume_for_simulation = 1 if unit_rate_constants else vol
-    volume_for_simulation = conc_to_count(1, vol)
+    volume_for_simulation = 1 if unit_rate_constants else vol
+    # volume_for_simulation = concentration_to_count(1, vol)
     sim = Simulation(init_config=init_config, rule=all_rps_dsd_rxns, volume=volume_for_simulation)
-    return sim
-    # sim.run(history_interval=0.001, run_until=0.1)
-    # sim.history.plot()
-    # plt.title('DNA strand displacement implementation of RPS oscillator')
-    # plt.xlim(0, sim.times[-1])
-    # plt.ylim(0, sim.n)
+    # return sim
+    sim.run(history_interval=0.001, run_until=0.01)
+    sim.history.plot()
+    plt.title('DNA strand displacement implementation of RPS oscillator')
+    plt.xlim(0, sim.times[-1])
+    plt.ylim(0, sim.n)
 
 if __name__ == '__main__':
     sim = main()
