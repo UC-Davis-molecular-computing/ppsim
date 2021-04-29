@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <Model>
-  <Description>Approximate Majority</Description>
-  <NumberOfReactions>3</NumberOfReactions>
+  <Description>Approximate Approximate Majority</Description>
+  <NumberOfReactions>4</NumberOfReactions>
   <NumberOfSpecies>3</NumberOfSpecies>
   <SpeciesList>
     <Species>
@@ -25,7 +25,7 @@
       <Id>R0</Id>
       <Description>A + B --&gt;(1.0) U + U</Description>
       <Type>mass-action</Type>
-      <Rate>1.0</Rate>
+      <Rate>0.01</Rate>
       <Reactants>
         <SpeciesReference id="A" stoichiometry="1"/>
         <SpeciesReference id="B" stoichiometry="1"/>
@@ -36,9 +36,9 @@
     </Reaction>
     <Reaction>
       <Id>R1</Id>
-      <Description>A + U --&gt;(1.0) A + A</Description>
+      <Description>A + U --&gt;(2.0) A + A</Description>
       <Type>mass-action</Type>
-      <Rate>1.0</Rate>
+      <Rate>0.02</Rate>
       <Reactants>
         <SpeciesReference id="A" stoichiometry="1"/>
         <SpeciesReference id="U" stoichiometry="1"/>
@@ -49,9 +49,22 @@
     </Reaction>
     <Reaction>
       <Id>R2</Id>
+      <Description>A + A --&gt;(3.0) A + U</Description>
+      <Type>mass-action</Type>
+      <Rate>0.03</Rate>
+      <Reactants>
+        <SpeciesReference id="A" stoichiometry="2"/>
+      </Reactants>
+      <Products>
+        <SpeciesReference id="A" stoichiometry="1"/>
+        <SpeciesReference id="U" stoichiometry="1"/>
+      </Products>
+    </Reaction>
+    <Reaction>
+      <Id>R3</Id>
       <Description>B + U --&gt;(1.0) B + B</Description>
       <Type>mass-action</Type>
-      <Rate>1.0</Rate>
+      <Rate>0.01</Rate>
       <Reactants>
         <SpeciesReference id="B" stoichiometry="1"/>
         <SpeciesReference id="U" stoichiometry="1"/>

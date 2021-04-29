@@ -73,7 +73,7 @@ def species_in_rxns(rxns: Iterable[Reaction]):
     return species_list
 
 
-def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int], name: str = 'CRN') -> str:
+def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int], volume: float = 1.0, name: str = 'CRN') -> str:
     """
 
     Args:
@@ -152,7 +152,10 @@ def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int], na
 
         rate_node = root.createElement('Rate')
         rxn_node.appendChild(rate_node)
-        rate_text = root.createTextNode(f'{rxn.rate_constant_stochastic}')
+        rate = rxn.rate_constant_stochastic
+        if rxn.is_bimolecular():
+            rate /= volume
+        rate_text = root.createTextNode(f'{rate}')
         rate_node.appendChild(rate_text)
 
         # reactants
@@ -191,7 +194,7 @@ def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int], na
 
     return stochkit_xml
 
-def write_stochkit_file(filename: str, rxns: Iterable[Reaction], init_config: Dict[Specie, int], name: str = 'CRN') -> None:
+def write_stochkit_file(filename: str, rxns: Iterable[Reaction], init_config: Dict[Specie, int], volume: float = 1.0, name: str = 'CRN') -> None:
     """
     Write stochkit file
     Args:
@@ -200,7 +203,7 @@ def write_stochkit_file(filename: str, rxns: Iterable[Reaction], init_config: Di
         name: name of the CRN
 
     """
-    xml = stochkit_format(rxns, init_config, name)
+    xml = stochkit_format(rxns, init_config, volume, name)
     with open(filename, 'w') as f:
         f.write(xml)
 
