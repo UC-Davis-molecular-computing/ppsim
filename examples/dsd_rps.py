@@ -128,8 +128,7 @@ def main():
         avagadro = 6.02214076e23
         return round(avagadro * conc * volume)
 
-    unit_rate_constants = True
-    # unit_rate_constants_and_volume = False
+    unit_rate_constants = False
     if not unit_rate_constants:
         k = 10e6  # forward rate constant
         r = 10e6  # reverse rate constant
@@ -167,7 +166,7 @@ def main():
 
     volume_for_simulation = 1 if unit_rate_constants else vol
     sim = Simulation(init_config=init_config, rule=all_rps_dsd_rxns, volume=volume_for_simulation)
-    sim.run(run_until=10)
+    sim.run(history_interval=0.001, run_until=0.1)
     sim.history.plot()
     plt.title('DNA strand displacement implementation of RPS oscillator')
     plt.xlim(0, sim.times[-1])
