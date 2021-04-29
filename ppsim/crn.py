@@ -10,7 +10,199 @@ import copy
 from enum import Enum
 from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List
 from dataclasses import dataclass
+from xml.dom import minidom
 
+# example of StochKit format:
+'''
+<Model>
+   <Description>Epidemic</Description>
+   <NumberOfReactions>1</NumberOfReactions>
+   <NumberOfSpecies>2</NumberOfSpecies>
+   <ParametersList>
+     <Parameter>
+       <Id>c1</Id>
+       <Expression>1.0</Expression>
+     </Parameter>
+   </ParametersList>
+   <ReactionsList>
+     <Reaction>
+       <Id>R2</Id>
+       <Description> A+B -> 2B </Description>
+       <Type>mass-action</Type>
+       <Rate>c1</Rate>
+       <Reactants>
+           <SpeciesReference id="A" stoichiometry="1"/>
+           <SpeciesReference id="B" stoichiometry="1"/>
+       </Reactants>
+       <Products>
+           <SpeciesReference id="B" stoichiometry="2"/>
+       </Products>
+     </Reaction>
+  </ReactionsList>
+  <SpeciesList>
+     <Species>
+       <Id>A</Id>
+       <Description>Species #1</Description>
+       <InitialPopulation>10000</InitialPopulation>
+     </Species>
+     <Species>
+       <Id>B</Id>
+       <Description>Species #2</Description>
+       <InitialPopulation>1</InitialPopulation>
+     </Species>
+  </SpeciesList>
+</Model>
+'''
+
+
+def species_in_rxns(rxns: Iterable[Reaction]):
+    """
+
+    Args:
+        rxns: iterable of :any:`Reaction`'s
+
+    Returns: list of species (without repetitions) in :any:`Reaction`'s in `rxns`
+    """
+    species_set: Set[Specie] = set()
+    species_list: List[Specie] = []
+    for rxn in rxns:
+        for sp in rxn.reactants.species + rxn.products.species:
+            if sp not in species_set:
+                species_set.add(sp)
+                species_list.append(sp)
+    return species_list
+
+
+def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int], name: str = 'CRN') -> str:
+    """
+
+    Args:
+        rxns: reactions to translate to StochKit format
+        init_config: dict mapping each :any:`Specie` to its initial count
+        name: name of the CRN
+
+    Returns:
+        string describing CRN in StochKit XML format
+    """
+    rxns = replace_reversible_rxns(rxns)
+    species_list = species_in_rxns(rxns)
+
+    root = minidom.Document()
+
+    model = root.createElement('Model')
+    root.appendChild(model)
+
+    desc_node = root.createElement('Description')
+    model.appendChild(desc_node)
+    desc_text = root.createTextNode(name)
+    desc_node.appendChild(desc_text)
+
+    num_rxns_node = root.createElement('NumberOfReactions')
+    model.appendChild(num_rxns_node)
+    num_rxns_text = root.createTextNode(str(len(rxns)))
+    num_rxns_node.appendChild(num_rxns_text)
+
+    num_species_node = root.createElement('NumberOfSpecies')
+    model.appendChild(num_species_node)
+    num_species_text = root.createTextNode(str(len(species_list)))
+    num_species_node.appendChild(num_species_text)
+
+    species_node = root.createElement('SpeciesList')
+    model.appendChild(species_node)
+    for specie in species_list:
+        specie_node = root.createElement('Species')
+        species_node.appendChild(specie_node)
+
+        id_node = root.createElement('Id')
+        specie_node.appendChild(id_node)
+        id_text = root.createTextNode(specie.name)
+        id_node.appendChild(id_text)
+
+        specie_description_node = root.createElement('Description')
+        specie_node.appendChild(specie_description_node)
+        specie_description_text = root.createTextNode(specie.name)
+        specie_description_node.appendChild(specie_description_text)
+
+        initial_population_node = root.createElement('InitialPopulation')
+        specie_node.appendChild(initial_population_node)
+        count = init_config.get(specie, 0)
+        initial_population_text = root.createTextNode(str(count))
+        initial_population_node.appendChild(initial_population_text)
+
+    rxns_node = root.createElement('ReactionsList')
+    model.appendChild(rxns_node)
+    for idx, rxn in enumerate(rxns):
+        rxn_node = root.createElement('Reaction')
+        rxns_node.appendChild(rxn_node)
+
+        id_node = root.createElement('Id')
+        rxn_node.appendChild(id_node)
+        id_text = root.createTextNode(f'R{idx}')
+        id_node.appendChild(id_text)
+
+        description_node = root.createElement('Description')
+        rxn_node.appendChild(description_node)
+        description_text = root.createTextNode(str(rxn))
+        description_node.appendChild(description_text)
+
+        type_node = root.createElement('Type')
+        rxn_node.appendChild(type_node)
+        type_text = root.createTextNode('mass-action')
+        type_node.appendChild(type_text)
+
+        rate_node = root.createElement('Rate')
+        rxn_node.appendChild(rate_node)
+        rate_text = root.createTextNode(f'{rxn.rate_constant_stochastic}')
+        rate_node.appendChild(rate_text)
+
+        # reactants
+        reactants_node = root.createElement('Reactants')
+        rxn_node.appendChild(reactants_node)
+        if rxn.is_bimolecular() and rxn.symmetric():
+            reactant = rxn.reactants.species[0]
+            reactant_node = root.createElement('SpeciesReference')
+            reactants_node.appendChild(reactant_node)
+            reactant_node.setAttribute('id', reactant.name)
+            reactant_node.setAttribute('stoichiometry', '2')
+        else:
+            for reactant in rxn.reactants.species:
+                reactant_node = root.createElement('SpeciesReference')
+                reactants_node.appendChild(reactant_node)
+                reactant_node.setAttribute('id', reactant.name)
+                reactant_node.setAttribute('stoichiometry', '1')
+
+        # products
+        products_node = root.createElement('Products')
+        rxn_node.appendChild(products_node)
+        if rxn.num_products() == 2 and rxn.symmetric_products():
+            product = rxn.reactants.species[0]
+            product_node = root.createElement('SpeciesReference')
+            products_node.appendChild(product_node)
+            product_node.setAttribute('id', product.name)
+            product_node.setAttribute('stoichiometry', '2')
+        else:
+            for product in rxn.products.species:
+                product_node = root.createElement('SpeciesReference')
+                products_node.appendChild(product_node)
+                product_node.setAttribute('id', product.name)
+                product_node.setAttribute('stoichiometry', '1')
+
+    stochkit_xml = root.toprettyxml(indent='  ')
+
+    return stochkit_xml
+
+def write_stochkit_file(filename: str, rxns: Iterable[Reaction], init_config: Dict[Specie, int], name: str = 'CRN') -> None:
+    """
+    Write stochkit file
+    Args:
+        rxns: reactions to translate to StochKit format
+        init_config: dict mapping each :any:`Specie` to its initial count
+        name: name of the CRN
+
+    """
+    xml = stochkit_format(rxns, init_config, name)
+    with open(filename, 'w') as f:
+        f.write(xml)
 
 def species(species_: str) -> Union[Specie, Tuple[Specie]]:
     """
@@ -38,6 +230,27 @@ def species(species_: str) -> Union[Specie, Tuple[Specie]]:
 
 SpeciePair = Tuple['Specie', 'Specie']  # forward annotations don't seem to work here
 Output = Union[SpeciePair, Dict[SpeciePair, float]]
+
+
+def replace_reversible_rxns(rxns: Iterable[Reaction]) -> List[Reaction]:
+    """
+    Args:
+        rxns: list of :any:`Reaction`'s
+
+    Returns: list of :any:`Reaction`'s, where every reversible reaction in `rxns` has been replaced by
+        two irreversible reactions, and all others have been left as they are
+    """
+    new_rxns: List[Reaction] = []
+    for rxn in rxns:
+        if not rxn.reversible:
+            new_rxns.append(rxn)
+        else:
+            forward_rxn = Reaction(reactants=rxn.reactants, products=rxn.products, k=rxn.rate_constant,
+                                   rate_constant_units=rxn.rate_constant_units, reversible=False)
+            reverse_rxn = Reaction(reactants=rxn.products, products=rxn.reactants, k=rxn.rate_constant_reverse,
+                                   rate_constant_units=rxn.rate_constant_reverse_units, reversible=False)
+            new_rxns.extend([forward_rxn, reverse_rxn])
+    return new_rxns
 
 
 # XXX: This algorithm currently uses the reactant *ordered* pair.
@@ -353,6 +566,12 @@ class Reaction:
 
     def is_bimolecular(self) -> bool:
         return self.num_reactants() == 2
+
+    def symmetric(self) -> bool:
+        return self.num_reactants() == 2 and self.reactants.species[0] == self.reactants.species[1]
+
+    def symmetric_products(self) -> bool:
+        return self.num_products() == 2 and self.products.species[0] == self.products.species[1]
 
     def num_reactants(self) -> int:
         return len(self.reactants)
