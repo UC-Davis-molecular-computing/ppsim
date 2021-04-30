@@ -15,6 +15,11 @@ ppsim
 .. automodule:: ppsim.ppsim
    :members:
 
+crn
+=====================
+.. automodule:: ppsim.crn
+   :members:
+
 
 Indices and tables
 ==================
