@@ -1,18 +1,38 @@
 """
 A module for simulating population protocols.
 
-The main class Simulation is created with a description of the protocol and
-    the initial condition, and is responsible for running the simulation.
+The main class :any:`Simulation` is created with a description of the protocol and the initial condition,
+and is responsible for running the simulation.
 
-Snapshot is a base class for snapshot objects that get are updated by
-    Simulation, used to visualize the protocol during or after the simulation
-    has ran.
+The general syntax is
 
-StatePlotter is a subclass of Snapshot that gives a barplot visualizing the
-    counts of all states and how they change over time.
+.. code-block:: python
 
-time_trials is a convenience function used for gathering data about the
-    convergence time of a protocol.
+    a, b, u = 'A', 'B', 'U'
+    approx_majority = {
+        (a,b): (u,u),
+        (a,u): (a,a),
+        (b,u): (b,b),
+    }
+    n = 10 ** 5
+    init_config = {a: 0.51 * n, b: 0.49 * n}
+    sim = Simulation(init_config=init_config, rule=approx_majority)
+    sim.run()
+    sim.history.plot()
+    plt.title('approximate majority protocol')
+    plt.xlim(0, sim.times[-1])
+    plt.ylim(0, n)
+
+More examples given in https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples
+
+:any:`Snapshot` is a base class for snapshot objects that get are updated by Simulation,
+used to visualize the protocol during or after the simulation has run.
+
+:any:`StatePlotter` is a subclass of Snapshot that gives a barplot visualizing the
+counts of all states and how they change over time.
+
+:py:meth:`time_trials` is a convenience function used for gathering data about the
+convergence time of a protocol.
 """
 
 import dataclasses
@@ -517,12 +537,11 @@ class Simulation:
 
     @property
     def reactions(self) -> str:
-        """A string showing all non-null transitions in reaction notation.
+        """
+        A string showing all non-null transitions in reaction notation.
 
-        Each reaction is separated by \n, so that print(self.reactions) will
-            display all reactions.
-        Only works with simulator method multibatch, otherwise will raise a
-            ValueError.
+        Each reaction is separated by newlines, so that ``print(self.reactions)`` will display all reactions.
+        Only works with simulator method multibatch, otherwise will raise a ValueError.
         """
         if type(self.simulator) != simulator.SimulatorMultiBatch:
             raise ValueError('reactions must be defined by multibatch simulator.')
@@ -533,11 +552,12 @@ class Simulation:
 
     @property
     def enabled_reactions(self) -> str:
-        """A string showing all non-null transitions that are currently enabled.
+        """
+        A string showing all non-null transitions that are currently enabled.
 
         This can only check the current configuration in self.simulator.
-        Each reaction is separated by \n, so that print(self.enabled_reactions) will
-            display all enabled reactions.
+        Each reaction is separated by newlines, so that ``print(self.enabled_reactions)``
+        will display all enabled reactions.
         """
         if type(self.simulator) != simulator.SimulatorMultiBatch:
             raise ValueError('reactions must be defined by multibatch simulator.')
@@ -751,8 +771,8 @@ class Plotter(Snapshot):
     """Base class for a Snapshot which will make a plot.
 
     Gives the option to map states to categories, for an easy way to visualize
-        relevant subsets of the states rather than the whole state set.
-        These require an interactive matplotlib backend to work.
+    relevant subsets of the states rather than the whole state set.
+    These require an interactive matplotlib backend to work.
 
     Attributes:
         fig: The matplotlib figure that is created which holds the barplot.

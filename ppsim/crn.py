@@ -1,6 +1,26 @@
 """
 Module for expression population protocols using CRN notation. Ideas and much code taken from
 https://github.com/enricozb/python-crn.
+
+The general syntax is
+
+.. code-block:: python
+
+    a, b, u = species('A B U')
+    approx_majority = [
+        a + b >> 2 * u,
+        a + u >> 2 * a,
+        b + u >> 2 * b,
+    ]
+    n = 10 ** 5
+    init_config = {a: 0.51 * n, b: 0.49 * n}
+    sim = Simulation(init_config=init_config, rule=approx_majority)
+
+In other words, a list of reactions is treated by the ppsim library just like the other ways of specifying
+population protocol transitions (the `rule` parameter in the constructor for :any:`Simulation`, which also
+accepts a dict or a Python function).
+
+More examples given in https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples
 """
 
 from __future__ import annotations  # needed for forward references in type hints
@@ -55,9 +75,8 @@ from xml.dom import minidom
 '''
 
 
-def species_in_rxns(rxns: Iterable[Reaction]):
+def species_in_rxns(rxns: Iterable[Reaction]) -> List[Specie]:
     """
-
     Args:
         rxns: iterable of :any:`Reaction`'s
 
@@ -73,12 +92,14 @@ def species_in_rxns(rxns: Iterable[Reaction]):
     return species_list
 
 
-def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int], volume: float = 1.0, name: str = 'CRN') -> str:
+def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int],
+                    volume: float = 1.0, name: str = 'CRN') -> str:
     """
 
     Args:
         rxns: reactions to translate to StochKit format
         init_config: dict mapping each :any:`Specie` to its initial count
+        volume: volume in liters
         name: name of the CRN
 
     Returns:
@@ -194,32 +215,39 @@ def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int], vo
 
     return stochkit_xml
 
-def write_stochkit_file(filename: str, rxns: Iterable[Reaction], init_config: Dict[Specie, int], volume: float = 1.0, name: str = 'CRN') -> None:
+
+def write_stochkit_file(filename: str, rxns: Iterable[Reaction], init_config: Dict[Specie, int],
+                        volume: float = 1.0, name: str = 'CRN') -> None:
     """
     Write stochkit file
     Args:
+        filename: name of file to write
         rxns: reactions to translate to StochKit format
         init_config: dict mapping each :any:`Specie` to its initial count
+        volume: volume in liters
         name: name of the CRN
-
     """
     xml = stochkit_format(rxns, init_config, volume, name)
     with open(filename, 'w') as f:
         f.write(xml)
 
+
 def species(species_: str) -> Union[Specie, Tuple[Specie]]:
     """
     Create a list of :any:`Specie` (Single species :any:`Expression`'s),
     or a single one.
+
     args:
         species_: str
-            A space-separated string representing the names of the species
-            being created
+            A space-separated string representing the names of the species being created
+
     This is normally used like this:
+
+    .. code-block:: python
+
         w, x, y, z = species("W X Y Z")
         rxn = x + y >> z + w
-        ...
-    The names MUST be valid Python identifiers: "X0" is valid but "0X" is not.
+
     """
     species_list = species_.split()
 
@@ -264,7 +292,7 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
         -> Tuple[Dict[SpeciePair, Output], float]:
     """
     Returns dict representation of `reactions`, transforming unimolecular reactions to bimolecular,
-    and converting rates to probabilities, also returning the max rate so the :any:`Simulator` knows
+    and converting rates to probabilities, also returning the max rate so the :any:`Simulation` knows
     how to scale time.
 
     Args:
@@ -431,17 +459,10 @@ class Expression:
     side of stoichiometric equations. Not very user friendly; users should
     just use the `species` functions and manipulate those to get their
     reactions.
-    args:
-        species: List[Specie]
-            represents species in this expression
-    properties:
-        species: Dict[Specie, int]
-            represents species and their coefficients (ints)
-            all added together. The same as the argument passed to the
-            constructor
     """
 
     species: List[Specie]
+    """ordered list of species in expression, e.g, A+A+B is [A,A,B]"""
 
     def __add__(self, other: Expression) -> Expression:
         if type(other) is Expression:
@@ -511,35 +532,44 @@ class Reaction:
     """
     Representation of a stoichiometric reaction using a pair of Expressions,
     one for the reactants and one for the products.
-    args:
-        reactants: Expression
-            The left hand side of the stoichiometric equation
-        products: Expression
-            The right hand side of the stoichiometric equation
-        k: float
-            The rate constant of the reaction
-    properties:
-        reactants: Expression
-            The left hand side of the stoichiometric equation
-        products: Expression
-            The right hand side of the stoichiometric equation
-        rate_constant: float
-            The rate constant of the reaction
     """
 
     reactants: Expression
+    """The left side of species in the reaction."""
+
     products: Expression
+    """The right side of species in the reaction."""
+
     rate_constant: float = 1
+    """Rate constant of forward reaction."""
+
     rate_constant_reverse: float = 1
+    """Rate constant of reverse reaction (only used if :py:data:`Reaction.reversible` is true."""
+
     rate_constant_units: RateConstantUnits = RateConstantUnits.stochastic
+    """Units of forward rate constant."""
+
     rate_constant_reverse_units: RateConstantUnits = RateConstantUnits.stochastic
+    """Units of reverse rate constant."""
+
     reversible: bool = False
+    """Whether reaction is reversible, i.e. products &rarr; reactants is a reaction also."""
 
     def __init__(self, reactants: Union[Specie, Expression], products: Union[Specie, Expression],
                  k: float = 1, r: float = 1,
                  rate_constant_units: RateConstantUnits = RateConstantUnits.stochastic,
                  rate_constant_reverse_units: RateConstantUnits = RateConstantUnits.stochastic,
                  reversible: bool = False) -> None:
+        """
+        Args:
+            reactants: left side of species in the reaction
+            products: right side of species in the reaction
+            k: Rate constant of forward reaction
+            r: Rate constant of reverse reaction (only used if :py:data:`Reaction.reversible` is true
+            rate_constant_units: Units of forward rate constant
+            rate_constant_reverse_units: Units of reverse rate constant
+            reversible: Whether reaction is reversible
+        """
         if type(reactants) not in (Specie, Expression):
             raise ValueError(
                 "Attempted construction of reaction with type of reactants "
@@ -556,6 +586,12 @@ class Reaction:
         if type(products) is Specie:
             products = Expression([products])
 
+        if len(reactants) == 0:
+            raise ValueError('reactants cannot be empty')
+
+        if len(products) == 0:
+            raise ValueError('products cannot be empty')
+
         self.reactants = reactants
         self.products = products
         self.rate_constant = float(k)
@@ -565,66 +601,102 @@ class Reaction:
         self.reversible = reversible
 
     def is_unimolecular(self) -> bool:
+        """
+        Returns: true if there is one reactant
+        """
         return self.num_reactants() == 1
 
     def is_bimolecular(self) -> bool:
+        """
+        Returns: true if there are two reactants
+        """
         return self.num_reactants() == 2
 
     def symmetric(self) -> bool:
+        """
+        Returns: true if there are two reactants that are the same species
+        """
         return self.num_reactants() == 2 and self.reactants.species[0] == self.reactants.species[1]
 
     def symmetric_products(self) -> bool:
+        """
+        Returns: true if there are two products that are the same species
+        """
         return self.num_products() == 2 and self.products.species[0] == self.products.species[1]
 
     def num_reactants(self) -> int:
+        """
+        Returns: number of reactants
+        """
         return len(self.reactants)
 
     def num_products(self) -> int:
+        """
+        Returns: number of products
+        """
         return len(self.products)
 
     def is_conservative(self) -> bool:
+        """
+        Returns: true if number of reactants equals number of products
+        """
         return self.num_reactants() == self.num_products()
 
     def reactant_if_unimolecular(self) -> Specie:
+        """
+        Returns: unique reactant if there is only one
+        Raises: ValueError if there are multiple reactants
+        """
         if self.is_unimolecular():
             return self.reactants.species[0]
         else:
             raise ValueError(f'reaction {self} is not unimolecular')
 
     def product_if_unique(self) -> Specie:
+        """
+        Returns: unique product if there is only one
+        Raises: ValueError if there are multiple products
+        """
         if self.num_products() == 1:
             return self.products.species[0]
         else:
             raise ValueError(f'reaction {self} does not have exactly one product')
 
     def reactants_if_bimolecular(self) -> Tuple[Specie, Specie]:
+        """
+        Returns: pair of reactants if there are exactly two
+        Raises: ValueError if there are not exactly two reactants
+        """
         if self.is_bimolecular():
             return self.reactants.species[0], self.reactants.species[1]
         else:
             raise ValueError(f'reaction {self} is not bimolecular')
 
     def reactant_names_if_bimolecular(self) -> Tuple[str, str]:
+        """
+        Returns: pair of reactant names if there are exactly two
+        Raises: ValueError if there are not exactly two reactants
+        """
         r1, r2 = self.reactants_if_bimolecular()
         return r1.name, r2.name
 
     def products_if_exactly_two(self) -> Tuple[Specie, Specie]:
+        """
+        Returns: pair of products if there are exactly two
+        Raises: ValueError if there are not exactly two products
+        """
         if self.num_products() == 2:
             return self.products.species[0], self.products.species[1]
         else:
             raise ValueError(f'reaction {self} does not have exactly two products')
 
     def product_names_if_exactly_two(self) -> Tuple[str, str]:
+        """
+        Returns: pair of product names if there are exactly two
+        Raises: ValueError if there are not exactly two products
+        """
         p1, p2 = self.products_if_exactly_two()
         return p1.name, p2.name
-
-    # def _get_exactly_two_species_from_dict(self, species_dict: Dict[Specie, int]) -> Tuple[Specie, Specie]:
-    #     if len(species_dict) == 1:
-    #         # stoichiometric coefficient 2
-    #         specie1 = specie2 = next(iter(species_dict.keys()))
-    #         specie_tuple = (specie1, specie2)
-    #     else:
-    #         specie_tuple = tuple(species_dict.keys())
-    #     return specie_tuple
 
     def __str__(self):
         rev_rate_str = f'({self.rate_constant_reverse})<' if self.reversible else ''
@@ -636,12 +708,18 @@ class Reaction:
 
     @property
     def rate_constant_stochastic(self) -> float:
+        """
+        Returns: forward rate constant in stochastic units (converts from mass-action if necessary)
+        """
         return self.rate_constant \
             if self.rate_constant_units == RateConstantUnits.stochastic \
             else self.rate_constant / avogadro
 
     @property
     def rate_constant_reverse_stochastic(self) -> float:
+        """
+        Returns: reverse rate constant in stochastic units (converts from mass-action if necessary)
+        """
         return self.rate_constant_reverse \
             if self.rate_constant_reverse_units == RateConstantUnits.stochastic \
             else self.rate_constant_reverse / avogadro
@@ -650,20 +728,23 @@ class Reaction:
         """
         Changes the reaction coefficient to `coeff` and returns `self`.
 
+        This is useful for including the rate constant during the construction
+        of a reaction. For example
+
+        .. code-block:: python
+
+            x, y, z = species("X Y Z")
+            rxns = [
+                (x + y >> z).k(2.5),
+                (z >> x).k(1.5),
+                (z >> y).k(0.5)),
+            ]
+
         args:
             coeff: float
                 The new reaction coefficient
             units: float
                 units of rate constant (default stochastic)
-
-        This is useful for including the rate constant during the construction
-        of a reaction. For example
-            x, y, z = species("X Y Z")
-            sys = CRN(
-                (x + y >> z).k(2.5),
-                (z >> x).k(1.5),
-                (z >> y).k(0.5))
-            ...
         """
         if self.is_unimolecular() and units == RateConstantUnits.mass_action:
             raise ValueError('cannot use mass-action rate constants on a unimolecular reaction')
@@ -675,20 +756,23 @@ class Reaction:
         """
         Changes the reverse reactionn reaction rate constant to `coeff` and returns `self`.
 
+        This is useful for including the rate constant during the construction
+        of a reaction. For example
+
+        .. code-block:: python
+
+            x, y, z = species("X Y Z")
+            rxns = [
+                (x + y >> z).k(2.5),
+                (z >> x).k(1.5),
+                (z >> y).k(0.5)),
+            ]
+
         args:
             coeff: float
                 The new reverse reaction rate constant
             units: float
                 units of rate constant (default stochastic)
-
-        This is useful for including the rate constant during the construction
-        of a reaction. For example
-            x, y, z = species("X Y Z")
-            sys = CRN(
-                (x + y >> z).k(2.5),
-                (z >> x).k(1.5),
-                (z >> y).k(0.5))
-            ...
         """
         if self.num_products() == 1 and units == RateConstantUnits.mass_action:
             raise ValueError('cannot use mass-action rate constants on a unimolecular reaction; '
@@ -699,9 +783,9 @@ class Reaction:
         self.rate_constant_reverse = coeff
         return self
 
-    def get_species(self):
+    def get_species(self) -> Set[Specie]:
         """
-        Returns the set of species present in the products and reactants.
+        Return: the set of species present in the products and reactants.
         """
         return {
             *self.reactants.get_species(),

@@ -3,7 +3,7 @@ from Cython.Build import cythonize
 import numpy as np
 from os.path import join
 from setuptools.extension import Extension
-
+from ppsim import version
 
 inc_path = np.get_include()
 lib_path = join(np.get_include(), '..', '..', 'random', 'lib')
@@ -24,7 +24,7 @@ with open("requirements.txt") as fp:
 setup(
     name="ppsim",
     packages=['ppsim'],
-    version="0.0.8",
+    version=version,
     author="Eric Severson",
     description="A package for simulating population protocols.",
     long_description=long_description,
