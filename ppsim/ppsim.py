@@ -17,6 +17,7 @@ time_trials is a convenience function used for gathering data about the
 
 import dataclasses
 from dataclasses import dataclass
+from datetime import timedelta
 import math
 from time import perf_counter
 from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable, Set
@@ -153,11 +154,13 @@ class Simulation:
             recorded during the simulation, as integer arrays."""
     time: float
     """The current time of the Simulation."""
-    times: List[float]
+    times: List[Union[float, timedelta]]
     """A list of all the corresponding times for configs,
             in units of parallel time."""
     steps_per_time_unit: float
     """Number of simulated interactions per time unit."""
+    time_units: Optional[str]
+    """The units that time is in."""
     continuous_time: bool
     """Whether continuous time is used. The regular discrete
             time model considers a steps_per_time_unit steps to be 1 unit of time.
@@ -179,8 +182,9 @@ class Simulation:
     """The optional integer seed used for rng and inside cython code."""
 
     def __init__(self, init_config: Dict[State, int], rule: Rule, simulator_method: str = "MultiBatch",
-                 transition_order: str = "asymmetric", volume: Optional[float] = None,
-                 continuous_time: bool = False, seed: Optional[int] = None, **kwargs):
+                 transition_order: str = "asymmetric", seed: Optional[int] = None,
+                 volume: Optional[float] = None, continuous_time: bool = False, time_units: Optional[str] = None,
+                 **kwargs):
         """Initialize a Simulation.
 
         Args:
@@ -217,13 +221,15 @@ class Simulation:
                 'symmetric_enforced': The same as symmetric, except that if rule(a, b)
                     and rule(b, a) are non-null and do not give the same set of outputs,
                     a ValueError is raised.
+            seed: An optional integer used as the seed for all pseudorandom number
+                generation. Defaults to None.
             volume: If a list of Reactions is given for a CRN, then the parameter volume
                 can be passed in here. Defaults to None. If None, the volume will be
                 assumed to be the population size n.
             continuous_time: Whether continuous time is used. Defaults to False.
                 If a CRN as a list of reactions is passed in, this will be set to True.
-            seed: An optional integer used as the seed for all pseudorandom number
-                generation. Defaults to None.
+            time_units: An optional string given the units that time is in. Defaults to None.
+                This must be a valid string to pass as unit to pandas.to_timedelta.
             **kwargs: If rule is a function, other keyword function parameters are
                 passed in here.
         """
@@ -231,6 +237,7 @@ class Simulation:
         self.rng = np.random.default_rng(seed)
         self.n = sum(init_config.values())
         self.steps_per_time_unit = self.n
+        self.time_units = time_units
         self.continuous_time = continuous_time
         # if rule is iterable of Reactions from the crn module, then convert to dict
         rule_is_reaction_iterable = True
@@ -292,7 +299,7 @@ class Simulation:
         self.time = 0
         self.add_config()
         # private history dataframe is initially empty, updated by the getter of property self.history
-        self._history = pd.DataFrame(data=self.configs, index=pd.Index(self.times),
+        self._history = pd.DataFrame(data=self.configs, index=pd.Index(self.times_in_units(self.times)),
                                      columns=self.column_names)
         self.snapshots = []
 
@@ -624,14 +631,22 @@ class Simulation:
         """A pandas dataframe containing the history of all recorded configurations."""
         h = len(self._history)
         if h < len(self.configs):
-            new_history = pd.DataFrame(data=self.configs[h:], index=pd.Index(self.times[h:]),
+            new_history = pd.DataFrame(data=self.configs[h:], index=pd.Index(self.times_in_units(self.times[h:])),
                                        columns=self._history.columns)
             self._history = pd.concat([self._history, new_history])
-            if self.continuous_time:
-                self._history.index.name = 'time (continuous)'
-            else:
-                self._history.index.name = f'time ({self.steps_per_time_unit} interaction steps)'
+            if self.time_units is None:
+                if self.continuous_time:
+                    self._history.index.name = 'time (continuous units)'
+                else:
+                    self._history.index.name = f'time ({self.steps_per_time_unit} interaction steps)'
         return self._history
+
+    def times_in_units(self, times):
+        """If self.time_units is defined, convert time list to appropriate units."""
+        if self.time_units:
+            return pd.to_timedelta(times, unit=self.time_units)
+        else:
+            return times
 
     def add_config(self) -> None:
         """Appends the current simulator configuration and time."""
@@ -722,7 +737,7 @@ class Simulation:
         """Returns information to be pickled."""
         # Clear _history such that it can be regenerated by self.history
         d = dict(self.__dict__)
-        d['_history'] = pd.DataFrame(data=self.configs[0:1], index=pd.Index(self.times[0:1], name='time'),
+        d['_history'] = pd.DataFrame(data=self.configs[0:1], index=pd.Index(self.times_in_units(self.times[0:1])),
                                      columns=self._history.columns)
         del d['simulator']
         return d
@@ -798,7 +813,8 @@ class StatePlotter(Plotter):
         self.ax = sns.barplot(x=[str(c) for c in self.categories], y=np.zeros(len(self.categories)))
         # rotate the x-axis labels if any of the label strings have more than 2 characters
         if max([len(str(c)) for c in self.categories]) > 2:
-            self.ax.set_xticklabels(self.ax.get_xticklabels(), rotation=90, ha='center')
+            for tick in self.ax.get_xticklabels():
+                tick.set_rotation(45)
         self.ax.set_ylim(0, self.simulation.simulator.n)
 
     def update(self, index: Optional[int] = None) -> None:
@@ -827,6 +843,10 @@ class HistoryPlotter(Plotter):
         else:
             df = self.simulation.history
         df.plot(ax=self.ax)
+        # rotate the x labels if they are time units
+        if self.simulation.time_units:
+            for tick in self.ax.get_xticklabels():
+                tick.set_rotation(45)
         self.fig.canvas.draw()
 
 
