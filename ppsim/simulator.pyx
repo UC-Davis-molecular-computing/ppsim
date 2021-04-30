@@ -670,6 +670,7 @@ cdef class Urn:
         size: sum(config).
         length: len(config).
     """
+
     cdef public int64_t [::1] config
     cdef bitgen_t *bitgen
     cdef npy_intp [::1] order

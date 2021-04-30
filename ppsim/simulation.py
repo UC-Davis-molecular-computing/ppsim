@@ -32,7 +32,6 @@ from datetime import timedelta
 import math
 from time import perf_counter
 from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable, Set
-
 import ipywidgets as widgets
 from natsort import natsorted
 import numpy as np

@@ -18,7 +18,7 @@ in categories over time.
 
 from typing import Optional
 
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
