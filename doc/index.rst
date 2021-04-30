@@ -10,9 +10,10 @@ Welcome to ppsim's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+``ppsim`` is a package for the simulation of population protocols.
 
-Submodules
-----------
+For an introduction, see the README at
+https://github.com/UC-Davis-molecular-computing/population-protocols-python-package
 
 ppsim.simulation module
 -----------------------
