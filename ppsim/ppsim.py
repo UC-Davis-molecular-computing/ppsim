@@ -4,6 +4,27 @@ A module for simulating population protocols.
 The main class :any:`Simulation` is created with a description of the protocol and the initial condition,
 and is responsible for running the simulation.
 
+The general syntax is
+
+.. code-block:: python
+
+    a, b, u = 'A', 'B', 'U'
+    approx_majority = {
+        (a,b): (u,u),
+        (a,u): (a,a),
+        (b,u): (b,b),
+    }
+    n = 10 ** 5
+    init_config = {a: 0.51 * n, b: 0.49 * n}
+    sim = Simulation(init_config=init_config, rule=approx_majority)
+    sim.run()
+    sim.history.plot()
+    plt.title('approximate majority protocol')
+    plt.xlim(0, sim.times[-1])
+    plt.ylim(0, n)
+
+More examples given in https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples
+
 :any:`Snapshot` is a base class for snapshot objects that get are updated by Simulation,
 used to visualize the protocol during or after the simulation has run.
 

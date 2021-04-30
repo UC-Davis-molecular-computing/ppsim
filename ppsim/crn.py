@@ -1,6 +1,26 @@
 """
 Module for expression population protocols using CRN notation. Ideas and much code taken from
 https://github.com/enricozb/python-crn.
+
+The general syntax is
+
+.. code-block:: python
+
+    a, b, u = species('A B U')
+    approx_majority = [
+        a + b >> 2 * u,
+        a + u >> 2 * a,
+        b + u >> 2 * b,
+    ]
+    n = 10 ** 5
+    init_config = {a: 0.51 * n, b: 0.49 * n}
+    sim = Simulation(init_config=init_config, rule=approx_majority)
+
+In other words, a list of reactions is treated by the ppsim library just like the other ways of specifying
+population protocol transitions (the `rule` parameter in the constructor for :any:`Simulation`, which also
+accepts a dict or a Python function).
+
+More examples given in https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples
 """
 
 from __future__ import annotations  # needed for forward references in type hints
