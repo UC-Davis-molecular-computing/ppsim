@@ -33,6 +33,9 @@ release = version
 # next line puts type of each function parameter next to description of parameter
 autodoc_typehints = "description"
 
+# make sure __init__ constructor gets documented
+autoclass_content = 'both'
+
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.

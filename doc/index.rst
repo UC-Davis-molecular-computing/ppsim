@@ -10,13 +10,31 @@ Welcome to ppsim's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-ppsim
-=====================
-.. automodule:: ppsim.ppsim
+
+Submodules
+----------
+
+ppsim.simulation module
+-----------------------
+
+.. automodule:: ppsim.simulation
    :members:
 
-crn
-=====================
+ppsim.snapshot module
+---------------------
+
+.. automodule:: ppsim.snapshot
+   :members:
+
+ppsim.simulator module
+----------------------
+
+.. automodule:: ppsim.simulator
+   :members:
+
+ppsim.crn module
+----------------
+
 .. automodule:: ppsim.crn
    :members:
 

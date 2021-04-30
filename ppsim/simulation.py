@@ -19,17 +19,8 @@ The general syntax is
     sim = Simulation(init_config=init_config, rule=approx_majority)
     sim.run()
     sim.history.plot()
-    plt.title('approximate majority protocol')
-    plt.xlim(0, sim.times[-1])
-    plt.ylim(0, n)
 
 More examples given in https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples
-
-:any:`Snapshot` is a base class for snapshot objects that get are updated by Simulation,
-used to visualize the protocol during or after the simulation has run.
-
-:any:`StatePlotter` is a subclass of Snapshot that gives a barplot visualizing the
-counts of all states and how they change over time.
 
 :py:meth:`time_trials` is a convenience function used for gathering data about the
 convergence time of a protocol.
@@ -43,15 +34,14 @@ from time import perf_counter
 from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable, Set
 
 import ipywidgets as widgets
-import matplotlib.pyplot as plt
 from natsort import natsorted
 import numpy as np
 import pandas as pd
-import seaborn as sns
 from tqdm.auto import tqdm
 
 from . import simulator
 from ppsim.crn import Reaction, reactions_to_dict
+from ppsim.snapshot import Snapshot, TimeUpdate
 
 # TODO: these names are not showing up in the mouseover information
 State = Hashable
@@ -93,69 +83,6 @@ def state_enumeration(init_dist: Dict[State, int], rule: Callable[[State, State]
     return checked_states
 
 
-class Snapshot:
-    """"Base class for Snapshot objects.
-
-    Attributes:
-        simulation: The Simulation object that initialized and will update the Snapshot.
-            This attribute gets set when the Simulation object calls add_snapshot.
-        update_time: How many seconds will elapse between calls to update while
-            running sim.
-        time: The parallel time at the current snapshot. Changes when self.update is
-            called.
-        config: The configuration array at the current snapshot. Changes when
-            self.update is called.
-    """
-
-    def __init__(self) -> None:
-        """Init construction for the base class.
-
-        Parameters can be passed in here, and any attributes that can be defined
-        without the parent Simulation object can be instantiated here, such as
-        self.update_interval.
-        """
-        self.simulation = None
-        self.update_time = 0.1
-        self.time = None
-        self.config = None
-
-    def initialize(self):
-        """Method which is called once during add_snapshot.
-
-        Any initialization that requires accessing the data in self.simulation
-        should go here.
-        """
-        pass
-
-    def update(self, index: Optional[int] = None):
-        """Method which is called while the Simulation is running.
-
-        Args:
-            index: An optional integer index. If present, the snapshot will use the
-                data from the configuration at self.sim.configs[index] and time
-                self.sim.times[index]. Otherwise, the snapshot will use the current
-                configuration self.sim.config_array and current time self.sim.time.
-        """
-        if type(index) is int:
-            self.time = self.simulation.times[index]
-            self.config = self.simulation.configs[index]
-        else:
-            self.time = self.simulation.time
-            self.config = self.simulation.config_array
-
-
-class TimeUpdate(Snapshot):
-    """Simple Snapshot that prints the current time in the Simulator.
-
-    When calling Simulator.run, if there are no current Snapshots present, then
-    this object will get added to provide a basic progress update.
-    """
-
-    def update(self, index: Optional[int] = None):
-        super().update(index)
-        print(f'\r Time: {self.time:.3f}', end='\r')
-
-
 # TODO: add seed
 @dataclass
 class Simulation:
@@ -167,32 +94,32 @@ class Simulation:
     """Maps states to their integer index to be used
             in array representations."""
     simulator: simulator.Simulator
-    """An internal Simulator object, whose methods actually
+    """An internal :any:`Simulator` object, whose methods actually
             perform the steps of the simulation."""
     configs: List[np.ndarray]
     """A list of all configurations that have been
             recorded during the simulation, as integer arrays."""
     time: float
-    """The current time of the Simulation."""
+    """The current time."""
     times: List[Union[float, timedelta]]
-    """A list of all the corresponding times for configs,
-            in units of parallel time."""
+    """A list of all the corresponding times for configs."""
     steps_per_time_unit: float
     """Number of simulated interactions per time unit."""
     time_units: Optional[str]
     """The units that time is in."""
     continuous_time: bool
     """Whether continuous time is used. The regular discrete
-            time model considers a steps_per_time_unit steps to be 1 unit of time.
+            time model considers :any:`steps_per_time_unit` steps 
+            to be 1 unit of time.
             The continuous time model is a poisson process, with expected
-            steps_per_time_unit number of steps per 1 unit of time."""
+            :any:`steps_per_time_unit` steps per 1 unit of time."""
     column_names: Union[pd.MultiIndex, List[str]]
     """Columns representing all states for pandas dataframe.
             If the State is a tuple, NamedTuple, or dataclass, this will be a
             pandas MultiIndex based on the various fields.
             Otherwise it is list of str(State) for each State."""
     snapshots: List[Snapshot]
-    """A list of Snapshot objects, which get
+    """A list of :any:`Snapshot` objects, which get
             periodically called during the running of the simulation to give live
             updates."""
     rng: np.random.Generator
@@ -208,7 +135,7 @@ class Simulation:
         """Initialize a Simulation.
 
         Args:
-            init_config (Dict[State, int]): The starting configuration, as a
+            init_config: The starting configuration, as a
                 dictionary mapping states to counts.
             rule: A representation of the transition rule. The first two options are
                 a dictionary, whose keys are tuples of 2 states and values are their
@@ -218,34 +145,43 @@ class Simulation:
                 mapping tuples of states to probabilities. Inputs that are not present
                 in the dictionary, or return None from the function, are interpreted as
                 null transitions that return the same pair of states as the output.
-                The third option is a list of Reactions describing a CRN, which will
-                be parsed into an equivalent population protocol.
-            simulator_method (str): Which Simulator method to use, either 'MultiBatch'
-                or 'Sequential'.
-                The MultiBatch simulator does O(sqrt(n)) interaction steps in parallel
-                using batching, and is much faster for large population sizes and
-                relatively small state sets.
-                The Sequential represents the population as an array of agents, and
-                simulates each interaction step by choosing a pair of agents to update.
-                Defaults to 'MultiBatch'.
-            transition_order (str): Should the rule be interpreted as being symmetric,
-                either 'asymmetric', 'symmetric', or 'symmetric_enforced'.
+                The third option is a list of :any:`Reaction` objects describing a CRN,
+                which will be parsed into an equivalent population protocol.
+            simulator_method: Which Simulator method to use, either ``'MultiBatch'``
+                or ``'Sequential'``.
+
+                ``'MultiBatch'``:
+                    :any:`SimulatorMultiBatch` does O(sqrt(n)) interaction steps in parallel
+                    using batching, and is much faster for large population sizes and
+                    relatively small state sets.
+                ``'Sequential'``:
+                    :any:`SimulatorSequentialArray` represents the population as an array of
+                    agents, and simulates each interaction step by choosing a pair of agents
+                    to update. Defaults to 'MultiBatch'.
+            transition_order: Should the rule be interpreted as being symmetric,
+                either ``'asymmetric'``, ``'symmetric'``, or ``'symmetric_enforced'``.
                 Defaults to 'asymmetric'.
-                'asymmetric': Ordering of the inputs matters, and all inputs not
+
+                ``'asymmetric'``:
+                    Ordering of the inputs matters, and all inputs not
                     explicitly given as assumed to be null interactions.
-                'symmetric': The input pairs are interpreted as unordered. If rule(a, b)
+
+                ``'symmetric'``:
+                    The input pairs are interpreted as unordered. If rule(a, b)
                     returns None, while rule(b, a) has a non-null output, then the
                     output of rule(a, b) is assumed to be the same as rule(b, a).
                     If rule(a, b) and rule(b, a) are each given, there is no effect.
                     Asymmetric interactions can be explicitly included this way.
-                'symmetric_enforced': The same as symmetric, except that if rule(a, b)
+
+                ``'symmetric_enforced'``:
+                    The same as symmetric, except that if rule(a, b)
                     and rule(b, a) are non-null and do not give the same set of outputs,
                     a ValueError is raised.
             seed: An optional integer used as the seed for all pseudorandom number
                 generation. Defaults to None.
-            volume: If a list of Reactions is given for a CRN, then the parameter volume
-                can be passed in here. Defaults to None. If None, the volume will be
-                assumed to be the population size n.
+            volume: If a list of :any:`Reaction` objects is given for a CRN, then
+                the parameter volume can be passed in here. Defaults to None.
+                If None, the volume will be assumed to be the population size n.
             continuous_time: Whether continuous time is used. Defaults to False.
                 If a CRN as a list of reactions is passed in, this will be set to True.
             time_units: An optional string given the units that time is in. Defaults to None.
@@ -341,10 +277,10 @@ class Simulation:
             raise TypeError("rule must be either a dict or a callable.")
 
     def initialize_simulator(self, config):
-        """Build the data structures necessary to instantiate the Simulator class.
+        """Build the data structures necessary to instantiate the :any:`Simulator` class.
 
         Args:
-            config: The config array to instantiate the Simulator.
+            config: The config array to instantiate :any:`Simulator`.
         """
         q = len(self.state_list)
         delta = np.zeros((q, q, 2), dtype=np.intp)
@@ -409,7 +345,8 @@ class Simulation:
         Args:
             d: A dictionary mapping states to counts.
 
-        Returns: An array giving counts of all states, in the order of
+        Returns:
+            An array giving counts of all states, in the order of
             self.state_list.
         """
 
@@ -418,7 +355,8 @@ class Simulation:
             a[self.state_dict[k]] += d[k]
         return a
 
-    def run(self, run_until: Union[float, ConvergenceDetector] = None, history_interval: float = 1.,
+    def run(self, run_until: Union[float, ConvergenceDetector] = None,
+            history_interval: Union[float, Callable[[float], float]] = 1.,
             stopping_interval: float = 1., timer: bool = True) -> None:
         """Runs the simulation.
 
@@ -426,7 +364,7 @@ class Simulation:
         the configuration for convergence.
 
         Args:
-            run_until: The stop condition. To run for a fixed amount of parallel time, give
+            run_until: The stop condition. To run for a fixed amount of time, give
                 a numerical value. To run until a convergence criterion, give a function
                 mapping a configuration (as a dictionary mapping states to counts) to a
                 boolean. The run will stop when the function returns True.
@@ -435,13 +373,14 @@ class Simulation:
                 simulator method, if another simulator method is given, then using None will
                 raise a ValueError.
             history_interval: The length to run the simulator before recording data,
-                in units of parallel time (n steps). Defaults to 1.
+                in current time units. Defaults to 1.
                 This can either be a float, or a function that takes the current time and
                 and returns a float.
             stopping_interval: The length to run the simulator before checking for the stop
                 condition.
-            timer: If True, and there are no other snapshot objects, a default TimeUpdate
-                Snapshot will be created to print the current parallel time.
+            timer: If True, and there are no other snapshot objects, a default :any:`TimeUpdate`
+                snapshot will be created to print updates with the current time.
+                Defaults to True.
         """
         if len(self.snapshots) == 0 and timer is True:
             self.add_snapshot(TimeUpdate())
@@ -583,7 +522,7 @@ class Simulation:
 
     # TODO: If this changes n, then the timescale must change
     def reset(self, init_config: Optional[Dict[State, int]] = None) -> None:
-        """Reset the Simulation.
+        """Reset the simulation.
 
         Args:
             init_config: The configuration to reset to. Defaults to None.
@@ -608,7 +547,7 @@ class Simulation:
         Args:
             config: The configuration to change to. This can be a dictionary,
                 mapping states to counts, or an array giving counts in the order
-                of state_list.
+                of :any:`state_list`.
         """
         if type(config) is dict:
             config_array = self.array_from_dict(config)
@@ -662,7 +601,7 @@ class Simulation:
         return self._history
 
     def times_in_units(self, times):
-        """If self.time_units is defined, convert time list to appropriate units."""
+        """If :any:`time_units` is defined, convert time list to appropriate units."""
         if self.time_units:
             return pd.to_timedelta(times, unit=self.time_units)
         else:
@@ -677,26 +616,26 @@ class Simulation:
         """Updates all snapshots to the nearest recorded configuration to a specified time.
 
         Args:
-            time (float): The parallel time to update the snapshots to.
+            time: The parallel time to update the snapshots to.
         """
         index = np.searchsorted(self.times, time)
         for snapshot in self.snapshots:
             snapshot.update(index=index)
 
     def set_snapshot_index(self, index: int) -> None:
-        """Updates all snapshots to the configuration self.configs[index].
+        """Updates all snapshots to the configuration :any:`configs` ``[index]``.
 
         Args:
-            index (int): The index of the configuration.
+            index: The index of the configuration.
         """
         for snapshot in self.snapshots:
             snapshot.update(index=index)
 
     def add_snapshot(self, snap: "Snapshot") -> None:
-        """Add a new Snapshot to self.snapshots.
+        """Add a new :any:`Snapshot` to :any:`snapshots`.
 
         Args:
-            snap (Snapshot): The Snapshot object to be added.
+            snap: The :any:`Snapshot` object to be added.
         """
         snap.simulation = self
         snap.initialize()
@@ -704,12 +643,12 @@ class Simulation:
         self.snapshots.append(snap)
 
     def snapshot_slider(self, var: str = 'index') -> widgets.interactive:
-        """Returns a slider that updates all Snapshot objects.
+        """Returns a slider that updates all :any:`Snapshot` objects.
 
         Returns a slider from the ipywidgets library.
 
         Args:
-            var: What variable the slider uses, either 'index' or 'time'.
+            var: What variable the slider uses, either ``'index'`` or ``'time'``.
         """
         if var.lower() == 'index':
             return widgets.interactive(self.set_snapshot_index,
@@ -767,108 +706,6 @@ class Simulation:
         self.__dict__ = state
         self.initialize_simulator(self.configs[-1])
 
-class Plotter(Snapshot):
-    """Base class for a Snapshot which will make a plot.
-
-    Gives the option to map states to categories, for an easy way to visualize
-    relevant subsets of the states rather than the whole state set.
-    These require an interactive matplotlib backend to work.
-
-    Attributes:
-        fig: The matplotlib figure that is created which holds the barplot.
-        ax: The matplotlib axis object that holds the barplot. Modifying properties
-            of this object is the most direct way to modify the plot.
-        state_map: A function mapping states to categories, which acts as a filter
-            to view a subset of the states or just one field of the states.
-        categories: A list which holds the set {state_map(state)} for all states
-            in state_list. This gives the set of labels for the bars in the barplot.
-        _matrix: A (# states)x(# categories) matrix such that for the configuration
-            array self.config (indexed by states), matrix * config gives an array
-            of counts of categories. Used internally for the update function.
-    """
-    def __init__(self, state_map=None, update_time=0.5) -> None:
-        """Initializes the StatePlotter.
-
-        Args:
-            state_map: An optional function mapping states to categories.
-        """
-        self._matrix = None
-        self.state_map = state_map
-        self.update_time = update_time
-
-    def _add_state_map(self, state_map):
-        """An internal function called to update self.categories and self.matrix."""
-        self.categories = []
-        # categories will be ordered in the same order as state_list
-        for state in self.simulation.state_list:
-            if state_map(state) is not None and state_map(state) not in self.categories:
-                self.categories.append(state_map(state))
-
-        categories_dict = {j: i for i, j in enumerate(self.categories)}
-        self._matrix = np.zeros((len(self.simulation.state_list), len(self.categories)), dtype=np.int64)
-        for i, state in enumerate(self.simulation.state_list):
-            m = state_map(state)
-            if m is not None:
-                self._matrix[i, categories_dict[m]] += 1
-
-    def initialize(self) -> None:
-        """Initializes the plotter by creating a fig and ax."""
-        self.fig, self.ax = plt.subplots()
-        if self.state_map is not None:
-            self._add_state_map(self.state_map)
-        else:
-            self.categories = self.simulation.state_list
-
-
-class StatePlotter(Plotter):
-    """Plotter which produces a barplot of counts."""
-
-    def initialize(self) -> None:
-        """Initializes the barplot.
-
-        If self.state_map gets changed, call initialize to update the barplot to
-            show the new set self.categories.
-        """
-        super().initialize()
-        self.ax = sns.barplot(x=[str(c) for c in self.categories], y=np.zeros(len(self.categories)))
-        # rotate the x-axis labels if any of the label strings have more than 2 characters
-        if max([len(str(c)) for c in self.categories]) > 2:
-            for tick in self.ax.get_xticklabels():
-                tick.set_rotation(45)
-        self.ax.set_ylim(0, self.simulation.simulator.n)
-
-    def update(self, index: Optional[int] = None) -> None:
-        """Update the heights of all bars in the plot."""
-        super().update(index)
-        if self._matrix is not None:
-            heights = np.matmul(self.config, self._matrix)
-        else:
-            heights = self.config
-        for i, rect in enumerate(self.ax.patches):
-            rect.set_height(heights[i])
-
-        self.ax.set_title(f'Time {self.time}')
-        self.fig.tight_layout()
-        self.fig.canvas.draw()
-
-
-class HistoryPlotter(Plotter):
-
-    def update(self, index: Optional[int] = None) -> None:
-        super().update(index)
-        self.ax.clear()
-        if self._matrix is not None:
-            df = pd.DataFrame(data=np.matmul(self.simulation.history.to_numpy(), self._matrix), columns=self.categories,
-                              index=self.simulation.history.index)
-        else:
-            df = self.simulation.history
-        df.plot(ax=self.ax)
-        # rotate the x labels if they are time units
-        if self.simulation.time_units:
-            for tick in self.ax.get_xticklabels():
-                tick.set_rotation(45)
-        self.fig.canvas.draw()
-
 
 def time_trials(rule: Rule, ns: List[int], initial_conditions: Union[Callable, List],
                 convergence_condition: Optional[Callable] = None, convergence_check_interval: float = 0.1,
@@ -878,9 +715,9 @@ def time_trials(rule: Rule, ns: List[int], initial_conditions: Union[Callable, L
     """Gathers data about the convergence time of a rule.
 
     Args:
-        rule: The rule that is used to generate the Simulation.
+        rule: The rule that is used to generate the :any:`Simulation` object.
         ns: A list of population sizes n to sample from.
-            This should be in increasing order to make the time_bound work.
+            This should be in increasing order.
         initial_conditions: An initial condition is a dict mapping states to counts.
             This can either be a list of initial conditions, or a function mapping
             population size n to an initial condition of n agents.
@@ -900,12 +737,12 @@ def time_trials(rule: Rule, ns: List[int], initial_conditions: Union[Callable, L
             Each value n is given a time budget based on the time remaining, and
             will stop before doing num_trials runs when this time budget runs out.
             Defaults to 60 * 60 * 24 (one day).
-        **kwargs: Other keyword arguments to pass into Simulation.
+        **kwargs: Other keyword arguments to pass into :any:`Simulation`.
 
     Returns:
-        df: A pandas dataframe giving the data from each trial, with two columns
-            'n' and 'time'. A good way to visualize this dataframe is using the
-            seaborn library, calling sns.lineplot(x='n', y='time', data=df).
+        A pandas dataframe giving the data from each trial, with two columns
+        ``'n''`` and ``'time'``. A good way to visualize this dataframe is using the
+        seaborn library, calling ``sns.lineplot(x='n', y='time', data=df)``.
     """
     d = {'n': [], 'time': []}
     end_time = perf_counter() + max_wallclock_time
