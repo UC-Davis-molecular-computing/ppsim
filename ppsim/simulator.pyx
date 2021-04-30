@@ -189,8 +189,8 @@ cdef class SimulatorMultiBatch(Simulator):
     """Uses the MultiBatch algorithm to simulate O(sqrt(n)) interactions in parallel.
 
     The MultiBatch algorithm comes from the paper
-        'Simulating Population Protocols in Subconstant Time per Interaction'
-        (https://arxiv.org/abs/2005.03584).
+    *Simulating Population Protocols in Subconstant Time per Interaction*
+    (https://arxiv.org/abs/2005.03584).
     Beyond the methods described in the paper, this class also dynamically switches
     to Gillespie's algorithm when the number of null interactions is high.
 
