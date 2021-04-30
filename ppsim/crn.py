@@ -72,13 +72,14 @@ def species_in_rxns(rxns: Iterable[Reaction]) -> List[Specie]:
     return species_list
 
 
-def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int], volume: float = 1.0, name: str = 'CRN') \
-        -> str:
+def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int],
+                    volume: float = 1.0, name: str = 'CRN') -> str:
     """
 
     Args:
         rxns: reactions to translate to StochKit format
         init_config: dict mapping each :any:`Specie` to its initial count
+        volume: volume in liters
         name: name of the CRN
 
     Returns:
@@ -194,18 +195,22 @@ def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int], vo
 
     return stochkit_xml
 
-def write_stochkit_file(filename: str, rxns: Iterable[Reaction], init_config: Dict[Specie, int], volume: float = 1.0, name: str = 'CRN') -> None:
+
+def write_stochkit_file(filename: str, rxns: Iterable[Reaction], init_config: Dict[Specie, int],
+                        volume: float = 1.0, name: str = 'CRN') -> None:
     """
     Write stochkit file
     Args:
         filename: name of file to write
         rxns: reactions to translate to StochKit format
         init_config: dict mapping each :any:`Specie` to its initial count
+        volume: volume in liters
         name: name of the CRN
     """
     xml = stochkit_format(rxns, init_config, volume, name)
     with open(filename, 'w') as f:
         f.write(xml)
+
 
 def species(species_: str) -> Union[Specie, Tuple[Specie]]:
     """
