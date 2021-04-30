@@ -406,7 +406,9 @@ cdef class SimulatorMultiBatch(Simulator):
                 faithful simulation up to step t_max).
         """
         cdef npy_intp i, j
-        cdef int64_t a, b
+        # make sure these are all doubles, because they will be squared and could overflow int64_t
+        cdef double a, b, n
+        n = self.n
         cdef npy_intp [:] r
         cdef double total_propensity = 0
         cdef double success_probability, x
@@ -422,7 +424,7 @@ cdef class SimulatorMultiBatch(Simulator):
         if total_propensity == 0:
             self.silent = True
             return
-        success_probability = total_propensity / (self.n * (self.n -1) / 2)
+        success_probability = total_propensity / (n * (n -1) / 2)
         if success_probability > self.gillespie_threshold:
             self.do_gillespie = False
         # add a geometric number of steps, based on success probability
