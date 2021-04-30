@@ -1,18 +1,17 @@
 """
 A module for simulating population protocols.
 
-The main class Simulation is created with a description of the protocol and
-    the initial condition, and is responsible for running the simulation.
+The main class :any:`Simulation` is created with a description of the protocol and the initial condition,
+and is responsible for running the simulation.
 
-Snapshot is a base class for snapshot objects that get are updated by
-    Simulation, used to visualize the protocol during or after the simulation
-    has ran.
+:any:`Snapshot` is a base class for snapshot objects that get are updated by Simulation,
+used to visualize the protocol during or after the simulation has run.
 
-StatePlotter is a subclass of Snapshot that gives a barplot visualizing the
-    counts of all states and how they change over time.
+:any:`StatePlotter` is a subclass of Snapshot that gives a barplot visualizing the
+counts of all states and how they change over time.
 
-time_trials is a convenience function used for gathering data about the
-    convergence time of a protocol.
+:py:meth:`time_trials` is a convenience function used for gathering data about the
+convergence time of a protocol.
 """
 
 import dataclasses
@@ -517,12 +516,11 @@ class Simulation:
 
     @property
     def reactions(self) -> str:
-        """A string showing all non-null transitions in reaction notation.
+        """
+        A string showing all non-null transitions in reaction notation.
 
-        Each reaction is separated by \n, so that print(self.reactions) will
-            display all reactions.
-        Only works with simulator method multibatch, otherwise will raise a
-            ValueError.
+        Each reaction is separated by newlines, so that ``print(self.reactions)`` will display all reactions.
+        Only works with simulator method multibatch, otherwise will raise a ValueError.
         """
         if type(self.simulator) != simulator.SimulatorMultiBatch:
             raise ValueError('reactions must be defined by multibatch simulator.')
@@ -533,11 +531,12 @@ class Simulation:
 
     @property
     def enabled_reactions(self) -> str:
-        """A string showing all non-null transitions that are currently enabled.
+        """
+        A string showing all non-null transitions that are currently enabled.
 
         This can only check the current configuration in self.simulator.
-        Each reaction is separated by \n, so that print(self.enabled_reactions) will
-            display all enabled reactions.
+        Each reaction is separated by newlines, so that ``print(self.enabled_reactions)``
+        will display all enabled reactions.
         """
         if type(self.simulator) != simulator.SimulatorMultiBatch:
             raise ValueError('reactions must be defined by multibatch simulator.')
