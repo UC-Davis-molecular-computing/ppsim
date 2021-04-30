@@ -822,7 +822,8 @@ class HistoryPlotter(Plotter):
         super().update(index)
         self.ax.clear()
         if self._matrix is not None:
-            df = pd.DataFrame(data=np.matmul(self.simulation.history.to_numpy(), self._matrix), columns=self.categories)
+            df = pd.DataFrame(data=np.matmul(self.simulation.history.to_numpy(), self._matrix), columns=self.categories,
+                              index=self.simulation.history.index)
         else:
             df = self.simulation.history
         df.plot(ax=self.ax)
