@@ -750,8 +750,8 @@ class Plotter(Snapshot):
     """Base class for a Snapshot which will make a plot.
 
     Gives the option to map states to categories, for an easy way to visualize
-        relevant subsets of the states rather than the whole state set.
-        These require an interactive matplotlib backend to work.
+    relevant subsets of the states rather than the whole state set.
+    These require an interactive matplotlib backend to work.
 
     Attributes:
         fig: The matplotlib figure that is created which holds the barplot.
