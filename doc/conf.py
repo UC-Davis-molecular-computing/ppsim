@@ -19,6 +19,11 @@ project = 'ppsim'
 copyright = '2021, Eric Severson and David Doty'
 author = 'Eric Severson and David Doty'
 
+# to get this to work on readthedocs, following the advice here in how to configure readthedocs
+# (briefly, we have to enable a virtualenv for readthe docs so it can compile the Cython extension
+# to be able to import it, to be able to create the docs):
+# https://stackoverflow.com/questions/13238736/how-to-document-cython-function-on-readthedocs
+
 
 # this is ugly, but appears to be standard practice:
 # https://stackoverflow.com/questions/17583443/what-is-the-correct-way-to-share-package-version-with-setup-py-and-the-package/17626524#17626524
