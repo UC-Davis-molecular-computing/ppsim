@@ -28,13 +28,12 @@ from __future__ import annotations  # needed for forward references in type hint
 from collections import defaultdict
 import copy
 from enum import Enum
-from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List
+from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List, Any
 from dataclasses import dataclass
 from xml.dom import minidom
 
 
-
-def species(species_: str) -> Union[Specie, Tuple[Specie]]:
+def species(species_: str) -> Union[Specie, Tuple[Specie, ...]]:
     """
     Create a list of :any:`Specie` (Single species :any:`Expression`'s),
     or a single one.
@@ -80,7 +79,8 @@ def replace_reversible_rxns(rxns: Iterable[Reaction]) -> List[Reaction]:
         else:
             forward_rxn = Reaction(reactants=rxn.reactants, products=rxn.products, k=rxn.rate_constant,
                                    rate_constant_units=rxn.rate_constant_units, reversible=False)
-            reverse_rxn = Reaction(reactants=rxn.products, products=rxn.reactants, k=rxn.rate_constant_reverse,
+            reverse_rxn = Reaction(reactants=rxn.products, products=rxn.reactants,
+                                   k=rxn.rate_constant_reverse,
                                    rate_constant_units=rxn.rate_constant_reverse_units, reversible=False)
             new_rxns.extend([forward_rxn, reverse_rxn])
     return new_rxns
@@ -151,8 +151,9 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
         else:
             # if we calculated probabilities correctly above, if we assigned a dict entry to be non-randomized
             # (since prob == 1.0 above), we should not encounter another reaction with same reactants
-            assert (isinstance(transitions[reactants], dict))
-            transitions[reactants][products] = prob
+            output = transitions[reactants]
+            assert isinstance(output, dict)
+            output[products] = prob
 
     # assert that each possible input for transitions has output probabilities summing to 1
     for reactants, outputs in transitions.items():
@@ -163,7 +164,8 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
     return transitions, max_rate
 
 
-def convert_unimolecular_to_bimolecular_and_flip_reactant_order(reactions: Iterable[Reaction], n: int, volume: float) \
+def convert_unimolecular_to_bimolecular_and_flip_reactant_order(reactions: Iterable[Reaction], n: int,
+                                                                volume: float) \
         -> List[Reaction]:
     """Process all reactions before being added to the dictionary.
 
@@ -211,13 +213,13 @@ def convert_unimolecular_to_bimolecular_and_flip_reactant_order(reactions: Itera
 class Specie:
     name: str
 
-    def __add__(self, other):
-        if type(other) is Expression:
+    def __add__(self, other: Union[Specie, Expression]) -> Expression:
+        if isinstance(other, Expression):
             return other + Expression([self])
-        elif type(other) is Specie:
+        elif isinstance(other, Specie):
             return Expression([self]) + Expression([other])
 
-        return NotImplemented
+        raise NotImplementedError()
 
     __radd__ = __add__
 
@@ -231,24 +233,28 @@ class Specie:
         return Reaction(self, other, reversible=True)
 
     def __mul__(self, other: int) -> Expression:
-        if type(other) is int:
+        if isinstance(other, int):
             return other * Expression([self])
         else:
             raise NotImplementedError()
 
     def __rmul__(self, other: int) -> Expression:
-        if type(other) is int:
+        if isinstance(other, int):
             return other * Expression([self])
         else:
             raise NotImplementedError()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def __lt__(self, other: Specie) -> bool:
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, Specie):
+            return NotImplemented
         return self.name < other.name
 
-    def __eq__(self, other: Specie) -> bool:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Specie):
+            return NotImplemented
         return self.name == other.name
 
     __req__ = __eq__
@@ -267,7 +273,7 @@ class Expression:
     """ordered list of species in expression, e.g, A+A+B is [A,A,B]"""
 
     def __add__(self, other: Expression) -> Expression:
-        if type(other) is Expression:
+        if isinstance(other, Expression):
             species_copy = list(self.species)
             species_copy.extend(other.species)
             return Expression(species_copy)
@@ -275,7 +281,7 @@ class Expression:
             raise NotImplementedError()
 
     def __rmul__(self, coeff: int) -> Expression:
-        if type(coeff) is int:
+        if isinstance(coeff, int):
             species_copy = []
             for _ in range(coeff):
                 species_copy.extend(self.species)
@@ -372,20 +378,20 @@ class Reaction:
             rate_constant_reverse_units: Units of reverse rate constant
             reversible: Whether reaction is reversible
         """
-        if type(reactants) not in (Specie, Expression):
+        if not (isinstance(reactants, Specie) or isinstance(reactants, Expression)):
             raise ValueError(
                 "Attempted construction of reaction with type of reactants "
                 f"as {type(reactants)}. Type of reactants must be Species "
                 "or Expression")
-        if type(products) not in (Specie, Expression):
+        if not (isinstance(products, Specie) or isinstance(products, Expression)):
             raise ValueError(
                 "Attempted construction of products with type of products "
                 f"as {type(products)}. Type of products must be Species "
                 "or Expression")
 
-        if type(reactants) is Specie:
+        if isinstance(reactants, Specie):
             reactants = Expression([reactants])
-        if type(products) is Specie:
+        if isinstance(products, Specie):
             products = Expression([products])
 
         if len(reactants) == 0:
@@ -500,11 +506,11 @@ class Reaction:
         p1, p2 = self.products_if_exactly_two()
         return p1.name, p2.name
 
-    def __str__(self):
+    def __str__(self) -> str:
         rev_rate_str = f'({self.rate_constant_reverse})<' if self.reversible else ''
         return f"{self.reactants} {rev_rate_str}-->({self.rate_constant}) {self.products}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (f"Reaction({repr(self.reactants)}, {repr(self.products)}, "
                 f"{self.rate_constant})")
 
@@ -774,7 +780,7 @@ def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int],
                 product_node.setAttribute('id', product.name)
                 product_node.setAttribute('stoichiometry', '1')
 
-    stochkit_xml = root.toprettyxml(indent='  ')
+    stochkit_xml: str = root.toprettyxml(indent='  ')
 
     return stochkit_xml
 
