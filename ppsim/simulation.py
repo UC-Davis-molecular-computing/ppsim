@@ -20,7 +20,7 @@ The general syntax is
     sim.run()
     sim.history.plot()
 
-More examples given in https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples
+More examples given in https://github.com/UC-Davis-molecular-computing/ppsim/tree/main/examples
 
 :py:meth:`time_trials` is a convenience function used for gathering data about the
 convergence time of a protocol.

@@ -20,7 +20,7 @@ In other words, a list of reactions is treated by the ppsim library just like th
 population protocol transitions (the `rule` parameter in the constructor for :any:`Simulation`, which also
 accepts a dict or a Python function).
 
-More examples given in https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples
+More examples given in https://github.com/UC-Davis-molecular-computing/ppsim/tree/main/examples
 """
 
 from __future__ import annotations  # needed for forward references in type hints
