@@ -60,7 +60,7 @@ class Snapshot:
         pass
 
     def update(self, index: Optional[int] = None):
-        """Method which is called while the :any:`simulation` is running.
+        """Method which is called while :any:`Snapshot.simulation` is running.
 
         Args:
             index: An optional integer index. If present, the snapshot will use the
@@ -105,7 +105,7 @@ class Plotter(Snapshot):
             in :any:`state_list`.
         _matrix: A (# states)x(# categories) matrix such that for the configuration
             array (indexed by states), ``matrix * config`` gives an array
-            of counts of categories. Used internally for :any:`update`.
+            of counts of categories. Used internally to get counts of categories.
     """
     def __init__(self, state_map=None, update_time=0.5) -> None:
         """Initializes the :any:`Plotter`.
