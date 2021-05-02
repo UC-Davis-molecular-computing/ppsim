@@ -36,13 +36,15 @@ def extract_version(filename: str):
             idx = line.index(version_comment)
             line_prefix = line[:idx]
             parts = line_prefix.split('=')
-            stripped_parts = [part.strip() for part in parts]
-            version_str = stripped_parts[-1].replace('"', '')
+            parts = [part.strip() for part in parts]
+            version_str = parts[-1]
+            version_str = version_str.replace('"', '')
+            version_str = version_str.replace("'", '')
+            version_str = version_str.strip()
             return version_str
     raise AssertionError(f'could not find version in {filename}')
 
 version = extract_version('../ppsim/__version__.py')
-
 print(f'ppsim version = {version}')
 
 # The full version, including alpha/beta/rc tags
