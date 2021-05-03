@@ -346,7 +346,7 @@ class Reaction:
     """Rate constant of forward reaction."""
 
     rate_constant_reverse: float = 1
-    """Rate constant of reverse reaction (only used if :py:data:`Reaction.reversible` is true."""
+    """Rate constant of reverse reaction (only used if :py:data:`Reaction.reversible` is true)."""
 
     rate_constant_units: RateConstantUnits = RateConstantUnits.stochastic
     """Units of forward rate constant."""
@@ -654,8 +654,45 @@ def species_in_rxns(rxns: Iterable[Reaction]) -> List[Specie]:
                 species_list.append(sp)
     return species_list
 
+def gillespy2_format(init_config: Dict[Specie, int], rxns: Iterable[Reaction],
+                    volume: float = 1.0, name: str = 'CRN'):
+    """
+    Create a gillespy2 Model object from a CRN description.
 
-def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int],
+    Args:
+        init_config: dict mapping each :any:`Specie` to its initial count
+        rxns: reactions to translate to StochKit format
+        volume: volume in liters
+        name: name of the CRN
+
+    Returns:
+        An equivalent gillespy2 Model object
+    """
+    # requires package gillespy2 to be installed
+    import gillespy2
+
+    rxns = replace_reversible_rxns(rxns)
+    species_list = species_in_rxns(rxns)
+    model = gillespy2.Model()
+
+    init_config = defaultdict(int, init_config)
+
+    gillespy2_species = {s: gillespy2.Species(name = 's'+s.name, initial_value = init_config[s]) for s in species_list}
+    model.add_species(list(gillespy2_species.values()))
+    model.volume = volume
+    rates = [gillespy2.Parameter(name='r'+str(i), expression=r.rate_constant) for i, r in enumerate(rxns)]
+    model.add_parameter(rates)
+    for rxn, rate in zip(rxns, rates):
+        reactants = {gillespy2_species[s]: rxn.reactants.species.count(s) for s in rxn.reactants.get_species()}
+        # Divide rate by 2 in same-species bimolecular reaction because gillespy2 propensity would be x(x-1)
+        if list(reactants.values()) == [2]:
+            rate.expression = float(rate.expression) / 2
+        products = {gillespy2_species[s]: rxn.products.species.count(s) for s in rxn.products.get_species()}
+        model.add_reaction(gillespy2.Reaction(reactants=reactants, products=products, rate=rate))
+    return model
+
+
+def stochkit_format(init_config: Dict[Specie, int], rxns: Iterable[Reaction],
                     volume: float = 1.0, name: str = 'CRN') -> str:
     """
 
@@ -745,34 +782,20 @@ def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int],
         # reactants
         reactants_node = root.createElement('Reactants')
         rxn_node.appendChild(reactants_node)
-        if rxn.is_bimolecular() and rxn.symmetric():
-            reactant = rxn.reactants.species[0]
+        for reactant in rxn.reactants.get_species():
             reactant_node = root.createElement('SpeciesReference')
             reactants_node.appendChild(reactant_node)
             reactant_node.setAttribute('id', reactant.name)
-            reactant_node.setAttribute('stoichiometry', '2')
-        else:
-            for reactant in rxn.reactants.species:
-                reactant_node = root.createElement('SpeciesReference')
-                reactants_node.appendChild(reactant_node)
-                reactant_node.setAttribute('id', reactant.name)
-                reactant_node.setAttribute('stoichiometry', '1')
+            reactant_node.setAttribute('stoichiometry', str(rxn.reactants.species.count(reactant)))
 
         # products
         products_node = root.createElement('Products')
         rxn_node.appendChild(products_node)
-        if rxn.num_products() == 2 and rxn.symmetric_products():
-            product = rxn.reactants.species[0]
+        for product in rxn.products.get_species():
             product_node = root.createElement('SpeciesReference')
             products_node.appendChild(product_node)
             product_node.setAttribute('id', product.name)
-            product_node.setAttribute('stoichiometry', '2')
-        else:
-            for product in rxn.products.species:
-                product_node = root.createElement('SpeciesReference')
-                products_node.appendChild(product_node)
-                product_node.setAttribute('id', product.name)
-                product_node.setAttribute('stoichiometry', '1')
+            product_node.setAttribute('stoichiometry', str(rxn.products.species.count(product)))
 
     stochkit_xml = root.toprettyxml(indent='  ')
 
