@@ -17,10 +17,8 @@ in categories over time.
 
 from typing import Optional, Callable, Hashable, Any
 
-from matplotlib import pyplot as plt  # type: ignore
 import numpy as np
 import pandas as pd  # type: ignore
-import seaborn as sns  # type: ignore
 
 State = Hashable
 
@@ -137,7 +135,8 @@ class Plotter(Snapshot):
 
     def initialize(self) -> None:
         """Initializes the plotter by creating a fig and ax."""
-
+        # Only do matplotlib import when necessary
+        from matplotlib import pyplot as plt
         self.fig, self.ax = plt.subplots()
         if self.state_map is not None:
             self._add_state_map(self.state_map)
@@ -155,6 +154,7 @@ class StatePlotter(Plotter):
             show the new set :any:`categories`.
         """
         super().initialize()
+        import seaborn as sns
         self.ax = sns.barplot(x=[str(c) for c in self.categories], y=np.zeros(len(self.categories)))
         # rotate the x-axis labels if any of the label strings have more than 2 characters
         if max([len(str(c)) for c in self.categories]) > 2:
@@ -195,4 +195,5 @@ class HistoryPlotter(Plotter):
         if self.simulation.time_units:
             for tick in self.ax.get_xticklabels():
                 tick.set_rotation(45)
+        self.fig.tight_layout()
         self.fig.canvas.draw()

@@ -392,6 +392,7 @@ cdef class SimulatorMultiBatch(Simulator):
         else:
             return self.delta[a, b, coin], self.delta[a, b, 1-coin]
 
+    # TODO: fix
     def get_enabled_reactions(self):
         """Updates :any:`enabled_reactions` and :any:`num_enabled_reactions`."""
         cdef npy_intp i
