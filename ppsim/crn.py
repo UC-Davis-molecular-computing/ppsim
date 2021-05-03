@@ -28,29 +28,40 @@ from __future__ import annotations  # needed for forward references in type hint
 from collections import defaultdict
 import copy
 from enum import Enum
-from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List, Any
+from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List
 from dataclasses import dataclass
 from xml.dom import minidom
 
 
-def species(species_: str) -> Union[Specie, Tuple[Specie, ...]]:
+def species(sp: Union[str, Iterable[str]]) -> Union[Specie, Tuple[Specie, ...]]:
     """
     Create a list of :any:`Specie` (Single species :any:`Expression`'s),
     or a single one.
 
     args:
-        species_: str
-            A space-separated string representing the names of the species being created
+        sp:
+            An string or Iterable of strings representing the names of the species being created.
+            If a single string, species names are interpreted as space-separated.
 
-    This is normally used like this:
+    Examples:
 
     .. code-block:: python
 
-        w, x, y, z = species("W X Y Z")
+        w, x, y, z = species('W X Y Z')
+        rxn = x + y >> z + w
+
+
+    .. code-block:: python
+
+        w, x, y, z = species(['W', 'X', 'Y', 'Z'])
         rxn = x + y >> z + w
 
     """
-    species_list = species_.split()
+    species_list: List[str]
+    if isinstance(sp, str):
+        species_list = sp.split()
+    else:
+        species_list = [specie.strip() for specie in sp]
 
     if len(species_list) == 1:
         return Specie(species_list[0])
@@ -660,8 +671,9 @@ def species_in_rxns(rxns: Iterable[Reaction]) -> List[Specie]:
                 species_list.append(sp)
     return species_list
 
+
 def gillespy2_format(init_config: Dict[Specie, int], rxns: Iterable[Reaction],
-                    volume: float = 1.0, name: str = 'CRN'):
+                     volume: float = 1.0, name: str = 'CRN'):
     """
     Create a gillespy2 Model object from a CRN description.
 
@@ -683,13 +695,15 @@ def gillespy2_format(init_config: Dict[Specie, int], rxns: Iterable[Reaction],
 
     init_config = defaultdict(int, init_config)
 
-    gillespy2_species = {s: gillespy2.Species(name = 's'+s.name, initial_value = init_config[s]) for s in species_list}
+    gillespy2_species = {s: gillespy2.Species(name='s' + s.name, initial_value=init_config[s]) for s in
+                         species_list}
     model.add_species(list(gillespy2_species.values()))
     model.volume = volume
-    rates = [gillespy2.Parameter(name='r'+str(i), expression=r.rate_constant) for i, r in enumerate(rxns)]
+    rates = [gillespy2.Parameter(name='r' + str(i), expression=r.rate_constant) for i, r in enumerate(rxns)]
     model.add_parameter(rates)
     for rxn, rate in zip(rxns, rates):
-        reactants = {gillespy2_species[s]: rxn.reactants.species.count(s) for s in rxn.reactants.get_species()}
+        reactants = {gillespy2_species[s]: rxn.reactants.species.count(s) for s in
+                     rxn.reactants.get_species()}
         # Divide rate by 2 in same-species bimolecular reaction because gillespy2 propensity would be x(x-1)
         if list(reactants.values()) == [2]:
             rate.expression = float(rate.expression) / 2
