@@ -47,6 +47,8 @@ State = Hashable
 Output = Union[Tuple[State, State], Dict[Tuple[State, State], float]]
 TransitionFunction = Callable[[State, State], Output]
 Rule = Union[TransitionFunction, Dict[Tuple[State, State], Output], Iterable[Reaction]]
+"""Type representing transition rule for protocol. Is one of three types: TODO"""
+
 ConvergenceDetector = Callable[[Dict[State, int]], bool]
 
 
@@ -136,7 +138,7 @@ class Simulation:
         Args:
             init_config: The starting configuration, as a
                 dictionary mapping states to counts.
-            rule: A representation of the transition rule. The first two options are
+            rule (:any:`Rule`): A representation of the transition rule. The first two options are
                 a dictionary, whose keys are tuples of 2 states and values are their
                 outputs, or a function which takes pairs of states as input. For a
                 deterministic transition function, the output is a tuple of 2 states.
