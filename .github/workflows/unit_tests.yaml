@@ -26,5 +26,7 @@ jobs:
       run: conda install cython=0.29.23
     - name: Install ipywidgets with conda
       run: conda install ipywidgets=7.6.3
+    - name: Install natsort with conda
+      run: conda install natsort=7.1.1
     - name: Test with unittest
       run: python -m unittest -v tests/ppsim_tests.py
