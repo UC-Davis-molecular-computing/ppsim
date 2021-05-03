@@ -16,9 +16,20 @@ def assertDeepAlmostEqual(test_case: TestCase, expected: Any, actual: Any,
     intact to assertAlmostEqual() (that's how you specify comparison
     precision).
 
-    :param test_case: TestCase object on which we can call all of the basic
-    'assert' methods.
-    :type test_case: :py:class:`unittest.TestCase` object
+    Usage:
+
+    .. code-block:: python
+
+        from util import assertDeepAlmostEqual
+
+        assertDeepAlmostEqual(self, expected, actual)
+
+    Args:
+        test_case: TestCase object on which we can call all of the basic 'assert' methods.
+        expected: expected value
+        actual: actual value
+        *args: args to pass to TestCase.assertAlmostEqual
+        **kwargs: kwargs to pass to TestCase.assertAlmostEqual
     """
     is_root = not '__trace' in kwargs
     trace = kwargs.pop('__trace', 'ROOT')
