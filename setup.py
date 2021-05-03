@@ -51,7 +51,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     python_requires='>=3.7',
-    url="https://github.com/UC-Davis-molecular-computing/population-protocols-python-package",
+    url="https://github.com/UC-Davis-molecular-computing/ppsim",
     ext_modules=cythonize(distributions, compiler_directives={'language_level': "3"}),
     install_requires=install_requires
 )
