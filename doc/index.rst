@@ -12,8 +12,8 @@ ppsim API documentation
 
 ``ppsim`` is a package for the simulation of population protocols.
 
-For an introduction, see the README at
-https://github.com/UC-Davis-molecular-computing/ppsim
+For an introduction, see
+https://github.com/UC-Davis-molecular-computing/ppsim#readme
 
 .. contents:: Table of Contents
     :depth: 3
