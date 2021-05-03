@@ -58,11 +58,11 @@ def assertDeepAlmostEqual(test_case: TestCase, expected: Any, actual: Any,
 
 # My part, using the function
 
-class TestMyClass(unittest.TestCase):
-    def test_dicts(self):
-        assertDeepAlmostEqual(self, {'a' : 12.4}, {'a' : 5.6 + 6.8})
-    def test_dicts_2(self):
-        dict_1 = {'a' : {'b' : [12.4, 0.3]}}
-        dict_2 = {'a' : {'b' : [5.6 + 6.8, 0.1 + 0.2]}}
-
-        assertDeepAlmostEqual(self, dict_1, dict_2)
+# class TestMyClass(unittest.TestCase):
+#     def test_dicts(self):
+#         assertDeepAlmostEqual(self, {'a' : 12.4}, {'a' : 5.6 + 6.8})
+#     def test_dicts_2(self):
+#         dict_1 = {'a' : {'b' : [12.4, 0.3]}}
+#         dict_2 = {'a' : {'b' : [5.6 + 6.8, 0.1 + 0.2]}}
+#
+#         assertDeepAlmostEqual(self, dict_1, dict_2)
