@@ -20,8 +20,10 @@ jobs:
       uses: s-weigand/setup-conda@v1
       with:
         activate-conda: true
-    - name: Install numpy, matplotlib, cython, ipywidgets, natsort, pandas with conda
-      run: conda install numpy=1.20.1 matplotlib=3.4.1 cython=0.29.23 ipywidgets=7.6.3 natsort=7.1.1 pandas=1.2.4
+    - name: Install numpy, cython, ipywidgets, natsort, pandas with conda
+      run: conda install numpy=1.20.1 cython=0.29.23 ipywidgets=7.6.3 natsort=7.1.1 pandas=1.2.4
+    - name: Install matplotlib with conda
+      run: conda install matplotlib=3.4.1
 #    - name: Install numpy with conda
 #      run: conda install numpy=1.20.1
 #    - name: Install cython with conda
