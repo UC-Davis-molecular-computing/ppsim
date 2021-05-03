@@ -33,7 +33,7 @@ from dataclasses import dataclass
 from xml.dom import minidom
 
 
-def species(sp: Union[str, Iterable[str]]) -> Union[Specie, Tuple[Specie, ...]]:
+def species(sp: Union[str, Iterable[str]]) -> Tuple[Specie, ...]:
     """
     Create a list of :any:`Specie` (Single species :any:`Expression`'s),
     or a single one.
@@ -63,8 +63,8 @@ def species(sp: Union[str, Iterable[str]]) -> Union[Specie, Tuple[Specie, ...]]:
     else:
         species_list = [specie.strip() for specie in sp]
 
-    if len(species_list) == 1:
-        return Specie(species_list[0])
+    # if len(species_list) == 1:
+    #     return Specie(species_list[0])
     if len(species_list) != len(set(species_list)):
         raise ValueError(f'species_list {species_list} cannot contain duplicates.')
 
