@@ -21,7 +21,7 @@ jobs:
       with:
         activate-conda: true
     - name: Install numpy, cython, ipywidgets, natsort, pandas, tqdm with conda
-      run: conda install numpy=1.20.1 cython=0.29.23 ipywidgets=7.6.3 natsort=7.1.1 pandas=1.2.4 twdm=4.60.0
+      run: conda install numpy=1.20.1 cython=0.29.23 ipywidgets=7.6.3 natsort=7.1.1 pandas=1.2.4 tqdm=4.60.0
     - name: Install matplotlib with conda
       run: conda install matplotlib=3.3.4
 #    - name: Install numpy with conda
