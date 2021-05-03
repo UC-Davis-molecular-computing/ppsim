@@ -23,7 +23,7 @@ jobs:
     - name: Install numpy with conda # some versions below are behind, but this is what's available on conda repos
       run: conda install numpy=1.20.1
     - name: Install cython with conda
-      run: conda install cython=0.29.8
+      run: conda install cython=0.29.23
     - name: Install ipywidgets with conda
       run: conda install ipywidgets=7.4.2
     - name: Test with unittest
