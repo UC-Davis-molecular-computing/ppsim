@@ -15,13 +15,14 @@ in categories.
 in categories over time.
 """
 
+from typing import Optional, Callable, Hashable, Any
 
-from typing import Optional
-
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt  # type: ignore
 import numpy as np
-import pandas as pd
-import seaborn as sns
+import pandas as pd  # type: ignore
+import seaborn as sns  # type: ignore
+
+State = Hashable
 
 
 class Snapshot:
@@ -51,7 +52,7 @@ class Snapshot:
         self.time = None
         self.config = None
 
-    def initialize(self):
+    def initialize(self) -> None:
         """Method which is called once during :any:`add_snapshot`.
 
         Any initialization that requires accessing the data in :any:`simulation`
@@ -59,7 +60,7 @@ class Snapshot:
         """
         pass
 
-    def update(self, index: Optional[int] = None):
+    def update(self, index: Optional[int] = None) -> None:
         """Method which is called while :any:`Snapshot.simulation` is running.
 
         Args:
@@ -68,12 +69,13 @@ class Snapshot:
                 :any:`times` ``[index]``. Otherwise, the snapshot will use the current
                 configuration :any:`config_array` and current time.
         """
-        if type(index) is int:
-            self.time = self.simulation.times[index]
-            self.config = self.simulation.configs[index]
-        else:
-            self.time = self.simulation.time
-            self.config = self.simulation.config_array
+        if self.simulation is not None:
+            if index is not None:
+                self.time = self.simulation.times[index]
+                self.config = self.simulation.configs[index]
+            else:
+                self.time = self.simulation.time
+                self.config = self.simulation.config_array
 
 
 class TimeUpdate(Snapshot):
@@ -83,7 +85,7 @@ class TimeUpdate(Snapshot):
     this object will get added to provide a basic progress update.
     """
 
-    def update(self, index: Optional[int] = None):
+    def update(self, index: Optional[int] = None) -> None:
         super().update(index)
         print(f'\r Time: {self.time:.3f}', end='\r')
 
@@ -107,7 +109,8 @@ class Plotter(Snapshot):
             array (indexed by states), ``matrix * config`` gives an array
             of counts of categories. Used internally to get counts of categories.
     """
-    def __init__(self, state_map=None, update_time=0.5) -> None:
+
+    def __init__(self, state_map: Optional[Callable[[State], Any]]=None, update_time=0.5) -> None:
         """Initializes the :any:`Plotter`.
 
         Args:
@@ -182,7 +185,8 @@ class HistoryPlotter(Plotter):
         super().update(index)
         self.ax.clear()
         if self._matrix is not None:
-            df = pd.DataFrame(data=np.matmul(self.simulation.history.to_numpy(), self._matrix), columns=self.categories,
+            df = pd.DataFrame(data=np.matmul(self.simulation.history.to_numpy(), self._matrix),
+                              columns=self.categories,
                               index=self.simulation.history.index)
         else:
             df = self.simulation.history

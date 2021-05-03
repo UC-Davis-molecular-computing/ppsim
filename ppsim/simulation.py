@@ -20,7 +20,7 @@ The general syntax is
     sim.run()
     sim.history.plot()
 
-More examples given in https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples
+More examples given in https://github.com/UC-Davis-molecular-computing/ppsim/tree/main/examples
 
 :py:meth:`time_trials` is a convenience function used for gathering data about the
 convergence time of a protocol.
@@ -185,8 +185,24 @@ class Simulation:
                 If a CRN as a list of reactions is passed in, this will be set to True.
             time_units: An optional string given the units that time is in. Defaults to None.
                 This must be a valid string to pass as unit to pandas.to_timedelta.
-            **kwargs: If rule is a function, other keyword function parameters are
-                passed in here.
+            **kwargs: If `rule` is a function, any extra function parameters are passed in here,
+                beyond the first two arguments representing the two agents. For example, if `rule` is
+                defined:
+
+                .. code-block:: python
+
+                    def rule(sender: int, receiver: int, threshold: int) -> Tuple[int, int]:
+                        if sender + receiver > threshold:
+                            return 0, 0
+                        else:
+                            return sender, receiver+1
+
+                To use a threshold of 20 in each interaction, in the :any:`Simulation` constructor, use
+
+                .. code-block:: python
+
+                    sim = Simulation(init_config, rule, threshold=20)
+
         """
         self.seed = seed
         self.rng = np.random.default_rng(seed)

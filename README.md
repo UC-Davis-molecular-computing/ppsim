@@ -36,7 +36,7 @@ approximate_majority = {
 
 ## Example Simulation
 
-To instantiate a `Simulation`, we must specify a protocol along with an initial condition, which is a dictionary mapping states to counts. Let's simulate approximate majority with in a population of one billion agents with a slight majority of `A` agents.
+To instantiate a `Simulation`, we must specify a protocol along with an initial condition, which is a dictionary mapping states to counts. Let's simulate approximate majority in a population of one billion agents with a slight majority of `A` agents.
 
 
 ```python

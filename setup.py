@@ -46,11 +46,12 @@ setup(
     name="ppsim",
     packages=['ppsim'],
     version=version,
-    author="Eric Severson",
+    author="Eric Severson and David Doty",
     description="A package for simulating population protocols.",
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url="https://github.com/UC-Davis-molecular-computing/population-protocols-python-package",
+    python_requires='>=3.7',
+    url="https://github.com/UC-Davis-molecular-computing/ppsim",
     ext_modules=cythonize(distributions, compiler_directives={'language_level': "3"}),
     install_requires=install_requires
 )
