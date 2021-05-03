@@ -28,5 +28,7 @@ jobs:
       run: conda install ipywidgets=7.6.3
     - name: Install natsort with conda
       run: conda install natsort=7.1.1
+    - name: Install pandas with conda
+      run: conda install pandas=1.2.4
     - name: Test with unittest
       run: python -m unittest -v tests/ppsim_tests.py
