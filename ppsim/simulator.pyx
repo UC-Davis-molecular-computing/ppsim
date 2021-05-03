@@ -1,5 +1,12 @@
 # cython: wraparound=False, nonecheck=False, boundscheck=False, cdivision=True, initializedcheck=False
 
+"""
+The cython module which contains the internal simulator algorithms.
+
+This is not intended to be interacted with directly.
+It is intended for the user to only interact with the class :any:`Simulation`.
+"""
+
 ''' Use these commands to enable line tracing.
 # cython: linetrace=True
 # cython: binding=True
@@ -53,7 +60,7 @@ cdef class Simulator:
     def __init__(self, int64_t [::1] init_array, npy_intp [:,:,:] delta, uint8_t [:,:] null_transitions,
                  npy_intp [:,:,:] random_transitions, random_outputs,
                  double [::1] transition_probabilities, seed=None):
-        """Initializes the main data structures for Simulator.
+        """Initializes the main data structures for :any:`Simulator`.
 
         Args:
             init_array: An integer array of counts representing the initial configuration.
@@ -122,7 +129,7 @@ cdef class SimulatorSequentialArray(Simulator):
     def make_population(self):
         """Creates the array self.population.
 
-        This is an array of agent states, where the count of each state comes from self.config.
+        This is an array of agent states, where the count of each state comes from :any:`Simulator.config`.
         """
         self.population = np.zeros(self.n, dtype=np.intp)
         cdef npy_intp i, j, k = 0
@@ -132,7 +139,7 @@ cdef class SimulatorSequentialArray(Simulator):
                 k += 1
 
     def run(self, int64_t end_step, double max_wallclock_time = 60 * 60):
-        """Samples random pairs of agents and updates them num_steps times."""
+        """Samples random pairs of agents and updates them until reaching end_step."""
         cdef npy_intp i, j, k, a, b
         cdef double u
         cdef double [:] ps
@@ -170,7 +177,7 @@ cdef class SimulatorSequentialArray(Simulator):
 
         Args:
             config: The configuration array to reset to.
-            t: The new value of self.t. Defaults to 0.
+            t: The new value of :any:`t`. Defaults to 0.
         """
         self.config = config
         self.t = t
@@ -182,14 +189,14 @@ cdef class SimulatorMultiBatch(Simulator):
     """Uses the MultiBatch algorithm to simulate O(sqrt(n)) interactions in parallel.
 
     The MultiBatch algorithm comes from the paper
-        'Simulating Population Protocols in Subconstant Time per Interaction'
-        (https://arxiv.org/abs/2005.03584).
+    *Simulating Population Protocols in Subconstant Time per Interaction*
+    (https://arxiv.org/abs/2005.03584).
     Beyond the methods described in the paper, this class also dynamically switches
     to Gillespie's algorithm when the number of null interactions is high.
 
     Attributes:
-        urn: An Urn object which stores the configuration and has methods for sampling.
-        updated_counts: An additional Urn where agents are stored that have been
+        urn: An :any:`Urn` object which stores the configuration and has methods for sampling.
+        updated_counts: An additional :any:`Urn` where agents are stored that have been
             updated during a batch.
         logn: Precomputed log(n).
         batch_threshold: Minimum number of interactions that must be simulated in each
@@ -329,7 +336,7 @@ cdef class SimulatorMultiBatch(Simulator):
 
         Args:
             config: The configuration array to reset to.
-            t: The new value of self.t. Defaults to 0.
+            t: The new value of :any:`t`. Defaults to 0.
         """
         self.config = config
         self.urn = Urn.create(self.config, self.bitgen)
@@ -386,7 +393,7 @@ cdef class SimulatorMultiBatch(Simulator):
             return self.delta[a, b, coin], self.delta[a, b, 1-coin]
 
     def get_enabled_reactions(self):
-        """Updates self.enabled_reactions and self.num_enabled_reactions."""
+        """Updates :any:`enabled_reactions` and :any:`num_enabled_reactions`."""
         cdef npy_intp i
         self.num_enabled_reactions = 0
         for i in range(len(self.reactions)):
@@ -399,14 +406,16 @@ cdef class SimulatorMultiBatch(Simulator):
 
         Args:
             t_max: Defaults to 0.
-                If positive, the maximum value of self.t that will be reached.
+                If positive, the maximum value of :any:`t` that will be reached.
                 If the sampled time is greater than t_max, then it will instead
                 be set to t_max and no reaction will be performed.
                 (Because of the memoryless property of the geometric, this gives a
                 faithful simulation up to step t_max).
         """
         cdef npy_intp i, j
-        cdef int64_t a, b
+        # make sure these are all doubles, because they will be squared and could overflow int64_t
+        cdef double a, b, n
+        n = self.n
         cdef npy_intp [:] r
         cdef double total_propensity = 0
         cdef double success_probability, x
@@ -422,7 +431,7 @@ cdef class SimulatorMultiBatch(Simulator):
         if total_propensity == 0:
             self.silent = True
             return
-        success_probability = total_propensity / (self.n * (self.n -1) / 2)
+        success_probability = total_propensity / (n * (n -1) / 2)
         if success_probability > self.gillespie_threshold:
             self.do_gillespie = False
         # add a geometric number of steps, based on success probability
@@ -661,6 +670,7 @@ cdef class Urn:
         size: sum(config).
         length: len(config).
     """
+
     cdef public int64_t [::1] config
     cdef bitgen_t *bitgen
     cdef npy_intp [::1] order
@@ -686,7 +696,7 @@ cdef class Urn:
         urn.sort()
         return urn
 
-    cpdef void sort(self):
+    cdef void sort(self):
         """Updates self.order.
         
         Uses insertion sort to maintain that 
