@@ -56,7 +56,8 @@ class Snapshot:
         Any initialization that requires accessing the data in :any:`simulation`
         should go here.
         """
-        pass
+        if self.simulation is None:
+            raise ValueError('self.simulation is None, cannot call self.initialize until using sim.add_snapshot')
 
     def update(self, index: Optional[int] = None) -> None:
         """Method which is called while :any:`Snapshot.simulation` is running.
@@ -67,13 +68,14 @@ class Snapshot:
                 :any:`times` ``[index]``. Otherwise, the snapshot will use the current
                 configuration :any:`config_array` and current time.
         """
-        if self.simulation is not None:
-            if index is not None:
-                self.time = self.simulation.times[index]
-                self.config = self.simulation.configs[index]
-            else:
-                self.time = self.simulation.time
-                self.config = self.simulation.config_array
+        if self.simulation is None:
+            raise ValueError('self.simulation is None, cannot call self.update until using sim.add_snapshot')
+        if index is not None:
+            self.time = self.simulation.times[index]
+            self.config = self.simulation.configs[index]
+        else:
+            self.time = self.simulation.time
+            self.config = self.simulation.config_array
 
 
 class TimeUpdate(Snapshot):
@@ -136,6 +138,7 @@ class Plotter(Snapshot):
     def initialize(self) -> None:
         """Initializes the plotter by creating a fig and ax."""
         # Only do matplotlib import when necessary
+        super().initialize()
         from matplotlib import pyplot as plt
         self.fig, self.ax = plt.subplots()
         if self.state_map is not None:

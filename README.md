@@ -765,6 +765,9 @@ As a result, the probability of a non-null interaction will grow very small, upo
 
 
 ```python
+# In order to see a Snapshot update live while the simulation is running, the command sim.add_snapshot() must be called in a previous cell
+# After the Snapshot is already displayed, calling sim.run() will update it in real time
+# The parameter Snapshot.update_time controls how often (in seconds) the Snapshot will get updated
 sim.run()
 ```
 

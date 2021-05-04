@@ -32,7 +32,6 @@ from datetime import timedelta
 import math
 from time import perf_counter
 from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable, Set
-import ipywidgets as widgets
 from natsort import natsorted
 import numpy as np
 import pandas as pd
@@ -234,10 +233,22 @@ class Simulation:
         self._rule_kwargs = kwargs
 
         # Get a list of all reachable states, use the natsort library to put in a nice order.
-        self.state_list = natsorted(list(state_enumeration(init_config, self.rule)),
-                                    key=lambda x: repr(x))
-        # TODO: process a dictionary in a more straightforward way, and check that state_list only includes
-        #         states in the dictionary
+        if type(self._rule) == dict:
+            # If the rule is a dict, we can loop over the entries to get all states
+            states = []
+            for input, output in self._rule.items():
+                states.extend(input)
+                if type(output) == dict:
+                    for pair in output.keys():
+                        states.extend(pair)
+                else:
+                    states.extend(output)
+            state_list = list(set(states))
+        else:
+            # Otherwise, we use breadth-first search to find all reachable states
+            state_list = list(state_enumeration(init_config, self.rule))
+        # We use the natsorted library to put state_list in a reasonable order
+        self.state_list = natsorted(state_list, key=lambda x: repr(x))
         self.state_dict = {state: i for i, state in enumerate(self.state_list)}
 
         if simulator_method.lower() == 'multibatch':
@@ -614,7 +625,8 @@ class Simulation:
                 if self.continuous_time:
                     self._history.index.name = 'time (continuous units)'
                 else:
-                    self._history.index.name = f'time ({self.steps_per_time_unit} interaction steps)'
+                    n = "n" if self.n == self.steps_per_time_unit else str(self.steps_per_time_unit)
+                    self._history.index.name = f'time ({n} interactions)'
         return self._history
 
     def times_in_units(self, times):
@@ -659,7 +671,7 @@ class Simulation:
         snap.update()
         self.snapshots.append(snap)
 
-    def snapshot_slider(self, var: str = 'index') -> widgets.interactive:
+    def snapshot_slider(self, var: str = 'index') -> "widgets.interactive":
         """Returns a slider that updates all :any:`Snapshot` objects.
 
         Returns a slider from the ipywidgets library.
@@ -667,6 +679,7 @@ class Simulation:
         Args:
             var: What variable the slider uses, either ``'index'`` or ``'time'``.
         """
+        import ipywidgets as widgets
         if var.lower() == 'index':
             return widgets.interactive(self.set_snapshot_index,
                                        index=widgets.IntSlider(min=0,

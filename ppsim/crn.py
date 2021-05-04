@@ -28,7 +28,7 @@ from __future__ import annotations  # needed for forward references in type hint
 from collections import defaultdict
 import copy
 from enum import Enum
-from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List
+from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List, Any
 from dataclasses import dataclass
 from xml.dom import minidom
 
@@ -673,7 +673,7 @@ def species_in_rxns(rxns: Iterable[Reaction]) -> List[Specie]:
 
 
 def gillespy2_format(init_config: Dict[Specie, int], rxns: Iterable[Reaction],
-                     volume: float = 1.0, name: str = 'CRN'):
+                     volume: float = 1.0) -> Any:
     """
     Create a gillespy2 Model object from a CRN description.
 
@@ -687,7 +687,7 @@ def gillespy2_format(init_config: Dict[Specie, int], rxns: Iterable[Reaction],
         An equivalent gillespy2 Model object
     """
     # requires package gillespy2 to be installed
-    import gillespy2
+    import gillespy2 # type: ignore
 
     rxns = replace_reversible_rxns(rxns)
     species_list = species_in_rxns(rxns)
@@ -695,7 +695,7 @@ def gillespy2_format(init_config: Dict[Specie, int], rxns: Iterable[Reaction],
 
     init_config = defaultdict(int, init_config)
 
-    gillespy2_species = {s: gillespy2.Species(name='s' + s.name, initial_value=init_config[s]) for s in
+    gillespy2_species = {s: gillespy2.Species(name=s.name, initial_value=init_config[s]) for s in
                          species_list}
     model.add_species(list(gillespy2_species.values()))
     model.volume = volume
