@@ -31,7 +31,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 import math
 from time import perf_counter
-from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable, Set
+from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable, Set, Any
 from natsort import natsorted
 import numpy as np
 import pandas as pd
@@ -629,7 +629,16 @@ class Simulation:
                     self._history.index.name = f'time ({n} interactions)'
         return self._history
 
-    def times_in_units(self, times):
+    @property
+    def null_probability(self) -> float:
+        """The probability the next interaction is null."""
+        if type(self.simulator) != simulator.SimulatorMultiBatch:
+            raise ValueError('null probability requires by multibatch simulator.')
+        self.simulator.get_enabled_reactions()
+        n = self.simulator.n
+        return 1 - self.simulator.get_total_propensity() / (n * (n-1) / 2)
+
+    def times_in_units(self, times: Iterable[float]) -> Iterable[Any]:
         """If :any:`time_units` is defined, convert time list to appropriate units."""
         if self.time_units:
             return pd.to_timedelta(times, unit=self.time_units)
