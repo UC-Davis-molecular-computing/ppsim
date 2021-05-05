@@ -160,7 +160,7 @@ class Simulation:
                     to update. Defaults to 'MultiBatch'.
             transition_order: Should the rule be interpreted as being symmetric,
                 either ``'asymmetric'``, ``'symmetric'``, or ``'symmetric_enforced'``.
-                Defaults to 'asymmetric'.
+                Defaults to 'symmetric'.
 
                 ``'asymmetric'``:
                     Ordering of the inputs matters, and all inputs not
