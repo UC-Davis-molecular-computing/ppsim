@@ -564,6 +564,7 @@ class Simulation:
                 config[self.state_dict[k]] += init_config[k]
         self.configs = [config]
         self.times = [0]
+        self.time = 0
         self._history = pd.DataFrame(data=self.configs, index=pd.Index(self.times, name='time'),
                                      columns=self._history.columns)
         self.simulator.reset(config)
