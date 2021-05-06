@@ -392,13 +392,13 @@ cdef class SimulatorMultiBatch(Simulator):
         else:
             return self.delta[a, b, coin], self.delta[a, b, 1-coin]
 
-    # TODO: fix
     def get_enabled_reactions(self):
         """Updates :any:`enabled_reactions` and :any:`num_enabled_reactions`."""
-        cdef npy_intp i
+        cdef npy_intp i, j, k
         self.num_enabled_reactions = 0
         for i in range(len(self.reactions)):
-            if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:
+            j, k = self.reactions[i][0], self.reactions[i][1]
+            if (j == k and self.config[j] >= 2) or (j != k and self.config[j] >= 1 and self.config[k] >= 1):
                 self.enabled_reactions[self.num_enabled_reactions] = i
                 self.num_enabled_reactions += 1
 

@@ -7992,7 +7992,7 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
  *         else:
  *             return self.delta[a, b, coin], self.delta[a, b, 1-coin]             # <<<<<<<<<<<<<<
  * 
- *     # TODO: fix
+ *     def get_enabled_reactions(self):
  */
   /*else*/ {
     __pyx_t_7 = __pyx_v_a;
@@ -8021,12 +8021,12 @@ static __pyx_ctuple_npy_intp__and_npy_intp __pyx_f_5ppsim_9simulator_19Simulator
   return __pyx_r;
 }
 
-/* "ppsim/simulator.pyx":396
+/* "ppsim/simulator.pyx":395
+ *             return self.delta[a, b, coin], self.delta[a, b, 1-coin]
  * 
- *     # TODO: fix
  *     def get_enabled_reactions(self):             # <<<<<<<<<<<<<<
  *         """Updates :any:`enabled_reactions` and :any:`num_enabled_reactions`."""
- *         cdef npy_intp i
+ *         cdef npy_intp i, j, k
  */
 
 /* Python wrapper */
@@ -8045,75 +8045,109 @@ static PyObject *__pyx_pw_5ppsim_9simulator_19SimulatorMultiBatch_11get_enabled_
 
 static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_10get_enabled_reactions(struct __pyx_obj_5ppsim_9simulator_SimulatorMultiBatch *__pyx_v_self) {
   npy_intp __pyx_v_i;
+  npy_intp __pyx_v_j;
+  npy_intp __pyx_v_k;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   size_t __pyx_t_1;
   Py_ssize_t __pyx_t_2;
   npy_intp __pyx_t_3;
-  int __pyx_t_4;
+  Py_ssize_t __pyx_t_4;
   Py_ssize_t __pyx_t_5;
-  Py_ssize_t __pyx_t_6;
-  Py_ssize_t __pyx_t_7;
+  npy_intp __pyx_t_6;
+  npy_intp __pyx_t_7;
   int __pyx_t_8;
+  int __pyx_t_9;
   __Pyx_RefNannySetupContext("get_enabled_reactions", 0);
 
-  /* "ppsim/simulator.pyx":399
+  /* "ppsim/simulator.pyx":398
  *         """Updates :any:`enabled_reactions` and :any:`num_enabled_reactions`."""
- *         cdef npy_intp i
+ *         cdef npy_intp i, j, k
  *         self.num_enabled_reactions = 0             # <<<<<<<<<<<<<<
  *         for i in range(len(self.reactions)):
- *             if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:
+ *             j, k = self.reactions[i][0], self.reactions[i][1]
  */
   __pyx_v_self->num_enabled_reactions = 0;
 
-  /* "ppsim/simulator.pyx":400
- *         cdef npy_intp i
+  /* "ppsim/simulator.pyx":399
+ *         cdef npy_intp i, j, k
  *         self.num_enabled_reactions = 0
  *         for i in range(len(self.reactions)):             # <<<<<<<<<<<<<<
- *             if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:
- *                 self.enabled_reactions[self.num_enabled_reactions] = i
+ *             j, k = self.reactions[i][0], self.reactions[i][1]
+ *             if (j == k and self.config[j] >= 2) or (j != k and self.config[j] >= 1 and self.config[k] >= 1):
  */
   __pyx_t_1 = __Pyx_MemoryView_Len(__pyx_v_self->reactions); 
   __pyx_t_2 = __pyx_t_1;
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "ppsim/simulator.pyx":401
+    /* "ppsim/simulator.pyx":400
  *         self.num_enabled_reactions = 0
  *         for i in range(len(self.reactions)):
- *             if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:             # <<<<<<<<<<<<<<
+ *             j, k = self.reactions[i][0], self.reactions[i][1]             # <<<<<<<<<<<<<<
+ *             if (j == k and self.config[j] >= 2) or (j != k and self.config[j] >= 1 and self.config[k] >= 1):
+ *                 self.enabled_reactions[self.num_enabled_reactions] = i
+ */
+    __pyx_t_4 = __pyx_v_i;
+    __pyx_t_5 = 0;
+    __pyx_t_6 = (*((npy_intp *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->reactions.data + __pyx_t_4 * __pyx_v_self->reactions.strides[0]) ) + __pyx_t_5 * __pyx_v_self->reactions.strides[1]) )));
+    __pyx_t_5 = __pyx_v_i;
+    __pyx_t_4 = 1;
+    __pyx_t_7 = (*((npy_intp *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->reactions.data + __pyx_t_5 * __pyx_v_self->reactions.strides[0]) ) + __pyx_t_4 * __pyx_v_self->reactions.strides[1]) )));
+    __pyx_v_j = __pyx_t_6;
+    __pyx_v_k = __pyx_t_7;
+
+    /* "ppsim/simulator.pyx":401
+ *         for i in range(len(self.reactions)):
+ *             j, k = self.reactions[i][0], self.reactions[i][1]
+ *             if (j == k and self.config[j] >= 2) or (j != k and self.config[j] >= 1 and self.config[k] >= 1):             # <<<<<<<<<<<<<<
  *                 self.enabled_reactions[self.num_enabled_reactions] = i
  *                 self.num_enabled_reactions += 1
  */
-    __pyx_t_5 = __pyx_v_i;
-    __pyx_t_6 = 0;
-    __pyx_t_7 = (*((npy_intp *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->reactions.data + __pyx_t_5 * __pyx_v_self->reactions.strides[0]) ) + __pyx_t_6 * __pyx_v_self->reactions.strides[1]) )));
-    __pyx_t_8 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_7)) ))) > 0) != 0);
-    if (__pyx_t_8) {
+    __pyx_t_9 = ((__pyx_v_j == __pyx_v_k) != 0);
+    if (!__pyx_t_9) {
+      goto __pyx_L7_next_or;
     } else {
-      __pyx_t_4 = __pyx_t_8;
+    }
+    __pyx_t_4 = __pyx_v_j;
+    __pyx_t_9 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_4)) ))) >= 2) != 0);
+    if (!__pyx_t_9) {
+    } else {
+      __pyx_t_8 = __pyx_t_9;
       goto __pyx_L6_bool_binop_done;
     }
-    __pyx_t_6 = __pyx_v_i;
-    __pyx_t_5 = 1;
-    __pyx_t_7 = (*((npy_intp *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_self->reactions.data + __pyx_t_6 * __pyx_v_self->reactions.strides[0]) ) + __pyx_t_5 * __pyx_v_self->reactions.strides[1]) )));
-    __pyx_t_8 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_7)) ))) > 0) != 0);
-    __pyx_t_4 = __pyx_t_8;
+    __pyx_L7_next_or:;
+    __pyx_t_9 = ((__pyx_v_j != __pyx_v_k) != 0);
+    if (__pyx_t_9) {
+    } else {
+      __pyx_t_8 = __pyx_t_9;
+      goto __pyx_L6_bool_binop_done;
+    }
+    __pyx_t_4 = __pyx_v_j;
+    __pyx_t_9 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_4)) ))) >= 1) != 0);
+    if (__pyx_t_9) {
+    } else {
+      __pyx_t_8 = __pyx_t_9;
+      goto __pyx_L6_bool_binop_done;
+    }
+    __pyx_t_4 = __pyx_v_k;
+    __pyx_t_9 = (((*((int64_t *) ( /* dim=0 */ ((char *) (((int64_t *) __pyx_v_self->__pyx_base.config.data) + __pyx_t_4)) ))) >= 1) != 0);
+    __pyx_t_8 = __pyx_t_9;
     __pyx_L6_bool_binop_done:;
-    if (__pyx_t_4) {
+    if (__pyx_t_8) {
 
       /* "ppsim/simulator.pyx":402
- *         for i in range(len(self.reactions)):
- *             if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:
+ *             j, k = self.reactions[i][0], self.reactions[i][1]
+ *             if (j == k and self.config[j] >= 2) or (j != k and self.config[j] >= 1 and self.config[k] >= 1):
  *                 self.enabled_reactions[self.num_enabled_reactions] = i             # <<<<<<<<<<<<<<
  *                 self.num_enabled_reactions += 1
  * 
  */
-      __pyx_t_5 = __pyx_v_self->num_enabled_reactions;
-      *((npy_intp *) ( /* dim=0 */ (__pyx_v_self->enabled_reactions.data + __pyx_t_5 * __pyx_v_self->enabled_reactions.strides[0]) )) = __pyx_v_i;
+      __pyx_t_4 = __pyx_v_self->num_enabled_reactions;
+      *((npy_intp *) ( /* dim=0 */ (__pyx_v_self->enabled_reactions.data + __pyx_t_4 * __pyx_v_self->enabled_reactions.strides[0]) )) = __pyx_v_i;
 
       /* "ppsim/simulator.pyx":403
- *             if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:
+ *             if (j == k and self.config[j] >= 2) or (j != k and self.config[j] >= 1 and self.config[k] >= 1):
  *                 self.enabled_reactions[self.num_enabled_reactions] = i
  *                 self.num_enabled_reactions += 1             # <<<<<<<<<<<<<<
  * 
@@ -8122,21 +8156,21 @@ static PyObject *__pyx_pf_5ppsim_9simulator_19SimulatorMultiBatch_10get_enabled_
       __pyx_v_self->num_enabled_reactions = (__pyx_v_self->num_enabled_reactions + 1);
 
       /* "ppsim/simulator.pyx":401
- *         self.num_enabled_reactions = 0
  *         for i in range(len(self.reactions)):
- *             if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:             # <<<<<<<<<<<<<<
+ *             j, k = self.reactions[i][0], self.reactions[i][1]
+ *             if (j == k and self.config[j] >= 2) or (j != k and self.config[j] >= 1 and self.config[k] >= 1):             # <<<<<<<<<<<<<<
  *                 self.enabled_reactions[self.num_enabled_reactions] = i
  *                 self.num_enabled_reactions += 1
  */
     }
   }
 
-  /* "ppsim/simulator.pyx":396
+  /* "ppsim/simulator.pyx":395
+ *             return self.delta[a, b, coin], self.delta[a, b, 1-coin]
  * 
- *     # TODO: fix
  *     def get_enabled_reactions(self):             # <<<<<<<<<<<<<<
  *         """Updates :any:`enabled_reactions` and :any:`num_enabled_reactions`."""
- *         cdef npy_intp i
+ *         cdef npy_intp i, j, k
  */
 
   /* function exit code */

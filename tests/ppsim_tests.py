@@ -2,7 +2,18 @@ import unittest
 from typing import List, Dict, Any
 
 import numpy
-from ppsim import species, reactions_to_dict, Reaction
+from ppsim import species, reactions_to_dict, Reaction, Simulation
+
+
+class TestBasicProtocols(unittest.TestCase):
+
+    def test_fratricide(self) -> None:
+        l, f = 'L', 'F'
+        fratricide = {(l, l): (l, f)}
+        sim = Simulation({l: 20}, fratricide)
+        sim.run()
+        self.assertEqual(sim.config_dict, {l: 1, f: 19})
+        self.assertEqual('', sim.enabled_reactions)
 
 
 class TestCRN(unittest.TestCase):
@@ -134,7 +145,6 @@ class TestCRN(unittest.TestCase):
         self.assertIn((c, d), transitions.keys())
         self.assertEqual((c, d), transitions[(a, b)])
         self.assertEqual((a, b), transitions[(c, d)])
-
 
 
 
