@@ -129,7 +129,7 @@ class Simulation:
     """The optional integer seed used for rng and inside cython code."""
 
     def __init__(self, init_config: Dict[State, int], rule: Rule, simulator_method: str = "MultiBatch",
-                 transition_order: str = "asymmetric", seed: Optional[int] = None,
+                 transition_order: str = "symmetric", seed: Optional[int] = None,
                  volume: Optional[float] = None, continuous_time: bool = False, time_units: Optional[str] = None,
                  **kwargs):
         """Initialize a Simulation.
