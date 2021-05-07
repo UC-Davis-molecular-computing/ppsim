@@ -17,6 +17,7 @@ in categories over time.
 
 from typing import Optional, Callable, Hashable, Any
 
+from natsort import natsorted
 import numpy as np
 import pandas as pd  # type: ignore
 
@@ -101,32 +102,40 @@ class Plotter(Snapshot):
         fig: The matplotlib figure that is created.
         ax: The matplotlib axis object that is created. Modifying properties
             of this object is the most direct way to modify the plot.
+        yscale: The scale used for the yaxis, passed into ax.set_yscale.
         state_map: A function mapping states to categories, which acts as a filter
             to view a subset of the states or just one field of the states.
         categories: A list which holds the set ``{state_map(state)}`` for all states
             in :any:`state_list`.
+        sort_by:
         _matrix: A (# states)x(# categories) matrix such that for the configuration
             array (indexed by states), ``matrix * config`` gives an array
             of counts of categories. Used internally to get counts of categories.
     """
 
-    def __init__(self, state_map: Optional[Callable[[State], Any]]=None, update_time=0.5) -> None:
+    def __init__(self, state_map: Optional[Callable[[State], Any]]=None, update_time=0.5, yscale='linear',
+                 sort_by: str = 'categories') -> None:
         """Initializes the :any:`Plotter`.
 
         Args:
             state_map: An optional function mapping states to categories.
+            yscale: The scale used for the yaxis, passed into ax.set_yscale.
+                Defaults to 'linear'.
         """
         self._matrix = None
         self.state_map = state_map
         self.update_time = update_time
+        self.yscale = yscale
+        self.sort_by = sort_by
 
     def _add_state_map(self, state_map):
         """An internal function called to update :any:`categories` and `_matrix`."""
         self.categories = []
-        # categories will be ordered in the same order as state_list
+
         for state in self.simulation.state_list:
             if state_map(state) is not None and state_map(state) not in self.categories:
                 self.categories.append(state_map(state))
+        self.categories = natsorted(self.categories, key=lambda x: repr(x))
 
         categories_dict = {j: i for i, j in enumerate(self.categories)}
         self._matrix = np.zeros((len(self.simulation.state_list), len(self.categories)), dtype=np.int64)
@@ -162,8 +171,12 @@ class StatePlotter(Plotter):
         # rotate the x-axis labels if any of the label strings have more than 2 characters
         if max([len(str(c)) for c in self.categories]) > 2:
             for tick in self.ax.get_xticklabels():
-                tick.set_rotation(45)
-        self.ax.set_ylim(0, self.simulation.simulator.n)
+                tick.set_rotation(90)
+        self.ax.set_yscale(self.yscale)
+        if self.yscale in ['symlog', 'log']:
+            self.ax.set_ylim(0, 2 * self.simulation.simulator.n)
+        else:
+            self.ax.set_ylim(0, self.simulation.simulator.n)
 
     def update(self, index: Optional[int] = None) -> None:
         """Update the heights of all bars in the plot."""
@@ -175,7 +188,7 @@ class StatePlotter(Plotter):
         for i, rect in enumerate(self.ax.patches):
             rect.set_height(heights[i])
 
-        self.ax.set_title(f'Time {self.time}')
+        self.ax.set_title(f'Time {self.time: .3f}')
         self.fig.tight_layout()
         self.fig.canvas.draw()
 
@@ -194,6 +207,13 @@ class HistoryPlotter(Plotter):
         else:
             df = self.simulation.history
         df.plot(ax=self.ax)
+
+        self.ax.set_yscale(self.yscale)
+        if self.yscale in ['symlog', 'log']:
+            self.ax.set_ylim(0, 2 * self.simulation.simulator.n)
+        else:
+            self.ax.set_ylim(0, 1.1 * self.simulation.simulator.n)
+
         # rotate the x labels if they are time units
         if self.simulation.time_units:
             for tick in self.ax.get_xticklabels():
