@@ -20,7 +20,7 @@ In other words, a list of reactions is treated by the ppsim library just like th
 population protocol transitions (the `rule` parameter in the constructor for :any:`Simulation`, which also
 accepts a dict or a Python function).
 
-More examples given in https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples
+More examples given in https://github.com/UC-Davis-molecular-computing/ppsim/tree/main/examples
 """
 
 from __future__ import annotations  # needed for forward references in type hints
@@ -28,33 +28,43 @@ from __future__ import annotations  # needed for forward references in type hint
 from collections import defaultdict
 import copy
 from enum import Enum
-from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List
+from typing import Union, Dict, Tuple, Set, Iterable, DefaultDict, List, Any
 from dataclasses import dataclass
 from xml.dom import minidom
 
 
-
-def species(species_: str) -> Union[Specie, Tuple[Specie]]:
+def species(sp: Union[str, Iterable[str]]) -> Tuple[Specie, ...]:
     """
     Create a list of :any:`Specie` (Single species :any:`Expression`'s),
     or a single one.
 
     args:
-        species_: str
-            A space-separated string representing the names of the species being created
+        sp:
+            An string or Iterable of strings representing the names of the species being created.
+            If a single string, species names are interpreted as space-separated.
 
-    This is normally used like this:
+    Examples:
 
     .. code-block:: python
 
-        w, x, y, z = species("W X Y Z")
+        w, x, y, z = species('W X Y Z')
+        rxn = x + y >> z + w
+
+
+    .. code-block:: python
+
+        w, x, y, z = species(['W', 'X', 'Y', 'Z'])
         rxn = x + y >> z + w
 
     """
-    species_list = species_.split()
+    species_list: List[str]
+    if isinstance(sp, str):
+        species_list = sp.split()
+    else:
+        species_list = [specie.strip() for specie in sp]
 
-    if len(species_list) == 1:
-        return Specie(species_list[0])
+    # if len(species_list) == 1:
+    #     return Specie(species_list[0])
     if len(species_list) != len(set(species_list)):
         raise ValueError(f'species_list {species_list} cannot contain duplicates.')
 
@@ -80,7 +90,8 @@ def replace_reversible_rxns(rxns: Iterable[Reaction]) -> List[Reaction]:
         else:
             forward_rxn = Reaction(reactants=rxn.reactants, products=rxn.products, k=rxn.rate_constant,
                                    rate_constant_units=rxn.rate_constant_units, reversible=False)
-            reverse_rxn = Reaction(reactants=rxn.products, products=rxn.reactants, k=rxn.rate_constant_reverse,
+            reverse_rxn = Reaction(reactants=rxn.products, products=rxn.reactants,
+                                   k=rxn.rate_constant_reverse,
                                    rate_constant_units=rxn.rate_constant_reverse_units, reversible=False)
             new_rxns.extend([forward_rxn, reverse_rxn])
     return new_rxns
@@ -151,8 +162,9 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
         else:
             # if we calculated probabilities correctly above, if we assigned a dict entry to be non-randomized
             # (since prob == 1.0 above), we should not encounter another reaction with same reactants
-            assert (isinstance(transitions[reactants], dict))
-            transitions[reactants][products] = prob
+            output = transitions[reactants]
+            assert isinstance(output, dict)
+            output[products] = prob
 
     # assert that each possible input for transitions has output probabilities summing to 1
     for reactants, outputs in transitions.items():
@@ -163,7 +175,8 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
     return transitions, max_rate
 
 
-def convert_unimolecular_to_bimolecular_and_flip_reactant_order(reactions: Iterable[Reaction], n: int, volume: float) \
+def convert_unimolecular_to_bimolecular_and_flip_reactant_order(reactions: Iterable[Reaction], n: int,
+                                                                volume: float) \
         -> List[Reaction]:
     """Process all reactions before being added to the dictionary.
 
@@ -211,13 +224,13 @@ def convert_unimolecular_to_bimolecular_and_flip_reactant_order(reactions: Itera
 class Specie:
     name: str
 
-    def __add__(self, other):
-        if type(other) is Expression:
+    def __add__(self, other: Union[Specie, Expression]) -> Expression:
+        if isinstance(other, Expression):
             return other + Expression([self])
-        elif type(other) is Specie:
+        elif isinstance(other, Specie):
             return Expression([self]) + Expression([other])
 
-        return NotImplemented
+        raise NotImplementedError()
 
     __radd__ = __add__
 
@@ -231,24 +244,28 @@ class Specie:
         return Reaction(self, other, reversible=True)
 
     def __mul__(self, other: int) -> Expression:
-        if type(other) is int:
+        if isinstance(other, int):
             return other * Expression([self])
         else:
             raise NotImplementedError()
 
     def __rmul__(self, other: int) -> Expression:
-        if type(other) is int:
+        if isinstance(other, int):
             return other * Expression([self])
         else:
             raise NotImplementedError()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def __lt__(self, other: Specie) -> bool:
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, Specie):
+            return NotImplemented
         return self.name < other.name
 
-    def __eq__(self, other: Specie) -> bool:
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Specie):
+            return NotImplemented
         return self.name == other.name
 
     __req__ = __eq__
@@ -267,7 +284,7 @@ class Expression:
     """ordered list of species in expression, e.g, A+A+B is [A,A,B]"""
 
     def __add__(self, other: Expression) -> Expression:
-        if type(other) is Expression:
+        if isinstance(other, Expression):
             species_copy = list(self.species)
             species_copy.extend(other.species)
             return Expression(species_copy)
@@ -275,7 +292,7 @@ class Expression:
             raise NotImplementedError()
 
     def __rmul__(self, coeff: int) -> Expression:
-        if type(coeff) is int:
+        if isinstance(coeff, int):
             species_copy = []
             for _ in range(coeff):
                 species_copy.extend(self.species)
@@ -346,7 +363,7 @@ class Reaction:
     """Rate constant of forward reaction."""
 
     rate_constant_reverse: float = 1
-    """Rate constant of reverse reaction (only used if :py:data:`Reaction.reversible` is true."""
+    """Rate constant of reverse reaction (only used if :py:data:`Reaction.reversible` is true)."""
 
     rate_constant_units: RateConstantUnits = RateConstantUnits.stochastic
     """Units of forward rate constant."""
@@ -372,20 +389,20 @@ class Reaction:
             rate_constant_reverse_units: Units of reverse rate constant
             reversible: Whether reaction is reversible
         """
-        if type(reactants) not in (Specie, Expression):
+        if not (isinstance(reactants, Specie) or isinstance(reactants, Expression)):
             raise ValueError(
                 "Attempted construction of reaction with type of reactants "
                 f"as {type(reactants)}. Type of reactants must be Species "
                 "or Expression")
-        if type(products) not in (Specie, Expression):
+        if not (isinstance(products, Specie) or isinstance(products, Expression)):
             raise ValueError(
                 "Attempted construction of products with type of products "
                 f"as {type(products)}. Type of products must be Species "
                 "or Expression")
 
-        if type(reactants) is Specie:
+        if isinstance(reactants, Specie):
             reactants = Expression([reactants])
-        if type(products) is Specie:
+        if isinstance(products, Specie):
             products = Expression([products])
 
         if len(reactants) == 0:
@@ -500,11 +517,11 @@ class Reaction:
         p1, p2 = self.products_if_exactly_two()
         return p1.name, p2.name
 
-    def __str__(self):
+    def __str__(self) -> str:
         rev_rate_str = f'({self.rate_constant_reverse})<' if self.reversible else ''
         return f"{self.reactants} {rev_rate_str}-->({self.rate_constant}) {self.products}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (f"Reaction({repr(self.reactants)}, {repr(self.products)}, "
                 f"{self.rate_constant})")
 
@@ -655,7 +672,47 @@ def species_in_rxns(rxns: Iterable[Reaction]) -> List[Specie]:
     return species_list
 
 
-def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int],
+def gillespy2_format(init_config: Dict[Specie, int], rxns: Iterable[Reaction],
+                     volume: float = 1.0) -> Any:
+    """
+    Create a gillespy2 Model object from a CRN description.
+
+    Args:
+        init_config: dict mapping each :any:`Specie` to its initial count
+        rxns: reactions to translate to StochKit format
+        volume: volume in liters
+        name: name of the CRN
+
+    Returns:
+        An equivalent gillespy2 Model object
+    """
+    # requires package gillespy2 to be installed
+    import gillespy2 # type: ignore
+
+    rxns = replace_reversible_rxns(rxns)
+    species_list = species_in_rxns(rxns)
+    model = gillespy2.Model()
+
+    init_config = defaultdict(int, init_config)
+
+    gillespy2_species = {s: gillespy2.Species(name=s.name, initial_value=init_config[s]) for s in
+                         species_list}
+    model.add_species(list(gillespy2_species.values()))
+    model.volume = volume
+    rates = [gillespy2.Parameter(name='r' + str(i), expression=r.rate_constant) for i, r in enumerate(rxns)]
+    model.add_parameter(rates)
+    for rxn, rate in zip(rxns, rates):
+        reactants = {gillespy2_species[s]: rxn.reactants.species.count(s) for s in
+                     rxn.reactants.get_species()}
+        # Divide rate by 2 in same-species bimolecular reaction because gillespy2 propensity would be x(x-1)
+        if list(reactants.values()) == [2]:
+            rate.expression = float(rate.expression) / 2
+        products = {gillespy2_species[s]: rxn.products.species.count(s) for s in rxn.products.get_species()}
+        model.add_reaction(gillespy2.Reaction(reactants=reactants, products=products, rate=rate))
+    return model
+
+
+def stochkit_format(init_config: Dict[Specie, int], rxns: Iterable[Reaction],
                     volume: float = 1.0, name: str = 'CRN') -> str:
     """
 
@@ -745,36 +802,22 @@ def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int],
         # reactants
         reactants_node = root.createElement('Reactants')
         rxn_node.appendChild(reactants_node)
-        if rxn.is_bimolecular() and rxn.symmetric():
-            reactant = rxn.reactants.species[0]
+        for reactant in rxn.reactants.get_species():
             reactant_node = root.createElement('SpeciesReference')
             reactants_node.appendChild(reactant_node)
             reactant_node.setAttribute('id', reactant.name)
-            reactant_node.setAttribute('stoichiometry', '2')
-        else:
-            for reactant in rxn.reactants.species:
-                reactant_node = root.createElement('SpeciesReference')
-                reactants_node.appendChild(reactant_node)
-                reactant_node.setAttribute('id', reactant.name)
-                reactant_node.setAttribute('stoichiometry', '1')
+            reactant_node.setAttribute('stoichiometry', str(rxn.reactants.species.count(reactant)))
 
         # products
         products_node = root.createElement('Products')
         rxn_node.appendChild(products_node)
-        if rxn.num_products() == 2 and rxn.symmetric_products():
-            product = rxn.reactants.species[0]
+        for product in rxn.products.get_species():
             product_node = root.createElement('SpeciesReference')
             products_node.appendChild(product_node)
             product_node.setAttribute('id', product.name)
-            product_node.setAttribute('stoichiometry', '2')
-        else:
-            for product in rxn.products.species:
-                product_node = root.createElement('SpeciesReference')
-                products_node.appendChild(product_node)
-                product_node.setAttribute('id', product.name)
-                product_node.setAttribute('stoichiometry', '1')
+            product_node.setAttribute('stoichiometry', str(rxn.products.species.count(product)))
 
-    stochkit_xml = root.toprettyxml(indent='  ')
+    stochkit_xml: str = root.toprettyxml(indent='  ')
 
     return stochkit_xml
 

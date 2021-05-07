@@ -394,10 +394,12 @@ cdef class SimulatorMultiBatch(Simulator):
 
     def get_enabled_reactions(self):
         """Updates :any:`enabled_reactions` and :any:`num_enabled_reactions`."""
-        cdef npy_intp i
+        cdef npy_intp i, reactant_1, k
         self.num_enabled_reactions = 0
         for i in range(len(self.reactions)):
-            if self.config[self.reactions[i][0]] > 0 and self.config[self.reactions[i][1]] > 0:
+            reactant_1, reactant_2 = self.reactions[i][0], self.reactions[i][1]
+            if (reactant_1 == reactant_2 and self.config[reactant_1] >= 2) or \
+                    (reactant_1 != reactant_2 and self.config[reactant_1] >= 1 and self.config[reactant_2] >= 1):
                 self.enabled_reactions[self.num_enabled_reactions] = i
                 self.num_enabled_reactions += 1
 
@@ -412,26 +414,16 @@ cdef class SimulatorMultiBatch(Simulator):
                 (Because of the memoryless property of the geometric, this gives a
                 faithful simulation up to step t_max).
         """
-        cdef npy_intp i, j
-        # make sure these are all doubles, because they will be squared and could overflow int64_t
-        cdef double a, b, n
-        n = self.n
+
         cdef npy_intp [:] r
-        cdef double total_propensity = 0
-        cdef double success_probability, x
-        cdef bint enabled_reactions_changed = False
-        for j in range(self.num_enabled_reactions):
-            i = self.enabled_reactions[j]
-            a, b = self.config[self.reactions[i][0]], self.config[self.reactions[i][1]]
-            if self.reactions[i][0] == self.reactions[i][1]:
-                self.propensities[i] = (a * (a-1) / 2) * self.reaction_probabilities[i]
-            else:
-                self.propensities[i] = a * b * self.reaction_probabilities[i]
-            total_propensity += self.propensities[i]
+        cdef double total_propensity = self.get_total_propensity()
         if total_propensity == 0:
             self.silent = True
             return
-        success_probability = total_propensity / (n * (n -1) / 2)
+        cdef double n = self.n
+        cdef double success_probability = total_propensity / (n * (n-1) / 2)
+        cdef bint enabled_reactions_changed = False
+
         if success_probability > self.gillespie_threshold:
             self.do_gillespie = False
         # add a geometric number of steps, based on success probability
@@ -443,7 +435,7 @@ cdef class SimulatorMultiBatch(Simulator):
             return
         # sample the successful reaction r, currently just using linear search
         x = self.bitgen.next_double(self.bitgen.state) * total_propensity
-        i = 0
+        cdef npy_intp i = 0
         while x > 0:
             x -= self.propensities[self.enabled_reactions[i]]
             i += 1
@@ -461,7 +453,23 @@ cdef class SimulatorMultiBatch(Simulator):
         if enabled_reactions_changed or self.config[r[0]] == 0 or self.config[r[1]] == 0:
             self.get_enabled_reactions()
 
-    def multibatch_step(self, int64_t t_max = 0):
+    cpdef double get_total_propensity(self):
+        """Calculates the probability the next interaction is non-null."""
+        cdef npy_intp i, j
+        # make sure these are all doubles, because they will be squared and could overflow int64_t
+        cdef double a, b
+        cdef double total_propensity = 0
+        for j in range(self.num_enabled_reactions):
+            i = self.enabled_reactions[j]
+            a, b = self.config[self.reactions[i][0]], self.config[self.reactions[i][1]]
+            if self.reactions[i][0] == self.reactions[i][1]:
+                self.propensities[i] = (a * (a-1) / 2) * self.reaction_probabilities[i]
+            else:
+                self.propensities[i] = a * b * self.reaction_probabilities[i]
+            total_propensity += self.propensities[i]
+        return total_propensity
+
+    cpdef void multibatch_step(self, int64_t t_max = 0):
         """Sample collisions to build a batch, then update the entire batch in parallel.
 
         See the paper for a more detailed explanation of the algorithm.

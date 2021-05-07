@@ -91,3 +91,7 @@ html_theme = "sphinx_rtd_theme"
 
 # This line was causing a warning
 # html_static_path = ['_static']
+
+# sort by order methods appear in source code
+# https://stackoverflow.com/questions/37209921/python-how-not-to-sort-sphinx-output-in-alphabetical-order
+autodoc_member_order = 'bysource'

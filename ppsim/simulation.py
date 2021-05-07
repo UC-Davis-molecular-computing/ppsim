@@ -20,7 +20,7 @@ The general syntax is
     sim.run()
     sim.history.plot()
 
-More examples given in https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples
+More examples given in https://github.com/UC-Davis-molecular-computing/ppsim/tree/main/examples
 
 :py:meth:`time_trials` is a convenience function used for gathering data about the
 convergence time of a protocol.
@@ -31,8 +31,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 import math
 from time import perf_counter
-from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable, Set
-import ipywidgets as widgets
+from typing import Union, Hashable, Dict, Tuple, Callable, Optional, List, Iterable, Set, Any
 from natsort import natsorted
 import numpy as np
 import pandas as pd
@@ -47,6 +46,8 @@ State = Hashable
 Output = Union[Tuple[State, State], Dict[Tuple[State, State], float]]
 TransitionFunction = Callable[[State, State], Output]
 Rule = Union[TransitionFunction, Dict[Tuple[State, State], Output], Iterable[Reaction]]
+"""Type representing transition rule for protocol. Is one of three types: TODO"""
+
 ConvergenceDetector = Callable[[Dict[State, int]], bool]
 
 
@@ -128,7 +129,7 @@ class Simulation:
     """The optional integer seed used for rng and inside cython code."""
 
     def __init__(self, init_config: Dict[State, int], rule: Rule, simulator_method: str = "MultiBatch",
-                 transition_order: str = "asymmetric", seed: Optional[int] = None,
+                 transition_order: str = "symmetric", seed: Optional[int] = None,
                  volume: Optional[float] = None, continuous_time: bool = False, time_units: Optional[str] = None,
                  **kwargs):
         """Initialize a Simulation.
@@ -136,7 +137,7 @@ class Simulation:
         Args:
             init_config: The starting configuration, as a
                 dictionary mapping states to counts.
-            rule: A representation of the transition rule. The first two options are
+            rule (:any:`Rule`): A representation of the transition rule. The first two options are
                 a dictionary, whose keys are tuples of 2 states and values are their
                 outputs, or a function which takes pairs of states as input. For a
                 deterministic transition function, the output is a tuple of 2 states.
@@ -159,7 +160,7 @@ class Simulation:
                     to update. Defaults to 'MultiBatch'.
             transition_order: Should the rule be interpreted as being symmetric,
                 either ``'asymmetric'``, ``'symmetric'``, or ``'symmetric_enforced'``.
-                Defaults to 'asymmetric'.
+                Defaults to 'symmetric'.
 
                 ``'asymmetric'``:
                     Ordering of the inputs matters, and all inputs not
@@ -185,8 +186,24 @@ class Simulation:
                 If a CRN as a list of reactions is passed in, this will be set to True.
             time_units: An optional string given the units that time is in. Defaults to None.
                 This must be a valid string to pass as unit to pandas.to_timedelta.
-            **kwargs: If rule is a function, other keyword function parameters are
-                passed in here.
+            **kwargs: If `rule` is a function, any extra function parameters are passed in here,
+                beyond the first two arguments representing the two agents. For example, if `rule` is
+                defined:
+
+                .. code-block:: python
+
+                    def rule(sender: int, receiver: int, threshold: int) -> Tuple[int, int]:
+                        if sender + receiver > threshold:
+                            return 0, 0
+                        else:
+                            return sender, receiver+1
+
+                To use a threshold of 20 in each interaction, in the :any:`Simulation` constructor, use
+
+                .. code-block:: python
+
+                    sim = Simulation(init_config, rule, threshold=20)
+
         """
         self.seed = seed
         self.rng = np.random.default_rng(seed)
@@ -216,10 +233,22 @@ class Simulation:
         self._rule_kwargs = kwargs
 
         # Get a list of all reachable states, use the natsort library to put in a nice order.
-        self.state_list = natsorted(list(state_enumeration(init_config, self.rule)),
-                                    key=lambda x: repr(x))
-        # TODO: process a dictionary in a more straightforward way, and check that state_list only includes
-        #         states in the dictionary
+        if type(self._rule) == dict:
+            # If the rule is a dict, we can loop over the entries to get all states
+            states = []
+            for input, output in self._rule.items():
+                states.extend(input)
+                if type(output) == dict:
+                    for pair in output.keys():
+                        states.extend(pair)
+                else:
+                    states.extend(output)
+            state_list = list(set(states))
+        else:
+            # Otherwise, we use breadth-first search to find all reachable states
+            state_list = list(state_enumeration(init_config, self.rule))
+        # We use the natsorted library to put state_list in a reasonable order
+        self.state_list = natsorted(state_list, key=lambda x: repr(x))
         self.state_dict = {state: i for i, state in enumerate(self.state_list)}
 
         if simulator_method.lower() == 'multibatch':
@@ -535,6 +564,7 @@ class Simulation:
                 config[self.state_dict[k]] += init_config[k]
         self.configs = [config]
         self.times = [0]
+        self.time = 0
         self._history = pd.DataFrame(data=self.configs, index=pd.Index(self.times, name='time'),
                                      columns=self._history.columns)
         self.simulator.reset(config)
@@ -596,10 +626,20 @@ class Simulation:
                 if self.continuous_time:
                     self._history.index.name = 'time (continuous units)'
                 else:
-                    self._history.index.name = f'time ({self.steps_per_time_unit} interaction steps)'
+                    n = "n" if self.n == self.steps_per_time_unit else str(self.steps_per_time_unit)
+                    self._history.index.name = f'time ({n} interactions)'
         return self._history
 
-    def times_in_units(self, times):
+    @property
+    def null_probability(self) -> float:
+        """The probability the next interaction is null."""
+        if type(self.simulator) != simulator.SimulatorMultiBatch:
+            raise ValueError('null probability requires by multibatch simulator.')
+        self.simulator.get_enabled_reactions()
+        n = self.simulator.n
+        return 1 - self.simulator.get_total_propensity() / (n * (n-1) / 2)
+
+    def times_in_units(self, times: Iterable[float]) -> Iterable[Any]:
         """If :any:`time_units` is defined, convert time list to appropriate units."""
         if self.time_units:
             return pd.to_timedelta(times, unit=self.time_units)
@@ -641,7 +681,7 @@ class Simulation:
         snap.update()
         self.snapshots.append(snap)
 
-    def snapshot_slider(self, var: str = 'index') -> widgets.interactive:
+    def snapshot_slider(self, var: str = 'index') -> "widgets.interactive":
         """Returns a slider that updates all :any:`Snapshot` objects.
 
         Returns a slider from the ipywidgets library.
@@ -649,6 +689,7 @@ class Simulation:
         Args:
             var: What variable the slider uses, either ``'index'`` or ``'time'``.
         """
+        import ipywidgets as widgets
         if var.lower() == 'index':
             return widgets.interactive(self.set_snapshot_index,
                                        index=widgets.IntSlider(min=0,

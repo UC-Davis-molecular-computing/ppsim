@@ -1,6 +1,8 @@
 # ppsim Python package
 
-The `ppsim` package is used for simulating population protocols. The core of the simulator uses a [batching algorithm](https://arxiv.org/abs/2005.03584) which gives significant asymptotic gains for protocols with relatively small reachable state sets. The package is designed to be run in a Python notebook, to concisely describe complex protocols, efficiently simulate their dynamics, and provide helpful visualization of the simulation.
+The `ppsim` package is used for simulating population protocols. The package and further example notebooks can be found on [Github](https://github.com/UC-Davis-molecular-computing/ppsim).
+
+The core of the simulator uses a [batching algorithm](https://arxiv.org/abs/2005.03584) which gives significant asymptotic gains for protocols with relatively small reachable state sets. The package is designed to be run in a Python notebook, to concisely describe complex protocols, efficiently simulate their dynamics, and provide helpful visualization of the simulation.
 
 ## Installation
 
@@ -10,7 +12,6 @@ The package can be installed with `pip` via
 ```python
 pip install ppsim
 ```
-
 
 The most important part of the package is the `Simulation` class, which is responsible for parsing a protocol, performing the simulation, and giving data about the simulation.
 
@@ -52,6 +53,8 @@ Now let's run this simulation for `10` units of parallel time (`10 * n` interact
 sim.run(10, 0.1)
 ```
 
+     Time: 10.000
+    
 
 The `Simulation` class can display all these configurations in a `pandas` dataframe in the attribute `history`.
 
@@ -60,6 +63,23 @@ The `Simulation` class can display all these configurations in a `pandas` datafr
 sim.history
 ```
 
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -69,7 +89,7 @@ sim.history
       <th>U</th>
     </tr>
     <tr>
-      <th>time</th>
+      <th>time (n interactions)</th>
       <th></th>
       <th></th>
       <th></th>
@@ -77,34 +97,34 @@ sim.history
   </thead>
   <tbody>
     <tr>
-      <th>0.000000</th>
+      <th>0.0</th>
       <td>501000000</td>
       <td>499000000</td>
       <td>0</td>
     </tr>
     <tr>
-      <th>0.100019</th>
-      <td>478280568</td>
-      <td>476279336</td>
-      <td>45440096</td>
+      <th>0.1</th>
+      <td>459457762</td>
+      <td>457439751</td>
+      <td>83102487</td>
     </tr>
     <tr>
-      <th>0.200020</th>
-      <td>459452270</td>
-      <td>457437245</td>
-      <td>83110485</td>
+      <th>0.2</th>
+      <td>430276789</td>
+      <td>428217565</td>
+      <td>141505646</td>
     </tr>
     <tr>
-      <th>0.300020</th>
-      <td>443657844</td>
-      <td>441619960</td>
-      <td>114722196</td>
+      <th>0.3</th>
+      <td>409027376</td>
+      <td>406898254</td>
+      <td>184074370</td>
     </tr>
     <tr>
-      <th>0.400038</th>
-      <td>430275369</td>
-      <td>428209473</td>
-      <td>141515158</td>
+      <th>0.4</th>
+      <td>393162729</td>
+      <td>390949934</td>
+      <td>215887337</td>
     </tr>
     <tr>
       <th>...</th>
@@ -113,47 +133,50 @@ sim.history
       <td>...</td>
     </tr>
     <tr>
-      <th>9.601563</th>
-      <td>352383237</td>
-      <td>314710447</td>
-      <td>332906316</td>
+      <th>9.7</th>
+      <td>771074143</td>
+      <td>55357812</td>
+      <td>173568045</td>
     </tr>
     <tr>
-      <th>9.701567</th>
-      <td>353031342</td>
-      <td>314085559</td>
-      <td>332883099</td>
+      <th>9.8</th>
+      <td>789103074</td>
+      <td>48973925</td>
+      <td>161923001</td>
     </tr>
     <tr>
-      <th>9.801585</th>
-      <td>353699490</td>
-      <td>313442830</td>
-      <td>332857680</td>
+      <th>9.9</th>
+      <td>806667929</td>
+      <td>43076383</td>
+      <td>150255688</td>
     </tr>
     <tr>
-      <th>9.901613</th>
-      <td>354400478</td>
-      <td>312787765</td>
-      <td>332811757</td>
+      <th>10.0</th>
+      <td>823641388</td>
+      <td>37668547</td>
+      <td>138690065</td>
     </tr>
     <tr>
-      <th>10.001624</th>
-      <td>355119662</td>
-      <td>312104917</td>
-      <td>332775421</td>
+      <th>10.0</th>
+      <td>823641389</td>
+      <td>37668547</td>
+      <td>138690064</td>
     </tr>
   </tbody>
 </table>
-<p>101 rows x 3 columns</p>
+<p>102 rows x 3 columns</p>
+</div>
+
 
 
 
 ```python
-sim.history.plot()
+p = sim.history.plot()
 ```
 
+
     
-![png](https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/raw/main/README_files/README_12_1.png)
+![png](README_files/README_12_0.png)
     
 
 
@@ -162,27 +185,20 @@ Without specifying an end time, `run` will run the simulation until the configur
 
 ```python
 sim.run()
-sim.history.plot()
+p = sim.history.plot()
 ```
 
-    
-![png](https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/raw/main/README_files/README_14_2.png)
-    
-
-
-As currently described, this protocol is one-way, where these interactions only take place if the two states meet in the specified order. We can see this by printing `sim.reactions`.
-
-
-```python
-print(sim.reactions)
-```
-
-    A, B  -->  U, U      with probability 0.5
-    A, U  -->  A, A      with probability 0.5
-    B, U  -->  B, B      with probability 0.5
+     Time: 21.000
     
 
-Here we have unorder pairs of reactants, and the probability `0.5` is because these interactions as written depended on the order of the agents. If we wanted to consider the more sensible symmetric variant of the protocol, one approach would explicitly give all non-null interactions:
+
+    
+![png](README_files/README_14_1.png)
+    
+
+
+Note that by default, `Simulation` assumes that input pair `(b,a)` will have the same transition as `(a,b)`, so order doesn't matter, with the default setting `transition_order = 'symmetric'`.
+Thus we have the exact same protocol as if we had spent more time explicitly specifying
 
 
 ```python
@@ -191,26 +207,27 @@ approximate_majority_symmetric = {
     (a,u): (a,a), (u,a): (a,a),
     (b,u): (b,b), (u,b): (b,b)
 }
-sim = Simulation(init_config, approximate_majority_symmetric)
 ```
 
-But a quicker equivalent approach is to tell `Simulation` that all interactions should be interpreted as symmetric, so if we specify interaction `(a,b)` but leave `(b,a)` as null, then `(b,a)` will be interpreted as having the same output pair.
+If we intentionally meant for these pairwise transitions to only happen in this specified order, we can declare that. We see in this case that it has the same behavior, but just runs twice as slow because now every interaction must happen in a specified order.
 
 
 ```python
-sim = Simulation(init_config, approximate_majority, transition_order='symmetric')
+sim = Simulation(init_config, approximate_majority, transition_order='asymmetric')
 print(sim.reactions)
 sim.run()
-sim.history.plot()
+p = sim.history.plot()
 ```
 
-    A, B  -->  U, U
-    A, U  -->  A, A
-    B, U  -->  B, B
+    A, B  -->  U, U      with probability 0.5
+    A, U  -->  A, A      with probability 0.5
+    B, U  -->  B, B      with probability 0.5
+     Time: 44.000
+    
 
 
     
-![png](https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/raw/main/README_files/README_20_2.png)
+![png](README_files/README_18_1.png)
     
 
 
@@ -224,11 +241,31 @@ import numpy as np
 ns = [int(n) for n in np.geomspace(10, 10 ** 8, 20)]
 def initial_condition(n):
     return {'A': n // 2, 'B': n // 2}
-df = time_trials(approximate_majority, ns, initial_condition, num_trials=100, max_wallclock_time = 30, transition_order='symmetric')
+df = time_trials(approximate_majority, ns, initial_condition, num_trials=100, max_wallclock_time = 30)
 df
 ```
 
 
+      0%|          | 0/20 [00:00<?, ?it/s]
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -241,27 +278,27 @@ df
     <tr>
       <th>0</th>
       <td>10</td>
-      <td>5.600000</td>
+      <td>3.0</td>
     </tr>
     <tr>
       <th>1</th>
       <td>10</td>
-      <td>3.900000</td>
+      <td>2.1</td>
     </tr>
     <tr>
       <th>2</th>
       <td>10</td>
-      <td>5.400000</td>
+      <td>2.8</td>
     </tr>
     <tr>
       <th>3</th>
       <td>10</td>
-      <td>6.000000</td>
+      <td>2.7</td>
     </tr>
     <tr>
       <th>4</th>
       <td>10</td>
-      <td>2.900000</td>
+      <td>3.8</td>
     </tr>
     <tr>
       <th>...</th>
@@ -269,33 +306,34 @@ df
       <td>...</td>
     </tr>
     <tr>
-      <th>1501</th>
+      <th>1492</th>
       <td>42813323</td>
-      <td>31.818947</td>
+      <td>23.8</td>
     </tr>
     <tr>
-      <th>1502</th>
+      <th>1493</th>
       <td>100000000</td>
-      <td>31.928544</td>
+      <td>28.1</td>
     </tr>
     <tr>
-      <th>1503</th>
+      <th>1494</th>
       <td>100000000</td>
-      <td>25.953497</td>
+      <td>25.2</td>
     </tr>
     <tr>
-      <th>1504</th>
+      <th>1495</th>
       <td>100000000</td>
-      <td>24.025694</td>
+      <td>25.1</td>
     </tr>
     <tr>
-      <th>1505</th>
+      <th>1496</th>
       <td>100000000</td>
-      <td>25.495013</td>
+      <td>24.6</td>
     </tr>
   </tbody>
 </table>
-<p>1506 rows x 2 columns</p>
+<p>1497 rows x 2 columns</p>
+</div>
 
 
 
@@ -309,8 +347,9 @@ lp = sns.lineplot(x='n', y='time', data=df)
 lp.set_xscale('log')
 ```
 
+
     
-![png](https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/raw/main/README_files/README_24_0.png)
+![png](README_files/README_22_0.png)
     
 
 
@@ -328,8 +367,8 @@ def discrete_averaging(a, b):
     avg = (a + b) / 2
     return floor(avg), ceil(avg)
 
-n = 10 ** 8
-sim = Simulation({0: n // 2, 100: n // 2}, discrete_averaging)
+n = 10 ** 6
+sim = Simulation({0: n // 2, 50: n // 2}, discrete_averaging)
 ```
 
 We did not need to explicitly describe the state set. Upon initialization, `Simulation` used breadth first search to find all states reachable from the initial configuration.
@@ -339,7 +378,7 @@ We did not need to explicitly describe the state set. Upon initialization, `Simu
 print(sim.state_list)
 ```
 
-    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
     
 
 This enumeration will call the function `rule` we give it O(q^2) times, where q is the number of reachable states. This preprocessing step also builds an internal representation of the transition function, so it will not need to continue calling `rule`. Thus we don't need to worry too much about our code for `rule` being efficient.
@@ -354,7 +393,7 @@ sim.config_dict
 
 
 
-    {0: 50000000, 100: 50000000}
+    {0: 500000, 50: 500000}
 
 
 
@@ -366,23 +405,13 @@ sim.config_array
 
 
 
-    array([50000000,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0,        0,        0,
-                  0,        0,        0,        0, 50000000], dtype=int64)
+    array([500000,      0,      0,      0,      0,      0,      0,      0,
+                0,      0,      0,      0,      0,      0,      0,      0,
+                0,      0,      0,      0,      0,      0,      0,      0,
+                0,      0,      0,      0,      0,      0,      0,      0,
+                0,      0,      0,      0,      0,      0,      0,      0,
+                0,      0,      0,      0,      0,      0,      0,      0,
+                0,      0, 500000], dtype=int64)
 
 
 
@@ -403,6 +432,26 @@ sim.run(three_consecutive_values, 0.1)
 sim.history
 ```
 
+     Time: 14.300
+    
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -418,19 +467,19 @@ sim.history
       <th>8</th>
       <th>9</th>
       <th>...</th>
-      <th>91</th>
-      <th>92</th>
-      <th>93</th>
-      <th>94</th>
-      <th>95</th>
-      <th>96</th>
-      <th>97</th>
-      <th>98</th>
-      <th>99</th>
-      <th>100</th>
+      <th>41</th>
+      <th>42</th>
+      <th>43</th>
+      <th>44</th>
+      <th>45</th>
+      <th>46</th>
+      <th>47</th>
+      <th>48</th>
+      <th>49</th>
+      <th>50</th>
     </tr>
     <tr>
-      <th>time</th>
+      <th>time (n interactions)</th>
       <th></th>
       <th></th>
       <th></th>
@@ -456,8 +505,8 @@ sim.history
   </thead>
   <tbody>
     <tr>
-      <th>0.000000</th>
-      <td>50000000</td>
+      <th>0.0</th>
+      <td>500000</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -477,103 +526,103 @@ sim.history
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>50000000</td>
+      <td>500000</td>
     </tr>
     <tr>
-      <th>0.100112</th>
-      <td>45011237</td>
+      <th>0.1</th>
+      <td>450122</td>
       <td>1</td>
-      <td>3</td>
-      <td>82</td>
+      <td>1</td>
       <td>16</td>
+      <td>2</td>
       <td>0</td>
-      <td>1688</td>
-      <td>568</td>
+      <td>364</td>
+      <td>127</td>
+      <td>0</td>
+      <td>18</td>
+      <td>...</td>
+      <td>23</td>
+      <td>0</td>
+      <td>116</td>
+      <td>344</td>
       <td>4</td>
-      <td>50</td>
-      <td>...</td>
+      <td>1</td>
+      <td>15</td>
+      <td>1</td>
+      <td>1</td>
+      <td>450204</td>
+    </tr>
+    <tr>
+      <th>0.2</th>
+      <td>401218</td>
+      <td>11</td>
+      <td>18</td>
+      <td>242</td>
       <td>48</td>
-      <td>0</td>
-      <td>594</td>
-      <td>1689</td>
-      <td>1</td>
-      <td>13</td>
-      <td>81</td>
-      <td>1</td>
-      <td>1</td>
-      <td>45011888</td>
+      <td>17</td>
+      <td>2059</td>
+      <td>692</td>
+      <td>26</td>
+      <td>211</td>
+      <td>...</td>
+      <td>236</td>
+      <td>25</td>
+      <td>697</td>
+      <td>2053</td>
+      <td>22</td>
+      <td>37</td>
+      <td>180</td>
+      <td>2</td>
+      <td>3</td>
+      <td>401462</td>
     </tr>
     <tr>
-      <th>0.200576</th>
-      <td>40102576</td>
-      <td>53</td>
-      <td>67</td>
-      <td>1627</td>
-      <td>270</td>
-      <td>77</td>
-      <td>18565</td>
-      <td>6305</td>
-      <td>138</td>
-      <td>1345</td>
-      <td>...</td>
-      <td>1367</td>
+      <th>0.3</th>
+      <td>354315</td>
+      <td>40</td>
+      <td>63</td>
+      <td>696</td>
+      <td>147</td>
+      <td>72</td>
+      <td>5015</td>
+      <td>1722</td>
       <td>151</td>
-      <td>6180</td>
-      <td>18431</td>
-      <td>86</td>
-      <td>275</td>
-      <td>1601</td>
-      <td>70</td>
-      <td>61</td>
-      <td>40103660</td>
+      <td>759</td>
+      <td>...</td>
+      <td>706</td>
+      <td>97</td>
+      <td>1725</td>
+      <td>4952</td>
+      <td>76</td>
+      <td>163</td>
+      <td>717</td>
+      <td>43</td>
+      <td>32</td>
+      <td>354744</td>
     </tr>
     <tr>
-      <th>0.301440</th>
-      <td>35366286</td>
-      <td>366</td>
-      <td>455</td>
-      <td>7533</td>
-      <td>1453</td>
-      <td>653</td>
-      <td>62958</td>
-      <td>21070</td>
-      <td>1029</td>
-      <td>7166</td>
-      <td>...</td>
-      <td>7359</td>
-      <td>1069</td>
-      <td>21291</td>
-      <td>62942</td>
-      <td>720</td>
-      <td>1489</td>
-      <td>7401</td>
-      <td>433</td>
+      <th>0.4</th>
+      <td>309976</td>
+      <td>109</td>
+      <td>135</td>
+      <td>1527</td>
       <td>382</td>
-      <td>35368065</td>
-    </tr>
-    <tr>
-      <th>0.402708</th>
-      <td>30886350</td>
-      <td>1310</td>
-      <td>1633</td>
-      <td>20116</td>
-      <td>4446</td>
-      <td>2507</td>
-      <td>133956</td>
-      <td>45872</td>
-      <td>3950</td>
-      <td>20640</td>
+      <td>247</td>
+      <td>8439</td>
+      <td>2994</td>
+      <td>404</td>
+      <td>1714</td>
       <td>...</td>
-      <td>20753</td>
-      <td>3886</td>
-      <td>45857</td>
-      <td>133427</td>
-      <td>2571</td>
-      <td>4287</td>
-      <td>19822</td>
-      <td>1550</td>
-      <td>1233</td>
-      <td>30888463</td>
+      <td>1673</td>
+      <td>380</td>
+      <td>2934</td>
+      <td>8292</td>
+      <td>249</td>
+      <td>414</td>
+      <td>1588</td>
+      <td>140</td>
+      <td>108</td>
+      <td>310440</td>
     </tr>
     <tr>
       <th>...</th>
@@ -600,7 +649,7 @@ sim.history
       <td>...</td>
     </tr>
     <tr>
-      <th>17.993288</th>
+      <th>13.9</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -624,7 +673,7 @@ sim.history
       <td>0</td>
     </tr>
     <tr>
-      <th>18.093388</th>
+      <th>14.0</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -648,7 +697,7 @@ sim.history
       <td>0</td>
     </tr>
     <tr>
-      <th>18.193590</th>
+      <th>14.1</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -672,7 +721,7 @@ sim.history
       <td>0</td>
     </tr>
     <tr>
-      <th>18.293700</th>
+      <th>14.2</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -696,7 +745,7 @@ sim.history
       <td>0</td>
     </tr>
     <tr>
-      <th>18.393828</th>
+      <th>14.3</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -721,25 +770,31 @@ sim.history
     </tr>
   </tbody>
 </table>
-<p>183 rows x 101 columns</p>
+<p>144 rows x 51 columns</p>
+</div>
+
 
 
 With a much larger number of states, the `history` dataframe is more unwieldly, so trying to directly call `history.plot()` would be very messy and not very useful.
 Instead we will bring in a `Snapshot` object that makes a bar plot with the counts of each state, and lets us visualize the way the distribution evolves over time.
-For this `StatePlotter` object to work as intended, we need to be using an interactive matplotlib backend, such as `%matplotlib widget` or `%matplotlib qt`.
+
+For this `StatePlotter` object to work as intended, we need to be using an interactive matplotlib backend, such as `%matplotlib widget` or `%matplotlib qt`. It is recommended to use `%matplotlib widget`, which uses the package [ipympl](https://github.com/matplotlib/ipympl), and to run the notebook with [Jupyter Lab](https://jupyterlab.readthedocs.io/en/stable/).
+
+Note these interactive plots are not displayed in a static notebook. Also note that some common IPython environments such as [Google Colab](https://colab.research.google.com/) do not support any of the interactive matplotlib backends, which prevents the interactive `Snapshot` objects `StatePlotter` and `HistoryPlotter` from working correctly.
 
 
 ```python
+# Requires ipympl package, can be installed from pip with pip install ipympl
 %matplotlib widget
+
 from ppsim import StatePlotter
-sp = StatePlotter()
+sp = StatePlotter(update_time=1)
 sim.add_snapshot(sp)
 sim.snapshot_slider('time')
 ```
 
 
 ![gif](https://raw.githubusercontent.com/UC-Davis-molecular-computing/population-protocols-python-package/main/README_files/barplot1.gif)
-
 
 To better visualize small count states, let's change `yscale` to `symlog`.
 
@@ -750,22 +805,26 @@ sp.ax.set_yscale('symlog')
 
 ![gif](https://raw.githubusercontent.com/UC-Davis-molecular-computing/population-protocols-python-package/main/README_files/barplot2.gif)
 
-
-If we run the `Simulation` while this `Snapshot` has already been created, it will update while the simulation runs. Because the population average was exactly 50, the ultimate silent configuration will have every agent in state 50, but it will take a a very long time to reach, as we must wait for pairwise interactions between dwindling counts of states 49 and 51. We can check that this reaction is now the only possible non-null interaction.
+If we run the `Simulation` while this `Snapshot` has already been created, it will update while the simulation runs. Because the population average was exactly 25, the ultimate silent configuration will have every agent in state 50, but it will take a a very long time to reach, as we must wait for pairwise interactions between dwindling counts of states 24 and 26. We can check that this reaction is now the only possible non-null interaction.
 
 
 ```python
 print(sim.enabled_reactions)
 ```
 
-     49,  51  -->   50,  50
+    24, 26  -->  25, 25
     
 
 As a result, the probability of a non-null interaction will grow very small, upon which the simulator will switch to the Gillespie algorithm. This allows it to relatively quickly run all the way until silence, which we can confirm takes a very long amount of parallel time.
 
 
 ```python
-sim.run()
+# In order to see a Snapshot update live while the simulation is running, the command sim.add_snapshot() must be called in a previous cell
+# After the Snapshot is already displayed, calling sim.run() will update it in real time
+# The parameter Snapshot.update_time controls how often (in seconds) the Snapshot will get updated
+
+# Setting history_interval to be a function of time t that shrinks, to not record too many configurations over a long time scale
+sim.run(history_interval=lambda t: 10 ** len(str(int(t))) / 100)
 ```
 
 Since the timescale of the whole simulation is now very long, we should have the slider range across recorded indices rather than parallel time.
@@ -779,5 +838,5 @@ sim.snapshot_slider('index')
 
 ![gif](https://raw.githubusercontent.com/UC-Davis-molecular-computing/population-protocols-python-package/main/README_files/barplot3.gif)
 
-
 For more examples see https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples/
+

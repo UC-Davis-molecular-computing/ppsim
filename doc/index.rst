@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to ppsim's documentation!
-=================================
+ppsim API documentation
+=======================
 
 .. toctree::
    :maxdepth: 2
@@ -12,8 +12,11 @@ Welcome to ppsim's documentation!
 
 ``ppsim`` is a package for the simulation of population protocols.
 
-For an introduction, see the README at
-https://github.com/UC-Davis-molecular-computing/population-protocols-python-package
+For an introduction, see
+https://github.com/UC-Davis-molecular-computing/ppsim#readme
+
+.. contents:: Table of Contents
+    :depth: 3
 
 ppsim.simulation module
 -----------------------
