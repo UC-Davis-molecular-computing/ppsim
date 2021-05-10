@@ -86,7 +86,8 @@ def replace_reversible_rxns(rxns: Iterable[Reaction]) -> List[Reaction]:
     new_rxns: List[Reaction] = []
     for rxn in rxns:
         if not rxn.reversible:
-            new_rxns.append(rxn)
+            new_rxn = copy.deepcopy(rxn)
+            new_rxns.append(new_rxn)
         else:
             forward_rxn = Reaction(reactants=rxn.reactants, products=rxn.products, k=rxn.rate_constant,
                                    rate_constant_units=rxn.rate_constant_units, reversible=False)
@@ -119,18 +120,7 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
         i.e., if we have reactions (a + b >> c + d).k(2) and (a + b >> x + y).k(3),
         then the ordered pair (a,b) has rate 2+3 = 5
     """
-    reactions = list(copy.deepcopy(reactions))
-
-    # add reverse reactions explicitly
-    reversible_reactions = [reaction for reaction in reactions if reaction.reversible]
-    for reaction in reversible_reactions:
-        reversed_reaction = Reaction(reactants=reaction.products,
-                                     products=reaction.reactants,
-                                     k=reaction.rate_constant_reverse,
-                                     rate_constant_units=reaction.rate_constant_reverse_units,
-                                     reversible=False)
-        reactions.append(reversed_reaction)
-        reaction.reversible = False
+    reactions = replace_reversible_rxns(reactions)
 
     # Make a copy of reactions because this conversion will mutate the reactions
     reactions = convert_unimolecular_to_bimolecular_and_flip_reactant_order(reactions, n, volume)
@@ -176,8 +166,7 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
 
 
 def convert_unimolecular_to_bimolecular_and_flip_reactant_order(reactions: Iterable[Reaction], n: int,
-                                                                volume: float) \
-        -> List[Reaction]:
+                                                                volume: float) -> List[Reaction]:
     """Process all reactions before being added to the dictionary.
 
     bimolecular reactions have their rates multiplied by the corrective factor (n-1) / (2 * volume).
