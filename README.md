@@ -67,6 +67,19 @@ sim.history
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -151,7 +164,7 @@ sim.history
     </tr>
   </tbody>
 </table>
-<p>102 rows x 3 columns</p>
+<p>102 rows × 3 columns</p>
 </div>
 
 
@@ -233,8 +246,26 @@ df
 ```
 
 
+      0%|          | 0/20 [00:00<?, ?it/s]
+
+
+
+
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -301,7 +332,7 @@ df
     </tr>
   </tbody>
 </table>
-<p>1497 rows x 2 columns</p>
+<p>1497 rows × 2 columns</p>
 </div>
 
 
@@ -401,13 +432,26 @@ sim.run(three_consecutive_values, 0.1)
 sim.history
 ```
 
-     Time: 14.300
+     Time: 14.800
     
 
 
 
 
 <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -486,99 +530,99 @@ sim.history
     </tr>
     <tr>
       <th>0.1</th>
-      <td>450122</td>
+      <td>450215</td>
       <td>1</td>
       <td>1</td>
-      <td>16</td>
+      <td>20</td>
+      <td>3</td>
+      <td>1</td>
+      <td>391</td>
+      <td>134</td>
       <td>2</td>
-      <td>0</td>
-      <td>364</td>
-      <td>127</td>
-      <td>0</td>
-      <td>18</td>
+      <td>8</td>
       <td>...</td>
-      <td>23</td>
+      <td>9</td>
       <td>0</td>
-      <td>116</td>
-      <td>344</td>
-      <td>4</td>
-      <td>1</td>
-      <td>15</td>
-      <td>1</td>
-      <td>1</td>
-      <td>450204</td>
+      <td>125</td>
+      <td>395</td>
+      <td>0</td>
+      <td>2</td>
+      <td>16</td>
+      <td>0</td>
+      <td>0</td>
+      <td>450243</td>
     </tr>
     <tr>
       <th>0.2</th>
-      <td>401218</td>
+      <td>401257</td>
       <td>11</td>
+      <td>11</td>
+      <td>229</td>
+      <td>30</td>
+      <td>14</td>
+      <td>2125</td>
+      <td>694</td>
       <td>18</td>
-      <td>242</td>
-      <td>48</td>
-      <td>17</td>
-      <td>2059</td>
-      <td>692</td>
-      <td>26</td>
-      <td>211</td>
+      <td>199</td>
       <td>...</td>
-      <td>236</td>
-      <td>25</td>
-      <td>697</td>
-      <td>2053</td>
-      <td>22</td>
-      <td>37</td>
-      <td>180</td>
-      <td>2</td>
-      <td>3</td>
-      <td>401462</td>
+      <td>188</td>
+      <td>26</td>
+      <td>684</td>
+      <td>2165</td>
+      <td>11</td>
+      <td>27</td>
+      <td>176</td>
+      <td>10</td>
+      <td>7</td>
+      <td>401337</td>
     </tr>
     <tr>
       <th>0.3</th>
-      <td>354315</td>
-      <td>40</td>
-      <td>63</td>
-      <td>696</td>
-      <td>147</td>
-      <td>72</td>
-      <td>5015</td>
-      <td>1722</td>
-      <td>151</td>
-      <td>759</td>
+      <td>354726</td>
+      <td>46</td>
+      <td>61</td>
+      <td>715</td>
+      <td>146</td>
+      <td>70</td>
+      <td>4818</td>
+      <td>1643</td>
+      <td>114</td>
+      <td>721</td>
       <td>...</td>
-      <td>706</td>
-      <td>97</td>
-      <td>1725</td>
-      <td>4952</td>
-      <td>76</td>
-      <td>163</td>
-      <td>717</td>
-      <td>43</td>
-      <td>32</td>
-      <td>354744</td>
+      <td>753</td>
+      <td>134</td>
+      <td>1730</td>
+      <td>5086</td>
+      <td>75</td>
+      <td>122</td>
+      <td>720</td>
+      <td>53</td>
+      <td>33</td>
+      <td>354312</td>
     </tr>
     <tr>
       <th>0.4</th>
-      <td>309976</td>
-      <td>109</td>
-      <td>135</td>
-      <td>1527</td>
-      <td>382</td>
-      <td>247</td>
-      <td>8439</td>
-      <td>2994</td>
-      <td>404</td>
-      <td>1714</td>
+      <td>310248</td>
+      <td>106</td>
+      <td>145</td>
+      <td>1572</td>
+      <td>360</td>
+      <td>251</td>
+      <td>8297</td>
+      <td>2953</td>
+      <td>340</td>
+      <td>1720</td>
       <td>...</td>
-      <td>1673</td>
-      <td>380</td>
-      <td>2934</td>
-      <td>8292</td>
-      <td>249</td>
-      <td>414</td>
-      <td>1588</td>
-      <td>140</td>
-      <td>108</td>
-      <td>310440</td>
+      <td>1708</td>
+      <td>399</td>
+      <td>2926</td>
+      <td>8523</td>
+      <td>233</td>
+      <td>327</td>
+      <td>1653</td>
+      <td>161</td>
+      <td>116</td>
+      <td>309999</td>
     </tr>
     <tr>
       <th>...</th>
@@ -605,7 +649,7 @@ sim.history
       <td>...</td>
     </tr>
     <tr>
-      <th>13.9</th>
+      <th>14.4</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -629,7 +673,7 @@ sim.history
       <td>0</td>
     </tr>
     <tr>
-      <th>14.0</th>
+      <th>14.5</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -653,7 +697,7 @@ sim.history
       <td>0</td>
     </tr>
     <tr>
-      <th>14.1</th>
+      <th>14.6</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -677,7 +721,7 @@ sim.history
       <td>0</td>
     </tr>
     <tr>
-      <th>14.2</th>
+      <th>14.7</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -701,7 +745,7 @@ sim.history
       <td>0</td>
     </tr>
     <tr>
-      <th>14.3</th>
+      <th>14.8</th>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -726,42 +770,80 @@ sim.history
     </tr>
   </tbody>
 </table>
-<p>144 rows x 51 columns</p>
+<p>149 rows × 51 columns</p>
 </div>
 
 
 
-With a much larger number of states, the `history` dataframe is more unwieldly, so trying to directly call `history.plot()` would be very messy and not very useful.
-Instead we will bring in a `Snapshot` object that makes a bar plot with the counts of each state, and lets us visualize the way the distribution evolves over time.
-
-For this `StatePlotter` object to work as intended, we need to be using an interactive matplotlib backend, such as `%matplotlib widget` or `%matplotlib qt`. It is recommended to use `%matplotlib widget`, which uses the package [ipympl](https://github.com/matplotlib/ipympl), and to run the notebook with [Jupyter Lab](https://jupyterlab.readthedocs.io/en/stable/).
-
-Note these interactive plots are not displayed in a static notebook. Also note that some common IPython environments such as [Google Colab](https://colab.research.google.com/) do not support any of the interactive matplotlib backends, which prevents the interactive `Snapshot` objects `StatePlotter` and `HistoryPlotter` from working correctly.
+With a much larger number of states, the `history` dataframe is more unwieldly, so trying to directly call `history.plot()` would be very messy and not very useful. Instead, we will define a function that makes a barplot, using the data in a single row of `sim.history` to visualize the distribution at that recorded time step.
 
 
 ```python
-# Requires ipympl package, can be installed from pip with pip install ipympl
-%matplotlib widget
-
-from ppsim import StatePlotter
-sp = StatePlotter(update_time=1)
-sim.add_snapshot(sp)
-sim.snapshot_slider('time')
+from matplotlib import pyplot as plt
+def plot_row(row):
+    fig, ax = plt.subplots(figsize=(12,5))
+    sim.history.iloc[row].plot(ax=ax, kind='bar', 
+                              title=f'Discrete averaging at time {sim.history.index[row]:.2f}', 
+                              xlabel='minute',
+                              ylim=(0,n))
+plot_row(0)
+plot_row(30)
+plot_row(-1)
 ```
 
 
-![gif](https://raw.githubusercontent.com/UC-Davis-molecular-computing/population-protocols-python-package/main/README_files/barplot1.gif)
+    
+![png](README_files/README_35_0.png)
+    
 
-To better visualize small count states, let's change `yscale` to `symlog`.
+
+
+    
+![png](README_files/README_35_1.png)
+    
+
+
+
+    
+![png](README_files/README_35_2.png)
+    
+
+
+The `ipywidgets` library gives a quick way to make a slider that lets us visualize the evolution of this distribution:
 
 
 ```python
-sp.ax.set_yscale('symlog')
+import ipywidgets as widgets
+bar = widgets.interact(plot_row, row = widgets.IntSlider(
+    min=0, max=len(sim.history)-1, step=1, value=0, layout = widgets.Layout(width='100%')))
 ```
 
-![gif](https://raw.githubusercontent.com/UC-Davis-molecular-computing/population-protocols-python-package/main/README_files/barplot2.gif)
+![gif](README_files/barplot1.gif)
 
-If we run the `Simulation` while this `Snapshot` has already been created, it will update while the simulation runs. Because the population average was exactly 25, the ultimate silent configuration will have every agent in state 50, but it will take a a very long time to reach, as we must wait for pairwise interactions between dwindling counts of states 24 and 26. We can check that this reaction is now the only possible non-null interaction.
+It is recommended to use an interactive matplotlib backend, such as `ipympl`, which can be installed with `pip install ipympl` and then activated with the cell magic `%matplotlib widget`. The recommended environment to use for these notebooks is [Jupyter Lab](https://jupyterlab.readthedocs.io/en/stable/). Unfortunately, these interactive backends are not supported with [Google Colab](https://colab.research.google.com/), so there does not seem to be an easy way to have access to interactive backends with something that can be run only in a browser without local installation.
+
+The code with the slider above was designed to work in the non-interactive backend. The following cell shows how to accomplish the same thing with an interactive backend:
+
+
+```python
+# The following example uses the ipympl backend. It creates one figure and axis once and then modifies the axis directly with plot_row.
+# If ipympl is installed, then uncommenting and running the following code will produce a slider that changes one single interactive figure object.
+
+# %matplotlib widget
+# def plot_row(row):
+#     ax.clear()
+#     sim.history.iloc[row].plot(ax=ax, kind='bar', 
+#                               title=f'Discrete averaging at time {sim.history.index[row]:.2f}', 
+#                               xlabel='minute',
+#                               ylim=(0,n))
+#     fig.canvas.draw()
+    
+# fig, ax = plt.subplots()
+# bar = widgets.interact(plot_row, row = widgets.IntSlider(
+#     min=0, max=len(sim.history)-1, step=1, value=0, layout = widgets.Layout(width='100%')))
+```
+
+Because the population average was exactly 25, the ultimate silent configuration will have every agent in state 50, but it will take a a very long time to reach, as we must wait for pairwise interactions between dwindling counts of states 24 and 26. We can check that this reaction is now the only possible non-null interaction.
 
 
 ```python
@@ -775,24 +857,1077 @@ As a result, the probability of a non-null interaction will grow very small, upo
 
 
 ```python
-# In order to see a Snapshot update live while the simulation is running, the command sim.add_snapshot() must be called in a previous cell
-# After the Snapshot is already displayed, calling sim.run() will update it in real time
-# The parameter Snapshot.update_time controls how often (in seconds) the Snapshot will get updated
-
 # Setting history_interval to be a function of time t that shrinks, to not record too many configurations over a long time scale
 sim.run(history_interval=lambda t: 10 ** len(str(int(t))) / 100)
 ```
 
-Since the timescale of the whole simulation is now very long, we should have the slider range across recorded indices rather than parallel time.
+     Time: 578983.800
+    
+
+To better visualize small count states, we add an option to change `yscale` from `linear` to `symlog`.
 
 
 ```python
-display(sp.fig.canvas)
-sim.snapshot_slider('index')
+def plot_row(row, yscale):
+    fig, ax = plt.subplots(figsize=(12,5))
+    sim.history.iloc[row].plot(ax=ax, kind='bar', 
+                              title=f'Discrete averaging at time {sim.history.index[row]:.2f}', 
+                              xlabel='minute',
+                              ylim=(0,n))
+    ax.set_yscale(yscale)
+    
+bar = widgets.interact(plot_row, 
+                       row = widgets.IntSlider(min=0, max=len(sim.history)-1, step=1, value=0, layout = widgets.Layout(width='100%')),
+                      yscale = ['linear','symlog'])
+```
+
+![gif](README_files/barplot2.gif)
+
+# Protocol with Multiple Fields
+
+For more complicated protocol, it is helpful to have the states be more complicated Python objects. A recommended method is to define an Agent [dataclass](https://docs.python.org/3/library/dataclasses.html) that includes various fields.
+
+As a concrete example, we will use the protocol from [Simple and Efficient Leader Election](https://drops.dagstuhl.de/opus/volltexte/2018/8302/pdf/OASIcs-SOSA-2018-9.pdf). We start by translating the explicit description of an agents state into our Agent class.
+
+![png](README_files/SimpleLeaderElection1.PNG)
+
+
+```python
+import dataclasses
+from dataclasses import dataclass
+
+# The parameter unsafe_hash=True makes the state hashable, as required, but still lets the transition code change the field values
+# Note that ppsim will by default make safe copies of the agent states before applying the rule,
+#  so it is safe to mutate the fields of an agent in the transition rule
+
+@dataclass(unsafe_hash=True)
+class Agent:
+    role: str = 'contender'
+    flip_bit: int = 0
+    marker: int = 0
+    phase: str = 'marking'
+    counter: int = 0
+```
+
+![png](README_files/SimpleLeaderElection2.PNG)
+
+
+```python
+def leader_election(v: Agent, u: Agent, loglogn: int, Ulogn: int):
+    # marking phase
+    if v.phase == 'marking':
+        if v.counter >= 3 * loglogn and u.flip_bit == 0:
+            v.phase = 'tournament'
+        else:
+            v.counter += 1
+        if v.counter == 4 * loglogn:
+            v.marker = 1
+            v.phase = 'tournament'
+    
+    if v.phase == 'tournament':
+        if v.role == 'contender':
+            if u.marker and v.counter <= Ulogn:
+                v.counter += 1
+            if v.counter < u.counter:
+                v.role = 'minion'
+            if u.role == 'contender' and v.counter == u.counter and v.flip_bit < u.flip_bit:
+                v.role = 'minion'
+        v.counter = max(v.counter, u.counter)
+        
+    v.flip_bit = 1 - v.flip_bit
+    
+    return v
+```
+
+The pseudocode was described in the following way:
+
+![png](README_files/SimpleLeaderElection3.PNG)
+
+We can implement this assumption by having our transition rule call the the `leader_election` function twice:
+
+
+```python
+def transition(v: Agent, u: Agent, loglogn: int, Ulogn: int):
+    return leader_election(v, dataclasses.replace(u), loglogn, Ulogn), leader_election(u, dataclasses.replace(v), loglogn, Ulogn)
+```
+
+We can first check instantiate the protocol for various population sizes, to confirm that the number of reachable states is scaling like we expect.
+
+
+```python
+import numpy as np
+ns = [int(n) for n in np.geomspace(10, 10 ** 8, 8)]
+states = []
+for n in ns:
+    sim = Simulation({Agent(): n}, transition, loglogn=int(np.log2(np.log2(n))), Ulogn= u * int(np.log2(n)))
+    states.append(len(sim.state_list))
+plt.plot(ns, states)
+plt.xscale('log')
+plt.xlabel('population size n')
+plt.ylabel('number of states')
+plt.show()
 ```
 
 
-![gif](https://raw.githubusercontent.com/UC-Davis-molecular-computing/population-protocols-python-package/main/README_files/barplot3.gif)
+    
+![png](README_files/README_53_0.png)
+    
+
+
+Now we will simulate the rule for a population of one billion agents, and run it until it gets to one leader.
+
+
+```python
+n = 10 ** 9
+sim = Simulation({Agent(): n}, transition, loglogn=int(np.log2(np.log2(n))), Ulogn= u * int(np.log2(n)))
+def one_leader(config):
+    leader_states = [state for state in config.keys() if state.role == 'contender']
+    return len(leader_states) == 1 and config[leader_states[0]] == 1
+sim.run(one_leader)
+```
+
+     Time: 67.253
+    
+
+Because there are hundreds of states, the full history dataframe is more complicated.
+
+
+```python
+sim.history
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead tr th {
+        text-align: left;
+    }
+
+    .dataframe thead tr:last-of-type th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr>
+      <th>role</th>
+      <th colspan="10" halign="left">contender</th>
+      <th>...</th>
+      <th colspan="10" halign="left">minion</th>
+    </tr>
+    <tr>
+      <th>flip_bit</th>
+      <th colspan="10" halign="left">0</th>
+      <th>...</th>
+      <th colspan="10" halign="left">1</th>
+    </tr>
+    <tr>
+      <th>marker</th>
+      <th colspan="10" halign="left">0</th>
+      <th>...</th>
+      <th colspan="10" halign="left">1</th>
+    </tr>
+    <tr>
+      <th>phase</th>
+      <th colspan="8" halign="left">marking</th>
+      <th colspan="2" halign="left">tournament</th>
+      <th>...</th>
+      <th colspan="10" halign="left">tournament</th>
+    </tr>
+    <tr>
+      <th>counter</th>
+      <th>0</th>
+      <th>2</th>
+      <th>4</th>
+      <th>6</th>
+      <th>8</th>
+      <th>10</th>
+      <th>12</th>
+      <th>14</th>
+      <th>12</th>
+      <th>13</th>
+      <th>...</th>
+      <th>50</th>
+      <th>51</th>
+      <th>52</th>
+      <th>53</th>
+      <th>54</th>
+      <th>55</th>
+      <th>56</th>
+      <th>57</th>
+      <th>58</th>
+      <th>59</th>
+    </tr>
+    <tr>
+      <th>time (n interactions)</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0.000000</th>
+      <td>1000000000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1.000000</th>
+      <td>135336837</td>
+      <td>270661696</td>
+      <td>90227329</td>
+      <td>12028156</td>
+      <td>859080</td>
+      <td>38162</td>
+      <td>1148</td>
+      <td>6</td>
+      <td>10</td>
+      <td>8</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2.000000</th>
+      <td>18312018</td>
+      <td>146524448</td>
+      <td>195383216</td>
+      <td>104189030</td>
+      <td>29773512</td>
+      <td>5298122</td>
+      <td>641440</td>
+      <td>13908</td>
+      <td>30153</td>
+      <td>14976</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3.000000</th>
+      <td>2478690</td>
+      <td>44626126</td>
+      <td>133867363</td>
+      <td>160631023</td>
+      <td>103263148</td>
+      <td>41305948</td>
+      <td>11269344</td>
+      <td>556907</td>
+      <td>1287669</td>
+      <td>649759</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4.000000</th>
+      <td>335736</td>
+      <td>10736616</td>
+      <td>57260444</td>
+      <td>122138990</td>
+      <td>139568370</td>
+      <td>99261227</td>
+      <td>48123925</td>
+      <td>4232398</td>
+      <td>10487317</td>
+      <td>5527630</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>64.000000</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>65.000000</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>66.000000</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>67.000000</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>67.252549</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>69 rows × 384 columns</p>
+</div>
+
+
+
+Because we defined a state as a dataclass `Agent`, which had fields, the columns of the `history` dataframe are a pandas [MultiIndex](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.MultiIndex.html).
+
+
+```python
+sim.history.columns
+```
+
+
+
+
+    MultiIndex([('contender', 0, 0,    'marking',  0),
+                ('contender', 0, 0,    'marking',  2),
+                ('contender', 0, 0,    'marking',  4),
+                ('contender', 0, 0,    'marking',  6),
+                ('contender', 0, 0,    'marking',  8),
+                ('contender', 0, 0,    'marking', 10),
+                ('contender', 0, 0,    'marking', 12),
+                ('contender', 0, 0,    'marking', 14),
+                ('contender', 0, 0, 'tournament', 12),
+                ('contender', 0, 0, 'tournament', 13),
+                ...
+                (   'minion', 1, 1, 'tournament', 50),
+                (   'minion', 1, 1, 'tournament', 51),
+                (   'minion', 1, 1, 'tournament', 52),
+                (   'minion', 1, 1, 'tournament', 53),
+                (   'minion', 1, 1, 'tournament', 54),
+                (   'minion', 1, 1, 'tournament', 55),
+                (   'minion', 1, 1, 'tournament', 56),
+                (   'minion', 1, 1, 'tournament', 57),
+                (   'minion', 1, 1, 'tournament', 58),
+                (   'minion', 1, 1, 'tournament', 59)],
+               names=['role', 'flip_bit', 'marker', 'phase', 'counter'], length=384)
+
+
+
+We can use the pandas [groupby](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.groupby.html) function to conveniently look at the values of just one field. For a field whose name is the string `field`, then calling `sim.history.groupby(field, axis=1).sum()` gives the counts of values of just a single state. If we have a set of fields `field1, field2, ...` then calling `sim.history.groupby([field1, field2, ...], axis=1).sum()` will give the counts of values of just those fields.
+
+
+```python
+sim.history.groupby('role', axis=1).sum()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>role</th>
+      <th>contender</th>
+      <th>minion</th>
+    </tr>
+    <tr>
+      <th>time (n interactions)</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0.000000</th>
+      <td>1000000000</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1.000000</th>
+      <td>1000000000</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2.000000</th>
+      <td>999999972</td>
+      <td>28</td>
+    </tr>
+    <tr>
+      <th>3.000000</th>
+      <td>999969579</td>
+      <td>30421</td>
+    </tr>
+    <tr>
+      <th>4.000000</th>
+      <td>998042414</td>
+      <td>1957586</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>64.000000</th>
+      <td>2</td>
+      <td>999999998</td>
+    </tr>
+    <tr>
+      <th>65.000000</th>
+      <td>2</td>
+      <td>999999998</td>
+    </tr>
+    <tr>
+      <th>66.000000</th>
+      <td>2</td>
+      <td>999999998</td>
+    </tr>
+    <tr>
+      <th>67.000000</th>
+      <td>2</td>
+      <td>999999998</td>
+    </tr>
+    <tr>
+      <th>67.252549</th>
+      <td>1</td>
+      <td>999999999</td>
+    </tr>
+  </tbody>
+</table>
+<p>69 rows × 2 columns</p>
+</div>
+
+
+
+This lets us quickly plot the counts of leaders, to see how it decreases down to one leader, and the count in each phase, to see when the agents transition from the marking phase to the tournament phase.
+
+
+```python
+sim.history.groupby('role', axis=1).sum().plot()
+plt.yscale('symlog')
+plt.ylim(0, 2*n)
+plt.show()
+```
+
+
+    
+![png](README_files/README_63_0.png)
+    
+
+
+
+```python
+sim.history.groupby('phase', axis=1).sum().plot()
+plt.show()
+```
+
+
+    
+![png](README_files/README_64_0.png)
+    
+
+
+For this protocol, a good understanding of why it is working comes from looking at the product of `role` and `counter` values. The way the protocol works is that contenders increase their counter values, which spread by epidemic among all minions, to eliminate other contenders with smaller counter values.
+
+We will again try to visualize a single row of the dataframe that projects onto just the `role` and `counter` values. Calling `df.iloc[index]` gives us a [Series](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.html)
+
+
+```python
+df = sim.history.groupby(['counter','role'], axis=1).sum()
+df.iloc[10]
+```
+
+
+
+
+    counter  role     
+    0        contender        2
+    1        contender       48
+    2        contender      441
+    3        contender     2876
+    4        contender    13600
+                          ...  
+    57       minion           0
+    58       contender        0
+             minion           0
+    59       contender        0
+             minion           0
+    Name: 10.0, Length: 108, dtype: int64
+
+
+
+Then calling `unstack()` on the series will give pull off the first field, and give us a dataframe that can immediately plotted as a multibar plot.
+
+
+```python
+df.iloc[10].unstack()
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>role</th>
+      <th>contender</th>
+      <th>minion</th>
+    </tr>
+    <tr>
+      <th>counter</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>48.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>441.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2876.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>13600.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>55257.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>183276.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>523542.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>1305762.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>2908411.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>5815321.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>10577404.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>19519273.0</td>
+      <td>144731.0</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>15633037.0</td>
+      <td>2774308.0</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>12659059.0</td>
+      <td>11179251.0</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>9794528.0</td>
+      <td>30343520.0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>31088600.0</td>
+      <td>522306882.0</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>7599591.0</td>
+      <td>292467764.0</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>951336.0</td>
+      <td>21176355.0</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>82136.0</td>
+      <td>856059.0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>5498.0</td>
+      <td>30677.0</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>277.0</td>
+      <td>1087.0</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>10.0</td>
+      <td>68.0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>0.0</td>
+      <td>11.0</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>1.0</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+df.iloc[10].unstack().plot(kind='bar', figsize=(12,5))
+plt.show()
+```
+
+
+    
+![png](README_files/README_69_0.png)
+    
+
+
+Now we can define a function that creates one of these plots at an arbitrary row, to get a similar slider that lets us quickly visualize the evolution of the distributions.
+
+
+```python
+def plot_row(row, yscale):
+    fig, ax = plt.subplots(figsize=(12,5))
+    df.iloc[row].unstack().plot(ax=ax, kind='bar', 
+                              ylim=(0,n))
+    ax.set_yscale(yscale)
+
+bar = widgets.interact(plot_row, 
+                       row = widgets.IntSlider(min=0, max=len(sim.history)-1, step=1, value=0, layout = widgets.Layout(width='100%')),
+                      yscale = ['linear','symlog'])
+```
+
+![gif](README_files/barplot3.gif)
 
 For more examples see https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples/
-
