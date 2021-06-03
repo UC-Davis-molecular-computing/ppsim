@@ -4,6 +4,13 @@ The `ppsim` package is used for simulating population protocols. The package and
 
 The core of the simulator uses a [batching algorithm](https://arxiv.org/abs/2005.03584) which gives significant asymptotic gains for protocols with relatively small reachable state sets. The package is designed to be run in a Python notebook, to concisely describe complex protocols, efficiently simulate their dynamics, and provide helpful visualization of the simulation.
 
+## Table of contents
+
+* [Installation](#installation)
+* [First example protocol](#first-example-protocol)
+* [Larger state protocol](#larger-state-protocol)
+* [Protocol with Multiple Fields](#protocol-with-multiple-fields)
+
 ## Installation
 
 The package can be installed with `pip` via
@@ -20,7 +27,7 @@ The most important part of the package is the `Simulation` class, which is respo
 from ppsim import Simulation
 ```
 
-## Example protocol
+## First example protocol
 
 A state can be any hashable Python object. The simplest way to describe a protocol is a dictionary mapping pairs of input states to pairs of output states.
 For example, here is a description of the classic 3-state [approximate majority protocol](http://www.cs.yale.edu/homes/aspnes/papers/approximate-majority-journal.pdf). There are two initial states `A` and `B`, and the protocol converges with high probability to the majority state with the help of a third "undecided" state `U`.
@@ -34,8 +41,6 @@ approximate_majority = {
     (b,u): (b,b)
 }
 ```
-
-## Example Simulation
 
 To instantiate a `Simulation`, we must specify a protocol along with an initial condition, which is a dictionary mapping states to counts. Let's simulate approximate majority with in a population of one billion agents with a slight majority of `A` agents.
 
@@ -838,7 +843,7 @@ bar = widgets.interact(plot_row,
 
 ![gif](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/barplot2.gif)
 
-# Protocol with Multiple Fields
+## Protocol with Multiple Fields
 
 For more complicated protocol, it is helpful to have the states be more complicated Python objects. A recommended method is to define an Agent [dataclass](https://docs.python.org/3/library/dataclasses.html) that includes various fields.
 
