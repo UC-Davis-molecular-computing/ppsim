@@ -394,7 +394,7 @@ cdef class SimulatorMultiBatch(Simulator):
 
     def get_enabled_reactions(self):
         """Updates :any:`enabled_reactions` and :any:`num_enabled_reactions`."""
-        cdef npy_intp i, reactant_1, k
+        cdef npy_intp i, reactant_1, reactant_2
         self.num_enabled_reactions = 0
         for i in range(len(self.reactions)):
             reactant_1, reactant_2 = self.reactions[i][0], self.reactions[i][1]

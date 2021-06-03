@@ -83,7 +83,6 @@ def state_enumeration(init_dist: Dict[State, int], rule: Callable[[State, State]
     return checked_states
 
 
-# TODO: add seed
 @dataclass
 class Simulation:
     """Class to simulate a population protocol."""
@@ -461,7 +460,7 @@ class Simulation:
 
         next_time = get_next_time()
         # The next step that the simulator will be run until, which corresponds to parallel time next_time
-        next_step = self.time_to_steps(next_time)
+        next_step = self.simulator.t + self.time_to_steps(next_time - self.time)
 
         for snapshot in self.snapshots:
             snapshot.next_snapshot_time = perf_counter() + snapshot.update_time
@@ -481,7 +480,7 @@ class Simulation:
                 # add a fraction of the time until next_time equal to the fractional progress made by simulator
                 self.time += (next_time - self.time) * (self.simulator.t - current_step) / (next_step - current_step)
             else:
-                raise RuntimeError('The simulator ran to step {self.simulator.t} past the next step {next_step}.')
+                raise RuntimeError(f'The simulator ran to step {self.simulator.t} past the next step {next_step}.')
             if self.time >= next_history_time:
                 assert self.time == next_history_time, \
                     f'self.time = {self.time} overshot next_history_time = {next_history_time}'
@@ -594,7 +593,6 @@ class Simulation:
         expected_steps = time * self.steps_per_time_unit
         if self.continuous_time:
             # In continuous time the number of steps is a poisson random variable
-            # TODO: handle the case when expected_steps is larger than an int32 and numpy reports a ValueError
             return self.rng.poisson(expected_steps)
         else:
             # In discrete time we round up to the next step
