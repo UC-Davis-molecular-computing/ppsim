@@ -67,19 +67,6 @@ sim.history
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -176,7 +163,7 @@ p = sim.history.plot()
 
 
     
-![png](README_files/README_12_0.png)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_12_0.png)
     
 
 
@@ -193,7 +180,7 @@ p = sim.history.plot()
 
 
     
-![png](README_files/README_14_1.png)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_14_1.png)
     
 
 
@@ -227,7 +214,7 @@ p = sim.history.plot()
 
 
     
-![png](README_files/README_18_1.png)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_18_1.png)
     
 
 
@@ -246,26 +233,7 @@ df
 ```
 
 
-      0%|          | 0/20 [00:00<?, ?it/s]
-
-
-
-
-
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -349,7 +317,7 @@ lp.set_xscale('log')
 
 
     
-![png](README_files/README_22_0.png)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_22_0.png)
     
 
 
@@ -439,19 +407,6 @@ sim.history
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -793,19 +748,19 @@ plot_row(-1)
 
 
     
-![png](README_files/README_35_0.png)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_35_0.png)
     
 
 
 
     
-![png](README_files/README_35_1.png)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_35_1.png)
     
 
 
 
     
-![png](README_files/README_35_2.png)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_35_2.png)
     
 
 
@@ -818,7 +773,7 @@ bar = widgets.interact(plot_row, row = widgets.IntSlider(
     min=0, max=len(sim.history)-1, step=1, value=0, layout = widgets.Layout(width='100%')))
 ```
 
-![gif](README_files/barplot1.gif)
+![gif](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/barplot1.gif)
 
 It is recommended to use an interactive matplotlib backend, such as `ipympl`, which can be installed with `pip install ipympl` and then activated with the cell magic `%matplotlib widget`. The recommended environment to use for these notebooks is [Jupyter Lab](https://jupyterlab.readthedocs.io/en/stable/). Unfortunately, these interactive backends are not supported with [Google Colab](https://colab.research.google.com/), so there does not seem to be an easy way to have access to interactive backends with something that can be run only in a browser without local installation.
 
@@ -881,7 +836,7 @@ bar = widgets.interact(plot_row,
                       yscale = ['linear','symlog'])
 ```
 
-![gif](README_files/barplot2.gif)
+![gif](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/barplot2.gif)
 
 # Protocol with Multiple Fields
 
@@ -889,7 +844,7 @@ For more complicated protocol, it is helpful to have the states be more complica
 
 As a concrete example, we will use the protocol from [Simple and Efficient Leader Election](https://drops.dagstuhl.de/opus/volltexte/2018/8302/pdf/OASIcs-SOSA-2018-9.pdf). We start by translating the explicit description of an agents state into our Agent class.
 
-![png](README_files/SimpleLeaderElection1.PNG)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/SimpleLeaderElection1.PNG)
 
 
 ```python
@@ -909,7 +864,7 @@ class Agent:
     counter: int = 0
 ```
 
-![png](README_files/SimpleLeaderElection2.PNG)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/SimpleLeaderElection2.PNG)
 
 
 ```python
@@ -941,7 +896,7 @@ def leader_election(v: Agent, u: Agent, loglogn: int, Ulogn: int):
 
 The pseudocode was described in the following way:
 
-![png](README_files/SimpleLeaderElection3.PNG)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/SimpleLeaderElection3.PNG)
 
 We can implement this assumption by having our transition rule call the the `leader_election` function twice:
 
@@ -970,7 +925,7 @@ plt.show()
 
 
     
-![png](README_files/README_53_0.png)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_53_0.png)
     
 
 
@@ -1000,23 +955,6 @@ sim.history
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead tr th {
-        text-align: left;
-    }
-
-    .dataframe thead tr:last-of-type th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr>
@@ -1411,19 +1349,6 @@ sim.history.groupby('role', axis=1).sum()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1512,7 +1437,7 @@ plt.show()
 
 
     
-![png](README_files/README_63_0.png)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_63_0.png)
     
 
 
@@ -1524,7 +1449,7 @@ plt.show()
 
 
     
-![png](README_files/README_64_0.png)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_64_0.png)
     
 
 
@@ -1568,19 +1493,6 @@ df.iloc[10].unstack()
 
 
 <div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -1909,7 +1821,7 @@ plt.show()
 
 
     
-![png](README_files/README_69_0.png)
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_69_0.png)
     
 
 
@@ -1928,6 +1840,6 @@ bar = widgets.interact(plot_row,
                       yscale = ['linear','symlog'])
 ```
 
-![gif](README_files/barplot3.gif)
+![gif](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/barplot3.gif)
 
 For more examples see https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples/
