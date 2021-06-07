@@ -160,7 +160,7 @@ def reactions_to_dict(reactions: Iterable[Reaction], n: int, volume: float) \
     for reactants, outputs in transitions.items():
         if isinstance(outputs, dict):
             sum_probs = sum(prob for prob in outputs.values())
-            assert sum_probs <= 1.0, f'sum_probs exceeds 1: {sum_probs}'
+            assert sum_probs <= 1 + 2 ** -20, f'sum_probs exceeds 1: {sum_probs}'
 
     return transitions, max_rate
 
