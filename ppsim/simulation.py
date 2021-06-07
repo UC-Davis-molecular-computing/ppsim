@@ -322,7 +322,7 @@ class Simulation:
                 # when output is a distribution
                 if type(output) == dict:
                     s = sum(output.values())
-                    assert s <= 1, "The sum of output probabilities must be <= 1."
+                    assert s <= 1 + 2 ** -20, "The sum of output probabilities must be <= 1."
                     # ensure probabilities sum to 1
                     if 1 - s:
                         if (a, b) in output.keys():
