@@ -274,19 +274,23 @@ cdef class SimulatorMultiBatch(Simulator):
             for j in range(i+1):
                 # check if interaction is symmetric
                 symmetric = False
+                # Check that entries in delta array match
                 if sorted(np.asarray(self.delta[i,j])) == sorted(np.asarray(self.delta[j, i])):
-                    if self.is_random and self.random_transitions[i, j, 0] == self.random_transitions[j, i, 0] > 0:
+                    # Check if those really were matching deterministic transitions
+                    if not self.is_random or self.random_transitions[i,j,0] == self.random_transitions[i,j,0] == 0:
+                        symmetric = True
+                    # If they have the same number of random outputs, check these random outputs match
+                    elif self.is_random and self.random_transitions[i, j, 0] == self.random_transitions[j, i, 0] > 0:
                         a, b = self.random_transitions[i, j, 1], self.random_transitions[j, i, 1]
                         symmetric = True
                         for k in range(self.random_transitions[i, j, 0]):
                             if sorted(np.asarray(self.random_outputs[a + k])) != \
                                     sorted(np.asarray(self.random_outputs[b + k])):
                                 symmetric = False
-                    else:
-                        symmetric = True
+                    # Other cases are not symmetric, such as a different number of random outputs based on order
                 if symmetric:
                     indices = [(i, j, 1.)]
-                # if interaction is not symmetric, each distinct order gets added as reactions with half proability
+                # if interaction is not symmetric, each distinct order gets added as reactions with half probability
                 else:
                     indices = [(i, j, 0.5), (j, i, 0.5)]
                 for a, b, p in indices:
