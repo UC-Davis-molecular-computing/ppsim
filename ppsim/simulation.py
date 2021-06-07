@@ -224,6 +224,7 @@ class Simulation:
             if volume is None:
                 volume = self.n
             rule, rate_max = reactions_to_dict(rule, self.n, volume)
+            transition_order = 'asymmetric'
             self.steps_per_time_unit *= rate_max
             # Default to continuous time for lists of reactions
             self.continuous_time = True
