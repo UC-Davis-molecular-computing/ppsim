@@ -1847,4 +1847,51 @@ bar = widgets.interact(plot_row,
 
 ![gif](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/barplot3.gif)
 
-For more examples see https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples/
+
+## Simulating Chemical Reaction Networks (CRNs)
+
+`ppsim` is able to simulate any Chemical Reaction Network that has only bimolecular (2-input, 2-output) and unimolecular (1-input, 1-output) reactions. There is a special syntax used to specify CRNs, such as
+
+$$
+A + B \mathop{\rightleftharpoons}\limits
+^{0.5}_4 2C, 
+\quad\quad
+C \mathop{\rightarrow}\limits^5 D
+$$
+
+
+
+```python
+from ppsim import species
+
+a,b,c,d = species('A B C D')
+crn = [(a+b | 2*c).k(0.5).r(4), (c >> d).k(5)]
+```
+
+First we define `species` objects `a,b,c,d`. We then create `crn`, a list of `reaction` objects, which are created by composing these species. Using the `>>` operator creates an irreversible (one-way) reaction, while using the `|` operator creates a reversible (two-way) reaction. A rate constant can be added with the method `reaction.k(...)`, and the reverse rate constant is added with the method `reaction.r(...)`. If not specified, rate constants are assumed to be 1.
+
+
+```python
+sim = Simulation({a: 2000, b:1000}, crn)
+sim.run()
+p = sim.history.plot()
+```
+
+     Time: 37.000
+    
+
+
+    
+![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_75_1.png)
+    
+
+
+CRNs are normally modelled by Gillespie kinetics, which gives a continuous time Markov process. The unimolecular reaction $C \mathop{\rightarrow}\limits^5 D$ happens as a Poisson process with rate 5. The forward bimolecular reaction $A+B \mathop{\rightarrow}\limits^{0.5} 2C$ happens as a Poisson process with rate $0.5 \cdot \frac{\# A \cdot \#B}{v}$, and the reverse bimolecular reaction happens as a Poisson process with rate $4 \cdot \frac{\#B (\#B - 1)}{2v}$, where $v$ is the volume parameter.
+
+When creating a `Simulation` with a list of `reaction` objects, `ppsim` will by default use this continuous time model.
+By default, `ppsim` sets the volume $v$ to be the population size $n$, which makes the time units independent of population size. In some models, this volume parameter is instead baked directly into the numerical rate constant. In this case, the volume should be set manually in the Simulation constructor, with `Simulation(..., volume = 1)`. In addition, if these numerical rate constants are specified in specific time units (such as per second), this can be specified with `Simulation(..., time_units='seconds')`, and then all times will appear with appropriate units.
+
+For more details about the CRN model and how it is faithfully represented as a continuous time population protocol, see [this paper](https://arxiv.org/abs/2105.04702).
+
+## More examples
+See https://github.com/UC-Davis-molecular-computing/population-protocols-python-package/tree/main/examples/
