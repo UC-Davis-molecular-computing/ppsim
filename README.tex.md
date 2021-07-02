@@ -1880,7 +1880,6 @@ p = sim.history.plot()
      Time: 37.000
     
 
-
     
 ![png](https://github.com/UC-Davis-molecular-computing/ppsim/blob/main/README_files/README_75_1.png)
     
