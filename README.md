@@ -10,6 +10,7 @@ The core of the simulator uses a [batching algorithm](https://arxiv.org/abs/2005
 * [First example protocol](#first-example-protocol)
 * [Larger state protocol](#larger-state-protocol)
 * [Protocol with Multiple Fields](#protocol-with-multiple-fields)
+* [Simulating Chemical Reaction Networks (CRNs)](#simulating-chemical-reaction-networks-crns)
 
 ## Installation
 
