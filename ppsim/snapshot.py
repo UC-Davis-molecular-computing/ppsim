@@ -20,6 +20,7 @@ from typing import Optional, Callable, Hashable, Any
 from natsort import natsorted
 import numpy as np
 import pandas as pd  # type: ignore
+from tqdm import tqdm
 
 State = Hashable
 
@@ -85,10 +86,17 @@ class TimeUpdate(Snapshot):
     When calling :any:`Simulation.run`, if :any:`snapshots` is empty, then
     this object will get added to provide a basic progress update.
     """
+    def __init__(self, time_bound: Optional[float] = None, update_time: float = 0.2) -> None:
+        self.pbar = tqdm(total=time_bound, position=0, leave=False, unit=' time simulated')
+        self.update_time = update_time
+
+    def initialize(self) -> None:
+        self.start_time = self.simulation.time
 
     def update(self, index: Optional[int] = None) -> None:
         super().update(index)
-        print(f'\r Time: {self.time:.3f}', end='\r')
+        new_n = round(self.time - self.start_time, 3)
+        self.pbar.update(new_n - self.pbar.n)
 
 
 class Plotter(Snapshot):
