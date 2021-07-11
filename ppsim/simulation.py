@@ -411,7 +411,10 @@ class Simulation:
                 Defaults to True.
         """
         if len(self.snapshots) == 0 and timer is True:
-            self.add_snapshot(TimeUpdate())
+            if type(run_until) is float or type(run_until) is int:
+                self.add_snapshot(TimeUpdate(time_bound=run_until))
+            else:
+                self.add_snapshot(TimeUpdate())
 
         end_time = None
         # stop_condition() returns True when it is time to stop
@@ -499,8 +502,9 @@ class Simulation:
             snapshot.update()
 
         if len(self.snapshots) == 1 and type(self.snapshots[0]) is TimeUpdate:
+            self.snapshots[0].pbar.close()
             self.snapshots.pop()
-            print()
+            # print()
 
     @property
     def reactions(self) -> str:
