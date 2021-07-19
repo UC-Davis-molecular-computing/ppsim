@@ -27,6 +27,7 @@ convergence time of a protocol.
 """
 
 import dataclasses
+from copy import deepcopy
 from dataclasses import dataclass
 from datetime import timedelta
 import math
@@ -298,6 +299,9 @@ class Simulation:
             # Make a fresh copy in the case of a dataclass in case the function mutates a, b
             if dataclasses.is_dataclass(a):
                 a, b = dataclasses.replace(a), dataclasses.replace(b)
+            # TODO: this doesn't help if the dataclass has more classes as fields
+            #   using deepcopy fixes this problem, but is significantly slower
+            # a, b = deepcopy(a), deepcopy(b)
             output = self._rule(a, b, **self._rule_kwargs)
             # If function just mutates a, b but doesn't return, then return new a, b values
             return (a, b) if output is None else output
@@ -464,7 +468,7 @@ class Simulation:
 
         next_time = get_next_time()
         # The next step that the simulator will be run until, which corresponds to parallel time next_time
-        next_step = self.simulator.t + self.time_to_steps(next_time - self.time)
+        next_step = self.time_to_steps(next_time)
 
         for snapshot in self.snapshots:
             snapshot.next_snapshot_time = perf_counter() + snapshot.update_time
@@ -473,8 +477,8 @@ class Simulation:
         max_wallclock_time = [min([s.update_time for s in self.snapshots])] if len(self.snapshots) > 0 else []
         while stop_condition() is False:
             if self.time >= next_time:
-                next_step += self.time_to_steps(get_next_time() - next_time)
                 next_time = get_next_time()
+                next_step = self.time_to_steps(next_time)
             current_step = self.simulator.t
             self.simulator.run(next_step, *max_wallclock_time)
             if self.simulator.t == next_step:
@@ -590,18 +594,20 @@ class Simulation:
         self.add_config()
 
     def time_to_steps(self, time: float) -> int:
-        """Convert length of time into number of steps.
+        """Convert simulated time into number of simulated interaction steps.
 
         Args:
             time: The amount of time to convert.
         """
-        expected_steps = time * self.steps_per_time_unit
         if self.continuous_time:
-            # In continuous time the number of steps is a poisson random variable
-            return self.rng.poisson(expected_steps)
+            # In continuous time the number of interactions to simulate is a Poisson random variable
+            # The last recorded simulated time was self.time, and at this point we had simulated self.simulator.t
+            # total interactions. We first compute the expected number of additional steps to simulate.
+            expected_steps = (time - self.time) * self.steps_per_time_unit
+            return self.simulator.t + self.rng.poisson(expected_steps)
         else:
-            # In discrete time we round up to the next step
-            return math.ceil(expected_steps)
+            # In discrete time we multiply to convert
+            return math.floor(time * self.steps_per_time_unit)
 
     @property
     def config_dict(self) -> Dict[State, int]:
