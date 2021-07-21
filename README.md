@@ -1889,7 +1889,7 @@ p = sim.history.plot()
     
 
 
-CRNs are normally modelled by Gillespie kinetics, which gives a continuous time Markov process. The unimolecular reaction `C ->(5) D` happens as a Poisson process with rate 5 &middot; #C. The forward bimolecular reaction `A+B ->(0.5) 2C` happens as a Poisson process with rate 0.5 &middot; (#A &middot; #B / v), and the reverse bimolecular reaction happens as a Poisson process with rate `4 * #B (\#B - 1) / (2*v)`, where `v` is the volume parameter.
+CRNs are normally modelled by Gillespie kinetics, which gives a continuous time Markov process. The unimolecular reaction `C ->(5) D` happens as a Poisson process with rate 5 &middot; #C. The forward bimolecular reaction `A+B ->(0.5) 2C` happens as a Poisson process with rate 0.5 &middot; (#A &middot; #B / v), and the reverse bimolecular reaction happens as a Poisson process with rate 4 &middot; #B &middot; (\#B - 1) / (2 &middot; v), where v is the volume parameter.
 
 When creating a `Simulation` with a list of `reaction` objects, `ppsim` will by default use this continuous time model.
 By default, `ppsim` sets the volume `v` to be the population size `n`, which makes the time units independent of population size. In some models, this volume parameter is instead baked directly into the numerical rate constant. In this case, the volume should be set manually in the Simulation constructor, with `Simulation(..., volume = 1)`. In addition, if these numerical rate constants are specified in specific time units (such as per second), this can be specified with `Simulation(..., time_units='seconds')`, and then all times will appear with appropriate units.
