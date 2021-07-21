@@ -5,7 +5,7 @@ The `ppsim` package is used for simulating population protocols. The package and
 
 If you find ppsim useful in a scientific project, please cite its associated paper:
 
-> <ins>ppsim: A software package for efficiently simulating and visualizing population protocols.</ins>  
+> <ins>ppsim: A software package for efficiently simulating and visualizing population protocols</ins>.  
   David Doty and Eric Severson.  
   CMSB 2021: *Proceedings of the 19th International Conference on Computational Methods in Systems Biology*  
   [ [paper](http://arxiv.org/abs/2105.04702) | [BibTeX](https://web.cs.ucdavis.edu/~doty/papers/ppsim.bib) ]
