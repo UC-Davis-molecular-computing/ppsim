@@ -4,6 +4,14 @@ The `ppsim` package is used for simulating population protocols. The package and
 
 The core of the simulator uses a [batching algorithm](https://arxiv.org/abs/2005.03584) which gives significant asymptotic gains for protocols with relatively small reachable state sets. The package is designed to be run in a Python notebook, to concisely describe complex protocols, efficiently simulate their dynamics, and provide helpful visualization of the simulation.
 
+If you find ppsim useful in a scientific project, please cite its associated paper:
+
+> <ins>ppsim: A software package for efficiently simulating and visualizing population protocols</ins>.  
+> David Doty and Eric Severson.  
+> CMSB 2021: *Proceedings of the 19th International Conference on Computational Methods in Systems Biology*  
+[ [paper](https://doi.org/10.1007/978-3-030-85633-5_16) | [BibTeX](https://web.cs.ucdavis.edu/~doty/papers/ppsim.bib) ]
+
+
 ## Table of contents
 
 * [Installation](#installation)
