@@ -9,7 +9,7 @@ If you find ppsim useful in a scientific project, please cite its associated pap
 > <ins>ppsim: A software package for efficiently simulating and visualizing population protocols</ins>.  
 > David Doty and Eric Severson.  
 > CMSB 2021: *Proceedings of the 19th International Conference on Computational Methods in Systems Biology*  
-[ [paper](https://doi.org/10.1007/978-3-030-85633-5_16) | [BibTeX](https://web.cs.ucdavis.edu/~doty/papers/ppsim.bib) ]
+[ [paper](https://doi.org/10.1007/978-3-030-85633-5_16) | [arXiv version](https://arxiv.org/abs/2105.04702) | [BibTeX](https://web.cs.ucdavis.edu/~doty/papers/ppsim.bib) ]
 
 
 ## Table of contents
