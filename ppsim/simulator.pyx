@@ -14,7 +14,7 @@ It is intended for the user to only interact with the class :any:`Simulation`.
 '''
 
 from libc.math cimport log, lgamma, sqrt
-from libc.stdint cimport int64_t, uint8_t, uint32_t
+from libc.stdint cimport int64_t, uint64_t, uint8_t, uint32_t
 cimport cython
 from numpy cimport npy_intp
 import numpy as np
@@ -44,7 +44,7 @@ cdef class Simulator:
         bitgen: A pointer to the BitGenerator, needed to for the numpy random C-API.
     """
     cdef public int64_t [::1] config
-    cdef public int64_t n, t
+    cdef public uint64_t n, t
     cdef npy_intp q
     cdef public npy_intp [:,:,:,] delta
     cdef public uint8_t [:,:] null_transitions
@@ -588,7 +588,7 @@ cdef class SimulatorMultiBatch(Simulator):
         # Dynamically update batch threshold, by comparing the times t2 - t1 of the collision sampling and
         #   the time t_3 - t_2 of the batch processing. Batch_threshold is adjusted to try to ensure
         #   t_2 - t_1 = t_3 - t_2
-        self.batch_threshold = int(((t3 - t2) / (t2 - t1)) ** 0.1 * self.batch_threshold)
+        self.batch_threshold = int((((t3 - t2) / (t2 - t1)) ** 0.1).real * self.batch_threshold)
         # Keep the batch threshold within some fixed bounds.
         self.batch_threshold = min(self.batch_threshold, 2 * self.n // 3)
         self.batch_threshold = max(self.batch_threshold, 3)
