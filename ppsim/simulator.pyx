@@ -124,6 +124,7 @@ cdef class SimulatorSequentialArray(Simulator):
     def __init__(self, *args):
         """Initializes Simulator, then creates the population array."""
         Simulator.__init__(self, *args)
+        print("************ Cython SimulatorSequentialArray.run() called")
         self.make_population()
 
     def make_population(self):
@@ -140,6 +141,7 @@ cdef class SimulatorSequentialArray(Simulator):
 
     def run(self, int64_t end_step, double max_wallclock_time = 60 * 60):
         """Samples random pairs of agents and updates them until reaching end_step."""
+        print("************ Cython SimulatorSequentialArray.run() called")
         cdef npy_intp i, j, k, a, b
         cdef double u
         cdef double [:] ps
@@ -252,8 +254,8 @@ cdef class SimulatorMultiBatch(Simulator):
 
     def __init__(self, *args):
         """Initializes all additional data structures needed for MultiBatch Simulator."""
-
         Simulator.__init__(self, *args)
+        print("************ Cython SimulatorMultiBatch.__init__() called")
 
         self.set_n_parameters()
 
@@ -359,6 +361,7 @@ cdef class SimulatorMultiBatch(Simulator):
             end_step: Will run until self.t = end_step.
             max_wallclock_time: A bound in seconds this will run for.
         """
+        print("************ Cython SimulatorMultiBatch.run() called")
         cdef double end_time = time.perf_counter() + max_wallclock_time
         while self.t < end_step and time.perf_counter() < end_time:
             if self.silent:

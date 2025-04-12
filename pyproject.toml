@@ -1,3 +1,10 @@
 [build-system]
-requires = ["setuptools", "wheel", "numpy", "cython"]
-build-backend = "setuptools.build_meta"
+requires = ["maturin>=1.0,<2.0", "setuptools", "wheel", "numpy"]
+build-backend = "maturin"
+
+[tool.maturin]
+python-source = "ppsim"
+features = ["pyo3/extension-module"]
+module-name = "ppsim.simulator_rust"
+manifest-path = "ppsim/rust/Cargo.toml"
+python-packages = ["ppsim"]

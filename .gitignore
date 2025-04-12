@@ -4,6 +4,8 @@
 /current/
 /old/
 /ppsim/build/
+/ppsim/rust/target/
+/ppsim/rust/Cargo.lock
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
