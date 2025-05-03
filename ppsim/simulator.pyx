@@ -510,7 +510,7 @@ cdef class SimulatorMultiBatch(Simulator):
         """
         CAP_BATCH_THRESHOLD = True
         #CAP_BATCH_THRESHOLD = False
-        max_batch_threshold = self.n // 2
+        max_batch_threshold = self.n // 4
         if CAP_BATCH_THRESHOLD:
             self.batch_threshold = min(self.batch_threshold, max_batch_threshold)
 

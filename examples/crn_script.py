@@ -293,7 +293,6 @@ def main2():
     sim.run(5)
     print(sim.history)
 
-
 def sample_configs():
     a,b,u = pp.species('A B U')
     approx_majority = [
@@ -303,7 +302,7 @@ def sample_configs():
     ]
 
     trials_exponent = 6
-    pop_exponent = 2
+    pop_exponent = 4
     n = 10 ** pop_exponent
     p = 0.51 # TODO: restore this
     # p = 0.5
@@ -324,21 +323,20 @@ def sample_configs():
     # state = 'B'
     # state = 'U'
     ax.hist([results_ppsim[state], results_rebop[state]], 
-            bins = np.linspace(0, n, 20), # type: ignore
+            bins = np.linspace(int(n*0.32), int(n*.43), 20), # type: ignore
             alpha = 1, label=['ppsim', 'rebop']) #, density=True, edgecolor = 'k', linewidth = 0.5)
     ax.legend()
 
     ax.set_xlabel(f'count of state {state}')
     ax.set_ylabel(f'empirical probability')
-    ax.set_title(f'state {state} distribution sampled at simulated time 5 ($10^{trials_exponent}$ samples)')
+    ax.set_title(f'state {state} distribution sampled at simulated time {end_time} ($10^{trials_exponent}$ samples)')
     
     # plt.ylim(0, 200_000)
 
     pdf_fn = f'{fn_noext}_regula.pdf'
-    # plt.savefig(pdf_fn, bbox_inches='tight')
+    plt.savefig(pdf_fn, bbox_inches='tight')
     plt.show()
     
-
 
 if __name__ == '__main__':
     # main2()

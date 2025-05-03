@@ -58196,7 +58196,7 @@ __pyx_t_5 = NULL;
  *         """
  *         CAP_BATCH_THRESHOLD = True             # <<<<<<<<<<<<<<
  *         #CAP_BATCH_THRESHOLD = False
- *         max_batch_threshold = self.n // 2
+ *         max_batch_threshold = self.n // 4
  */
   __Pyx_TraceLine(511,0,__PYX_ERR(0, 511, __pyx_L1_error))
 
@@ -58206,18 +58206,18 @@ __pyx_t_5 = NULL;
   /* "ppsim/simulator.pyx":513
  *         CAP_BATCH_THRESHOLD = True
  *         #CAP_BATCH_THRESHOLD = False
- *         max_batch_threshold = self.n // 2             # <<<<<<<<<<<<<<
+ *         max_batch_threshold = self.n // 4             # <<<<<<<<<<<<<<
  *         if CAP_BATCH_THRESHOLD:
  *             self.batch_threshold = min(self.batch_threshold, max_batch_threshold)
  */
   __Pyx_TraceLine(513,0,__PYX_ERR(0, 513, __pyx_L1_error))
 
 #line 513 "ppsim/simulator.pyx"
-  __pyx_v_max_batch_threshold = (__pyx_v_self->__pyx_base.n / 2);
+  __pyx_v_max_batch_threshold = (__pyx_v_self->__pyx_base.n / 4);
 
   /* "ppsim/simulator.pyx":514
  *         #CAP_BATCH_THRESHOLD = False
- *         max_batch_threshold = self.n // 2
+ *         max_batch_threshold = self.n // 4
  *         if CAP_BATCH_THRESHOLD:             # <<<<<<<<<<<<<<
  *             self.batch_threshold = min(self.batch_threshold, max_batch_threshold)
  * 
@@ -58228,7 +58228,7 @@ __pyx_t_5 = NULL;
   if (__pyx_v_CAP_BATCH_THRESHOLD) {
 
     /* "ppsim/simulator.pyx":515
- *         max_batch_threshold = self.n // 2
+ *         max_batch_threshold = self.n // 4
  *         if CAP_BATCH_THRESHOLD:
  *             self.batch_threshold = min(self.batch_threshold, max_batch_threshold)             # <<<<<<<<<<<<<<
  * 
@@ -58265,7 +58265,7 @@ __pyx_t_5 = NULL;
 
     /* "ppsim/simulator.pyx":514
  *         #CAP_BATCH_THRESHOLD = False
- *         max_batch_threshold = self.n // 2
+ *         max_batch_threshold = self.n // 4
  *         if CAP_BATCH_THRESHOLD:             # <<<<<<<<<<<<<<
  *             self.batch_threshold = min(self.batch_threshold, max_batch_threshold)
  * 
