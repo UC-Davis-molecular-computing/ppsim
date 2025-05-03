@@ -701,7 +701,7 @@ def gillespy2_format(init_config: Dict[Specie, int], rxns: Iterable[Reaction],
     return model
 
 
-def stochkit_format(init_config: Dict[Specie, int], rxns: Iterable[Reaction],
+def stochkit_format(rxns: Iterable[Reaction], init_config: Dict[Specie, int],
                     volume: float = 1.0, name: str = 'CRN') -> str:
     """
 

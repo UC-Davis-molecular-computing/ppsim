@@ -90,41 +90,53 @@ class Simulation:
 
     state_list: List[State]
     """A sorted list of all reachable states."""
+
     state_dict: Dict[State, int]
     """Maps states to their integer index to be used
             in array representations."""
+    
     simulator: simulator.Simulator
     """An internal :any:`Simulator` object, whose methods actually
             perform the steps of the simulation."""
+    
     configs: List[np.ndarray]
     """A list of all configurations that have been
             recorded during the simulation, as integer arrays."""
+    
     time: float
     """The current time."""
+    
     times: List[Union[float, timedelta]]
     """A list of all the corresponding times for configs."""
+    
     steps_per_time_unit: float
     """Number of simulated interactions per time unit."""
+    
     time_units: Optional[str]
     """The units that time is in."""
+    
     continuous_time: bool
     """Whether continuous time is used. The regular discrete
             time model considers :any:`steps_per_time_unit` steps 
             to be 1 unit of time.
             The continuous time model is a poisson process, with expected
             :any:`steps_per_time_unit` steps per 1 unit of time."""
+    
     column_names: Union[pd.MultiIndex, List[str]]
     """Columns representing all states for pandas dataframe.
             If the State is a tuple, NamedTuple, or dataclass, this will be a
             pandas MultiIndex based on the various fields.
             Otherwise it is list of str(State) for each State."""
+    
     snapshots: List[Snapshot]
     """A list of :any:`Snapshot` objects, which get
             periodically called during the running of the simulation to give live
             updates."""
+    
     rng: np.random.Generator
     """A numpy random generator used to sample random variables outside the
             cython code."""
+    
     seed: Optional[int]
     """The optional integer seed used for rng and inside cython code."""
 
@@ -423,12 +435,12 @@ class Simulation:
         end_time = None
         # stop_condition() returns True when it is time to stop
         if run_until is None:
-            if type(self.simulator) != simulator.SimulatorMultiBatch:
+            if not isinstance(self.simulator, simulator.SimulatorMultiBatch):
                 raise ValueError('Running until silence only works with multibatch simulator.')
 
             def stop_condition():
                 return self.simulator.silent
-        elif type(run_until) is float or type(run_until) is int:
+        elif isinstance(run_until, (float, int)):
             end_time = self.time + run_until
 
             def stop_condition():
@@ -547,7 +559,7 @@ class Simulation:
         return '\n'.join(reactions)
 
     def _reaction_string(self, reaction, p: float = 1, w: int = 1) -> str:
-        """A string representation of a reaction."""
+        # A string representation of a reaction.
 
         reactants = [self.state_list[i] for i in sorted(reaction[0:2])]
         products = [self.state_list[i] for i in sorted(reaction[2:])]

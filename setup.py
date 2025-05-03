@@ -10,11 +10,22 @@ lib_path = join(np.get_include(), '..', '..', 'random', 'lib')
 with open("README.md", 'r') as f:
     long_description = f.read()
 
+# Add debug flags for Cython debugging
+extra_compile_args = []
+extra_link_args = []
+
+# Add debug symbols
+if False:  # Set to False to disable debug mode
+    extra_compile_args.extend(['-g', '-O0', '-Ox', '-Zi'])
+    extra_link_args.extend(['-g', '-debug:full'])
+
 distributions = Extension("ppsim.simulator",
                           sources=[join('', 'ppsim/simulator.pyx')],
                           include_dirs=[inc_path],
                           library_dirs=[lib_path],
-                          libraries=['npyrandom']
+                          libraries=['npyrandom'],
+                          extra_compile_args=extra_compile_args,
+                          extra_link_args=extra_link_args,
                           )
 
 with open("requirements.txt") as fp:
@@ -52,6 +63,10 @@ setup(
     long_description_content_type='text/markdown',
     python_requires='>=3.7',
     url="https://github.com/UC-Davis-molecular-computing/ppsim",
-    ext_modules=cythonize(distributions, compiler_directives={'language_level': "3"}),
+    ext_modules=cythonize(distributions, compiler_directives={
+        'language_level': "3",
+        'linetrace': True,
+        'binding': True
+    }, emit_linenums=True),
     install_requires=install_requires
 )

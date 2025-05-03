@@ -1,17 +1,9 @@
-# cython: wraparound=False, nonecheck=False, boundscheck=False, cdivision=True, initializedcheck=False
-
 """
 The cython module which contains the internal simulator algorithms.
 
 This is not intended to be interacted with directly.
 It is intended for the user to only interact with the class :any:`Simulation`.
 """
-
-''' Use these commands to enable line tracing.
-# cython: linetrace=True
-# cython: binding=True
-# distutils: define_macros=CYTHON_TRACE_NOGIL=1
-'''
 
 from libc.math cimport log, lgamma, sqrt
 from libc.stdint cimport int64_t, uint64_t, uint8_t, uint32_t
@@ -21,7 +13,7 @@ import numpy as np
 cimport numpy as np
 from cpython.pycapsule cimport PyCapsule_GetPointer
 from numpy.random cimport bitgen_t
-from numpy.random cimport BitGenerator
+from numpy.random.bit_generator cimport BitGenerator
 from numpy.random import PCG64
 from numpy.random.c_distributions cimport \
     (random_hypergeometric, random_interval, random_multinomial, random_geometric, binomial_t)
@@ -70,8 +62,8 @@ cdef class Simulator:
             random_transitions: A q x q x 2 array. Entry [i, j, 0] is the number of possible outputs if
                 transition [i, j] is random, otherwise it is 0. Entry [i, j, 1] gives the starting index to find
                 the outputs in the array random_outputs if it is random.
-            random_outputs: An array containing all outputs of random transitions, whose indexing information
-                is contained in random_transitions.
+            random_outputs: A ? x 2 array containing all (out1,out2) outputs of random transitions, 
+                whose indexing information is contained in random_transitions.
             transition_probabilities: An array containing all random transition probabilities, whose indexing matches
                 random_outputs.
             seed (optional): An integer seed for the pseudorandom number generator.
@@ -185,6 +177,22 @@ cdef class SimulatorSequentialArray(Simulator):
         self.make_population()
 
 
+def print_np_array(array):
+    """Prints a numpy array in a readable format."""
+    assert array.ndim <= 2, "Only 1D and 2D arrays are supported."
+    print('[', end='')
+    if array.ndim == 1:
+        for i in range(array.shape[0]):
+            print(f'{array[i]},', end='')
+    elif array.ndim == 2:
+        for i in range(array.shape[0]):
+            print('\n[', end='')
+            for j in range(array.shape[1]):
+                print(f'{array[i, j]},', end='')
+            print('],', end='')
+        print()
+    print(']')
+
 cdef class SimulatorMultiBatch(Simulator):
     """Uses the MultiBatch algorithm to simulate O(sqrt(n)) interactions in parallel.
 
@@ -250,10 +258,13 @@ cdef class SimulatorMultiBatch(Simulator):
     cdef npy_intp num_r_values
     cdef int64_t r_constant
 
+    cdef public dict collision_counts
+
     def __init__(self, *args):
         """Initializes all additional data structures needed for MultiBatch Simulator."""
-
         Simulator.__init__(self, *args)
+
+        self.collision_counts = {}
 
         self.set_n_parameters()
 
@@ -315,7 +326,9 @@ cdef class SimulatorMultiBatch(Simulator):
         """Initialize all parameters that depend on the population size n."""
         self.logn = log(self.n)
         # theoretical optimum for batch_threshold is Theta(sqrt(n / logn) * q) agents / batch
-        self.batch_threshold = int(min(sqrt(self.n / self.logn) * self.q, self.n ** 0.7))
+        batch_constant = 2**11
+        # batch_constant = 1
+        self.batch_threshold = batch_constant * int(min(sqrt(self.n / self.logn) * self.q, self.n ** 0.7))
         # first rough approximation for probability of successful reaction where we want to do gillespie
         self.gillespie_threshold = 2 / sqrt(self.n)
 
@@ -323,15 +336,31 @@ cdef class SimulatorMultiBatch(Simulator):
         self.num_r_values = int(10 * log(self.n))
         self.num_u_values = int(10 * log(self.n))
         self.r_constant = max(int(1.5 * self.batch_threshold) // ((self.num_r_values - 2) ** 2), 1)
-        self.coll_table = np.zeros((self.num_r_values, self.num_u_values), dtype=np.int64)
-        self.coll_table_r_values = np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)]
-                                            + [self.n], dtype=np.int64)
+        r_values = []
+        for idx in range(self.num_r_values - 1):
+            r = 2 + self.r_constant * (idx ** 2)
+            if r >= self.n:
+                break
+            r_values.append(r)
+        r_values.append(self.n)
+        self.num_r_values = len(r_values)
+        self.coll_table_r_values = np.array(r_values, dtype=np.int64)
         self.coll_table_u_values = np.linspace(0, 1, self.num_u_values, dtype=float)
+        #print(f'r values: {r_values}, u values (len={self.num_u_values}):')
+        #for u_idx in range(self.num_u_values):
+            #print(f'{self.coll_table_u_values[u_idx]:.2}', end=', ')
+        #print()
         cdef npy_intp i, j
+        
+        #print("collision table:")
+        self.coll_table = np.zeros((self.num_r_values, self.num_u_values), dtype=np.int64)
         for i in range(self.num_r_values):
             for j in range(self.num_u_values):
-                self.coll_table[i, j] = self.sample_coll(self.coll_table_r_values[i],
-                                                         self.coll_table_u_values[j], has_bounds=False)
+                r = self.coll_table_r_values[i]
+                u = self.coll_table_u_values[j]
+                self.coll_table[i, j] = self.sample_coll(r, u, has_bounds=False)
+                #print(f'{self.coll_table[i, j]}', end=', ')
+            #print()
 
     def reset(self, int64_t [::1] config, int64_t t = 0):
         """Reset to a given configuration.
@@ -342,6 +371,7 @@ cdef class SimulatorMultiBatch(Simulator):
             config: The configuration array to reset to.
             t: The new value of :any:`t`. Defaults to 0.
         """
+        self.collision_counts = {}
         self.config = config
         self.urn = Urn.create(self.config, self.bitgen)
         cdef int64_t n = sum(config)
@@ -352,7 +382,7 @@ cdef class SimulatorMultiBatch(Simulator):
         self.silent = False
         self.do_gillespie = False
 
-    def run(self, int64_t end_step, double max_wallclock_time = 60 * 60):
+    def run(self, int64_t t_max, double max_wallclock_time = 60 * 60):
         """Run the simulation for a fixed number of steps.
 
         Args:
@@ -360,16 +390,16 @@ cdef class SimulatorMultiBatch(Simulator):
             max_wallclock_time: A bound in seconds this will run for.
         """
         cdef double end_time = time.perf_counter() + max_wallclock_time
-        while self.t < end_step and time.perf_counter() < end_time:
+        while self.t < t_max and time.perf_counter() < end_time:
             if self.silent:
-                self.t = end_step
+                self.t = t_max
                 return
             elif self.do_gillespie:
-                self.gillespie_step(end_step)
+                self.gillespie_step(t_max)
             else:
-                self.multibatch_step(end_step)
+                self.multibatch_step(t_max)
 
-    def run_until_silent(self, int64_t [::1] config):
+    def run_until_silent(self):
         """Run the simulation until silent."""
         while not self.silent:
             if self.do_gillespie:
@@ -478,10 +508,15 @@ cdef class SimulatorMultiBatch(Simulator):
 
         See the paper for a more detailed explanation of the algorithm.
         """
+        CAP_BATCH_THRESHOLD = True
+        #CAP_BATCH_THRESHOLD = False
+        max_batch_threshold = self.n // 2
+        if CAP_BATCH_THRESHOLD:
+            self.batch_threshold = min(self.batch_threshold, max_batch_threshold)
+
         cdef int64_t num_delayed, l
         cdef double t1, t2, t3, u, r, end_step
-        cdef npy_intp a, b, c, i, j, i_max, j_max, o_i, o_j
-
+        cdef npy_intp a, b, c, i, j, i_max, j_max, o_i, o_j, num_outputs, first_idx
 
         self.updated_counts.reset()
         self.updated_counts.order = self.urn.order
@@ -489,11 +524,17 @@ cdef class SimulatorMultiBatch(Simulator):
         num_delayed = 2
 
         t1 = time.perf_counter()
+
         # batch will go for at least batch_threshold interactions, unless passing t_max
         end_step = self.t + self.batch_threshold
         if t_max > 0:
             end_step = min(end_step, t_max)
+
+        # print(f'batch_threshold: {self.batch_threshold}')
+        
+        cdef int64_t num_collisions = 0
         while self.t + num_delayed // 2 < end_step:
+            num_collisions += 1
             u = self.bitgen.next_double(self.bitgen.state)
             l = self.sample_coll(r = num_delayed + self.updated_counts.size,
                                  u = u, has_bounds=True)
@@ -508,8 +549,7 @@ cdef class SimulatorMultiBatch(Simulator):
 
             # sample if a was a delayed or an updated agent
             u = self.bitgen.next_double(self.bitgen.state)
-            r = num_delayed / (num_delayed + self.updated_counts.size)
-            # true with probability num_delayed / (num_delayed + num_updated)
+            # delayed with probability num_delayed / (num_delayed + num_updated)
             if u * (num_delayed + self.updated_counts.size) <= num_delayed:
                 # if a was delayed, need to first update a with its first interaction before the collision
                 # c is the delayed partner that a interacted with, so add this interaction
@@ -524,7 +564,7 @@ cdef class SimulatorMultiBatch(Simulator):
                 # if a was updated, we simply sample a and remove it from updated counts
                 a = self.updated_counts.sample_one()
 
-            if l % 2 == 0:  # when l is even, the collision must with with a formally untouched agent
+            if l % 2 == 0:  # when l is even, the collision must with a formally untouched agent
                 b = self.urn.sample_one()
             else: # when l is odd, the collision is with the next agent, either untouched, delayed, or updated
                 u = self.bitgen.next_double(self.bitgen.state)
@@ -547,7 +587,10 @@ cdef class SimulatorMultiBatch(Simulator):
             self.updated_counts.add_to_entry(a, 1)
             self.updated_counts.add_to_entry(b, 1)
 
+        self.collision_counts[num_collisions] = self.collision_counts.get(num_collisions, 0) + 1
+
         t2 = time.perf_counter()
+
         self.do_gillespie = True  # if entire batch are null reactions, stays true and switches to gillspie
         i_max = self.urn.sample_vector(num_delayed // 2, self.row_sums)
         for i in range(i_max):
@@ -559,19 +602,32 @@ cdef class SimulatorMultiBatch(Simulator):
                     # don't switch to gillespie because we did a random transition
                     # TODO: this might not switch to gillespie soon enough in certain cases
                     self.do_gillespie = False
-                    a = self.random_transitions[o_i, o_j, 0]  # better written using walrus operator
-                    b = self.random_transitions[o_i, o_j, 1]
+                    num_outputs = self.random_transitions[o_i, o_j, 0]  # better written using walrus operator
+                    first_idx = self.random_transitions[o_i, o_j, 1]
                     # updates the first a entries of m to hold a multinomial,
                     # giving the number of times for each random transition
                     self.m[:] = 0
-                    random_multinomial(self.bitgen, self.row[o_j], &self.m[0], &self.transition_probabilities[b],
-                                       a, &self._binomial)
-                    for c in range(a):
-                        self.updated_counts.add_to_entry(self.random_outputs[b+c,0], self.m[c])
-                        self.updated_counts.add_to_entry(self.random_outputs[b+c,1], self.m[c])
+                    # From https://numpy.org/doc/2.0/reference/random/c-api.html#c.random_multinomial
+                    # bitgen_t *bitgen_state   RNG
+                    # npy_int64 n              population size n
+                    # npy_int64 *mnix          pointer to array to write sample into
+                    # double *pix              pointer to probabilities
+                    # npy_intp d               number of possible outputs/"colors" (num_outputs in our case)
+                    # binomial_t *binomial     not entirely sure, but it gets passed to the binomial sampler
+                    random_multinomial(
+                        self.bitgen, 
+                        self.row[o_j], 
+                        &self.m[0], 
+                        &self.transition_probabilities[first_idx],
+                        num_outputs, 
+                        &self._binomial
+                    )
+                    for c in range(num_outputs):
+                        self.updated_counts.add_to_entry(self.random_outputs[first_idx+c,0], self.m[c])
+                        self.updated_counts.add_to_entry(self.random_outputs[first_idx+c,1], self.m[c])
                 else:
                     if self.do_gillespie:
-                        # if transition is non-null, we will set do_gillespie = False
+                        # if any transition is non-null, we will set do_gillespie = False
                         self.do_gillespie = self.null_transitions[o_i, o_j]
                     # We are directly adding to updated_counts.config rather than using the function
                     #   updated_counts.add_to_entry for speed. None of the other urn features of updated_counts will
@@ -588,9 +644,11 @@ cdef class SimulatorMultiBatch(Simulator):
         # Dynamically update batch threshold, by comparing the times t2 - t1 of the collision sampling and
         #   the time t_3 - t_2 of the batch processing. Batch_threshold is adjusted to try to ensure
         #   t_2 - t_1 = t_3 - t_2
-        self.batch_threshold = int((((t3 - t2) / (t2 - t1)) ** 0.1).real * self.batch_threshold)
-        # Keep the batch threshold within some fixed bounds.
-        self.batch_threshold = min(self.batch_threshold, 2 * self.n // 3)
+        if False and t2 - t1 > 0:
+            self.batch_threshold = int((((t3 - t2) / (t2 - t1)) ** 0.1).real * self.batch_threshold)
+            # Keep the batch threshold within some fixed bounds.
+        if CAP_BATCH_THRESHOLD:
+            self.batch_threshold = min(self.batch_threshold, max_batch_threshold)
         self.batch_threshold = max(self.batch_threshold, 3)
 
         self.urn.sort()
@@ -600,7 +658,8 @@ cdef class SimulatorMultiBatch(Simulator):
             self.get_enabled_reactions()
 
     cdef int64_t sample_coll(self, int64_t r, double u, bint has_bounds=True):
-        """Returns a sample l ~ coll(n, r) from the collision length distribution.
+        """
+        Returns a sample l ~ coll(n, r) from the collision length distribution.
         
         See Lemma 3 in the source paper. The distribution gives the number of agents needed to pick an agent twice,
         when r unique agents have already been selected.
@@ -634,13 +693,14 @@ cdef class SimulatorMultiBatch(Simulator):
         cdef npy_intp i, j
         cdef double logu, lhs
         logu = log(u)
-        lhs = lgamma(self.n-r+1) - logu
+        assert self.n + 1 >= r
+        diff = self.n + 1 - r
+        lhs = lgamma(diff) - logu
         # The condition P(l < t) < U becomes
         #     lhs < lgamma(n - r - t + 1) + t * log(n)
 
         if has_bounds:
             # Look up bounds from coll_table.
-
             # For r values, we invert the definition of self.coll_table_r_values:
             #   np.array([2 + self.r_constant * (i ** 2) for i in range(self.num_r_values - 1)] + [self.n])
             i = int(sqrt((r - 2) / self.r_constant))
@@ -649,6 +709,10 @@ cdef class SimulatorMultiBatch(Simulator):
             # for u values we similarly invert the definition: np.linspace(0, 1, num_u_values)
             j = int(u * (self.num_u_values - 1))
 
+            assert self.coll_table_r_values[i] <= r
+            assert r <= self.coll_table_r_values[i + 1]
+            assert self.coll_table_u_values[j] <= u
+            assert u <= self.coll_table_u_values[j + 1]
             # assert self.coll_table_r_values[i] <= r <= self.coll_table_r_values[i+1]
             # assert self.coll_table_u_values[j] <= u <= self.coll_table_u_values[j+1]
             t_lo = self.coll_table[i + 1, j + 1]
@@ -778,6 +842,7 @@ cdef class Urn:
         while n > 0 and i < self.length - 1:
             index = self.order[i]
             total -= self.config[index]
+            # print(f"population = {total+self.config[index]}, successes = {self.config[index]}, draws = {n}")
             h = random_hypergeometric(self.bitgen, self.config[index], total, n)
             v[index] = h
             n -= h

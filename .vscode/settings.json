@@ -1,0 +1,38 @@
+{
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": false,
+    "python.linting.mypyEnabled": false,
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}"
+    ],
+    "python.terminal.activateEnvironment": true,
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.debugOptions": [
+        "DebugStdLib",
+        "ShowReturnValue",
+        "RedirectOutput"
+    ],
+    "python.analysis.diagnosticMode": "workspace",
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.completeFunctionParens": true,
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.inlayHints.variableTypes": true,
+    "python.analysis.packageIndexDepths": [
+        {
+            "name": "ppsim",
+            "depth": 5
+        }
+    ],
+    // Additional settings for Cython debugging
+    "files.associations": {
+        "*.pyx": "cython",
+        "*.pxd": "cython"
+    },
+    "python.debugging.enableDebuggingOfStandardLibrary": true,
+    "python.debugging.justMyCode": false,
+    "python.debugging.autoExpandVariables": true,
+    "python.debugging.showReturnValue": true,
+    "python.debugging.stopOnEntry": false
+}
