@@ -326,8 +326,8 @@ cdef class SimulatorMultiBatch(Simulator):
         """Initialize all parameters that depend on the population size n."""
         self.logn = log(self.n)
         # theoretical optimum for batch_threshold is Theta(sqrt(n / logn) * q) agents / batch
-        batch_constant = 2**11
-        # batch_constant = 1
+        # batch_constant = 2**11
+        batch_constant = 1
         self.batch_threshold = batch_constant * int(min(sqrt(self.n / self.logn) * self.q, self.n ** 0.7))
         # first rough approximation for probability of successful reaction where we want to do gillespie
         self.gillespie_threshold = 2 / sqrt(self.n)
