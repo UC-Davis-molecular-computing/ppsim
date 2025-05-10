@@ -1,5 +1,7 @@
 # ppsim Python package
 
+**UPDATE:** This repo is no longer maintained. The latest ppsim package (post version 1.0.0) is maintained at https://github.com/UC-Davis-molecular-computing/ppsim-rust/
+
 The `ppsim` package is used for simulating population protocols. The package and further example notebooks can be found on [Github](https://github.com/UC-Davis-molecular-computing/ppsim).
 
 The core of the simulator uses a [batching algorithm](https://arxiv.org/abs/2005.03584) which gives significant asymptotic gains for protocols with relatively small reachable state sets. The package is designed to be run in a Python notebook, to concisely describe complex protocols, efficiently simulate their dynamics, and provide helpful visualization of the simulation.
